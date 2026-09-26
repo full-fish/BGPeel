@@ -33,16 +33,19 @@
     <input type="file" id="file" accept="image/*" multiple>
     <input type="file" id="dir" webkitdirectory>
     Drag images or folders here or <label for="file"><b>click to choose</b></label> · <label for="dir" class="dir"><b>choose a folder</b></label>
+    <span class="hint">You can also paste (Ctrl+V · ⌘V)</span>
   </div>
 
   <div id="opts">
   <div class="actions">
-    <button class="primary" id="run" disabled>Convert</button>
-    <button id="stop" hidden>Stop</button>
+    <div class="main">
+      <button class="primary" id="run" disabled>Convert</button>
+      <button id="stop" hidden>Stop</button>
+      <button id="zip" disabled>Download zip</button>
+      <button id="clear" disabled>Clear list</button>
+    </div>
     <button id="pickFail" hidden>Select failed</button>
     <button id="unpick" hidden>Clear selection</button>
-    <button id="zip" disabled>Download all (zip)</button>
-    <button id="clear" disabled>Clear list</button>
     <span id="status" role="status"></span>
   </div>
 
@@ -53,8 +56,7 @@
       <label class="bgopt" title="Black"><input type="radio" name="bg" value="black" aria-label="Black"><span class="chip"></span></label>
       <label class="bgopt" title="White"><input type="radio" name="bg" value="white" aria-label="White"><span class="chip"></span></label>
     </span>
-    <span class="grp">Card size <button id="smaller" aria-label="Smaller cards">−</button><button id="bigger" aria-label="Bigger cards">+</button></span>
-    <button id="side" aria-label="Move sidebar left / right" title="Move sidebar left / right">⇄</button>
+    <span class="tail"><span class="grp">Card size <button id="smaller" aria-label="Smaller cards">−</button><button id="bigger" aria-label="Bigger cards">+</button></span><button id="swap" aria-label="Move sidebar left / right" title="Move sidebar left / right">⇄</button></span>
   </div>
 
   <div class="export" id="export"></div>
@@ -113,9 +115,14 @@
   <article class="guide">
     <h2>How to use</h2>
     <ol>
-      <li><b>Add images</b> — drag them onto the box above or click to choose. To pick a whole folder, use “choose a folder”. You can add many at once; dropping a folder adds everything inside, subfolders included.</li>
-      <li><b>Convert</b> — the background color and type are detected for each image automatically. Each card shows the detected color. To redo only a few, click their images to select them and convert: only the selected ones are converted and the other results stay. Use × at the top right of a card to remove it from the list. Shift-click selects everything from the last card you clicked, and “Select failed” picks only skipped or failed cards. Hover over a card image (or press and hold on a phone) to see the original, or press “Show originals” to switch all cards at once. The magnifier opens a large view (hold to see the original, ←/→ for the next image), and a black or white background makes leftover background color at the edges easy to spot.</li>
-      <li><b>Download</b> — use the Download link on each card, or “Download all (zip)” to get everything at once (dropped folders keep their structure inside the zip). Use “Download size” and “256 colors” to get smaller files, for all images or card by card. Results are PNGs with transparent backgrounds.</li>
+      <li><b>Add images</b> — drag them onto the box above (or anywhere on the page) or click to choose. To pick a whole folder, use “choose a folder”. You can add many at once; dropping a folder adds everything inside, subfolders included. Screenshots can be pasted directly (Ctrl+V, or ⌘V on a Mac).</li>
+      <li><b>Convert</b> — the background color and type are detected for each image automatically, and each card shows the detected color.
+        <ul>
+          <li><b>Compare</b>: hover over a card image (or press and hold on a phone) to see the original. “Show originals” switches all cards at once, and the magnifier opens a large view (hold to see the original, ←/→ for the next image).</li>
+          <li><b>Check</b>: a black or white background makes leftover background color at the edges easy to spot. Use “Card size” −/+ to fit more or fewer images on screen.</li>
+          <li><b>Redo a few</b>: click images to select them and convert: only the selected ones are redone and the other results stay. Shift-click selects a range, and “Select failed” picks only skipped or failed cards. × at the top right of a card removes it from the list.</li>
+        </ul></li>
+      <li><b>Download</b> — use the Download link on each card, or “Download zip” to get everything at once (dropped folders keep their structure inside the zip). Use “Download size” and “256 colors” to get smaller files, for all images or card by card. Results are PNGs with transparent backgrounds.</li>
     </ol>
 
     <h2>Works best with</h2>

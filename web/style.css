@@ -33,6 +33,7 @@ h1 { font-size: 24px; margin: 0 0 4px; }
 .drop b { color: var(--accent); }
 .drop label[for=file]::after { content: ""; position: absolute; inset: 0; } /* 칸 어디를 눌러도 파일 선택 */
 .drop .dir { position: relative; z-index: 1; } /* '폴더 선택'만 그 위로 */
+.drop .hint { display: block; margin-top: 6px; font-size: 13px; color: var(--muted); }
 
 /* 설정 */
 .basic { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px 24px; }
@@ -79,6 +80,9 @@ input[type=range] { width: 100%; margin: 10px 0 2px; accent-color: var(--accent)
 .reset-row { margin-top: 16px; display: flex; justify-content: flex-end; }
 
 .actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 16px; }
+.actions .main { display: flex; gap: 8px; flex-basis: 100%; } /* 변환·zip·비우기는 항상 한 줄(좁으면 글자가 줄바꿈) */
+.actions .main > button { flex: none; white-space: nowrap; }
+.actions .main > #run { flex: 0 1 auto; min-width: 0; white-space: normal; } /* 길이가 바뀌는 변환 버튼만 줄어든다 */
 button { font: inherit; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--text); cursor: pointer; }
 button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); font-weight: 600; }
 button:disabled { opacity: .45; cursor: not-allowed; }
@@ -127,15 +131,15 @@ button:disabled { opacity: .45; cursor: not-allowed; }
 /* 좁은 화면(휴대폰): 사이드바 자리가 없어 옵션은 위에 쌓고, 변환 버튼 줄만 화면 아래에 고정 */
 @media (max-width: 899px) {
   .actions { position: fixed; z-index: 10; left: 0; right: 0; bottom: 0; margin: 0; padding: 8px 12px calc(8px + env(safe-area-inset-bottom)); background: var(--bg); border-top: 1px solid var(--line); box-shadow: 0 -4px 16px rgb(0 0 0 / .08); }
-  body:has(.actions) { padding-bottom: 120px; }
-  #side { display: none; }
+  body:has(.actions) { padding-bottom: calc(var(--bar, 120px) + 16px); } /* 버튼 줄 실제 높이(app.js가 잼)만큼 비워 둔다 */
+  #swap { display: none; }
 }
 
 /* 보기: 원본 보기, 미리보기 배경, 카드 크기, 사이드바 위치 */
 .view { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin-bottom: 16px; font-size: 14px; }
 .grp { display: inline-flex; align-items: center; gap: 4px; }
-.grp button, #side { padding: 4px 10px; }
-#side { margin-left: auto; }
+.grp button, #swap { padding: 4px 10px; }
+.tail { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; } /* 카드 크기와 ⇄는 같은 줄 */
 .bgopt { position: relative; display: inline-flex; cursor: pointer; }
 .bgopt input { position: absolute; opacity: 0; pointer-events: none; }
 .chip { width: 22px; height: 22px; border-radius: 6px; border: 1px solid var(--line); }

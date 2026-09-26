@@ -26,7 +26,7 @@ const I18N = {
       distTol: { name: "배경과 구분할 색 차이", ends: ["또렷하게", "배경색 더 빼기"],
         help: "배경색과 이만큼 이상 다른 색은 완전히 남겨요. 글로우 주변에 배경색이 남으면 올리고, 물체가 반투명해지면 내리세요." },
     },
-    valueOf: (name) => `${name} 값`,
+    valueLabel: (name) => `${name} 값`,
     bgMarker: "배경색",
     keyHelp: {
       auto: "이미지마다 테두리에서 가장 많이 나오는 색을 배경으로 봐요. 물체가 테두리에 닿아 있어도 괜찮아요.",
@@ -85,7 +85,7 @@ const I18N = {
     close: "닫기",
     prev: "이전",
     next: "다음",
-    stopping: "지금 한 장 끝나면 정지…",
+    stopping: "처리 중인 것만 끝내고 정지…",
     stopped: (n) => ` · 정지됨, ${n}장 남음`,
   },
   en: {
@@ -113,7 +113,7 @@ const I18N = {
       distTol: { name: "Color difference from background", ends: ["Crisper", "Remove more background"],
         help: "Colors at least this different from the background are kept fully. Raise it if background color remains around glows; lower it if the object becomes semi-transparent." },
     },
-    valueOf: (name) => `${name} value`,
+    valueLabel: (name) => `${name} value`,
     bgMarker: "Background color",
     keyHelp: {
       auto: "For each image, the most common color along the border is used as the background. It works even if the object touches the border.",
@@ -172,7 +172,7 @@ const I18N = {
     close: "Close",
     prev: "Previous",
     next: "Next",
-    stopping: "Stopping after this one…",
+    stopping: "Stopping after the current ones…",
     stopped: (n) => ` · stopped, ${n} left`,
   },
 };

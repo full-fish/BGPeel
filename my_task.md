@@ -5,7 +5,7 @@
 ## 0. 먼저 정할 것
 
 - [ ] **도메인 이름** (예: `nobg.com`). 광고(AdSense)를 붙이려면 내 도메인이 꼭 있어야 한다. 무료 주소 `xxx.pages.dev`로는 AdSense 신청이 안 된다.
-      -> nobackground.com
+      -> bgpeel.com
 
 - [ ] **공개 문의 이메일**. 페이지 맨 아래와 개인정보처리방침에 그대로 보이니 스팸이 올 수 있다. 따로 만든 주소를 권장.
       -> manseon94@gmail.com
@@ -16,6 +16,7 @@
 - [ ] 대시보드 → Domain Registration → Register Domains에서 도메인 구매
   - 여기서 사면 DNS가 자동으로 연결돼서 제일 편하다.
   - `.kr`은 Cloudflare에서 못 산다. 가비아 같은 곳에서 산 뒤 네임서버를 Cloudflare로 바꾸면 된다.
+    -> 너가 바꿔줘
 
 ## 2. 자리표시자 채우기
 
@@ -23,7 +24,7 @@
 도메인은 `https://`와 끝의 `/` 없이 `nobg.com` 모양으로 넣는다.
 
 ```bash
-cd ~/dev/remove_bg/web
+cd ~/dev/bgpeel/web
 grep -rl "__DOMAIN__\|__CONTACT__" . | xargs sed -i '' -e 's/__DOMAIN__/내도메인.com/g' -e 's/__CONTACT__/문의메일@주소.com/g'
 ```
 
@@ -33,7 +34,7 @@ grep -rl "__DOMAIN__\|__CONTACT__" . | xargs sed -i '' -e 's/__DOMAIN__/내도�
 ## 3. 올리기 (Cloudflare Pages)
 
 ```bash
-cd ~/dev/remove_bg
+cd ~/dev/bgpeel
 npx wrangler pages deploy web --project-name=nobg
 ```
 

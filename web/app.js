@@ -40,7 +40,7 @@ function sliderHTML(s) {
   const t = T.ctrl[s.id];
   return `<div class="ctrl" data-needs="${s.needs || ""}">
     <div class="top"><label for="r-${s.id}">${t.name} <span class="var">${s.v}</span></label>
-      <input class="num" type="number" id="n-${s.id}" min="${s.min}" max="${s.max}" step="${s.step}" aria-label="${T.valueOf(t.name)}${s.unit ? ` (${s.unit})` : ""}"></div>
+      <input class="num" type="number" id="n-${s.id}" min="${s.min}" max="${s.max}" step="${s.step}" aria-label="${T.valueLabel(t.name)}${s.unit ? ` (${s.unit})` : ""}"></div>
     <input type="range" id="r-${s.id}" min="${s.min}" max="${s.max}" step="${s.step}">
     <div class="ends"><span>← ${t.ends[0]}</span><span>${t.ends[1]} →</span></div>
     <p class="help">${t.help}</p></div>`;
@@ -131,13 +131,21 @@ $("#h0").oninput = (e) => set("glowHue", [+e.target.value, cfg.glowHue[1]]);
 $("#h1").oninput = (e) => set("glowHue", [cfg.glowHue[0], +e.target.value]);
 $("#reset").onclick = () => { const key = cfg.key, mode = cfg.mode; cfg = clone(D); cfg.key = key; cfg.mode = mode; save(); render(); };
 
-// 워커: 이미지를 한 장씩 순차 처리해 화면이 멈추지 않고 메모리도 아낀다
-const worker = new Worker(workerUrl);
-const pending = new Map();
+// 처리기(워커) 묶음: 여러 장을 동시에 처리해 화면은 멈추지 않는다. 처리기 하나가 2048px 한 장에 ~300MB까지 써서
+// 휴대폰(터치)은 1개, 그 밖은 CPU 코어 절반(최대 4개)
+// ponytail: 기기 메모리는 보지 않는다. 메모리 적은 PC에서 멈추면 navigator.deviceMemory로 줄일 것
+const POOL = matchMedia("(pointer: coarse)").matches ? 1 : Math.min(4, Math.max(1, Math.floor((navigator.hardwareConcurrency || 2) / 2)));
+const pending = new Map(), queue = [], idle = [];
 let seq = 0;
-worker.onmessage = ({ data }) => { pending.get(data.id)(data); pending.delete(data.id); };
-worker.onerror = () => { $("#status").textContent = T.workerFail; };
-const call = (msg) => new Promise((res) => { const id = ++seq; pending.set(id, res); worker.postMessage({ id, ...msg }); });
+const pump = () => { while (idle.length && queue.length) idle.pop().postMessage(queue.shift()); };
+for (let i = 0; i < POOL; i++) {
+  const w = new Worker(workerUrl);
+  w.onmessage = ({ data }) => { idle.push(w); pending.get(data.id)(data); pending.delete(data.id); pump(); };
+  w.onerror = () => { $("#status").textContent = T.workerFail; };
+  idle.push(w);
+}
+// 작업 하나를 줄에 세우고 결과를 기다린다. job: remove(배경 제거) · shrink(받기용 줄이기) · thumbs(미리보기 사본)
+const call = (msg) => new Promise((res) => { const id = ++seq; pending.set(id, res); queue.push({ id, ...msg }); pump(); });
 
 // 내려받을 크기(긴 변 px, 0=원본)와 256색. 전체 기본값은 이 브라우저에 기억하고, 카드마다 따로 가진다
 const SIDES = [0, 1024, 512, 256, 128, 64];
@@ -194,7 +202,7 @@ async function exported(it) {
   if (!shrinks(it)) return it.blob;
   const key = expKey(it), src = it.blob;
   if (it.exp?.key !== key || it.exp.src !== src) {
-    const r = await call({ blob: src, side: it.side, colors: it.colors });
+    const r = await call({ job: "shrink", blob: src, side: it.side, colors: it.colors });
     if (r.error) throw new Error(r.error);
     it.exp = { key, src, blob: r.blob };
     showOut(it);
@@ -215,20 +223,25 @@ function addFiles(list) {
     card.className = "card";
     // 썸네일을 누르면 선택(label), 오른쪽 위 ×는 목록에서 빼기, 그 아래 돋보기는 크게 보기
     // 원본(.orig)과 결과(.res)는 겹쳐 두고 보이는 쪽만 바꾼다(paint)
-    card.innerHTML = `<label class="thumb"><input type="checkbox" class="pick" aria-label="${T.pick}"><img class="res" alt="" draggable="false"><img class="orig" alt="" draggable="false"></label>
+    card.innerHTML = `<label class="thumb"><input type="checkbox" class="pick" aria-label="${T.pick}"><img class="res" alt="" draggable="false" decoding="async"><img class="orig" alt="" draggable="false" decoding="async"></label>
       <button type="button" class="rm" aria-label="${T.remove}" title="${T.remove}">×</button>
       <button type="button" class="zbtn" aria-label="${T.zoom}" title="${T.zoom}"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.5-4.5"/></svg></button>
       <div class="meta"><div class="name"></div><div class="st"></div><div class="detected" hidden></div>
       <div class="out" hidden>${outHTML(T.colorsShort)}</div><div class="dims"></div></div>`;
-    $(".orig", card).src = url;
     card.querySelector(".name").textContent = file.name;
     card.querySelector(".name").title = path;
     card.querySelector(".st").textContent = T.waiting;
     $("#list").append(card);
-    const it = { file, path, url, card, ...out };
+    const it = { file, path, url, card, th: { orig: null, res: null }, ...out };
     bindOut(card, (patch) => { Object.assign(it, patch); showOut(it); });
     bindPeek(it);
     paint(it);
+    // 원본 미리보기 사본은 처리기에서 따로 만든다. 그동안 카드 그림은 비어 있다(2048px 원본을 여러 장 띄우지 않으려고)
+    call({ job: "thumbs", blob: file }).then((r) => {
+      if (!items.includes(it)) return;
+      it.th.orig = thumbUrls(r.thumbs);
+      setSrc(it);
+    });
     const pick = $(".pick", card);
     pick.onchange = refresh;
     // Shift+클릭: 마지막으로 누른 카드부터 여기까지를 이 카드가 바뀔 상태로 한 번에
@@ -268,7 +281,11 @@ function setSt(it, text, cls = "") {
   el.textContent = text;
 }
 
-const forget = (it) => { URL.revokeObjectURL(it.url); if (it.resultUrl) URL.revokeObjectURL(it.resultUrl); };
+const forget = (it) => {
+  URL.revokeObjectURL(it.url);
+  if (it.resultUrl) URL.revokeObjectURL(it.resultUrl);
+  [it.th.orig, it.th.res].forEach(dropUrls);
+};
 let anchor = null; // Shift 범위 선택의 시작 카드
 const picked = () => items.filter((it) => $(".pick", it.card).checked);
 const failed = () => items.filter((it) => it.blob === null); // 건너뜀·실패
@@ -302,6 +319,26 @@ function refresh() {
 let origAll = false;
 const paint = (it) => it.card.classList.toggle("show-orig", !it.blob || origAll !== !!it.peek);
 const peek = (it, on) => { it.peek = on; paint(it); };
+
+// 카드 미리보기 해상도: 카드 한 칸의 실제 화면 픽셀(카드 폭 × 화면 밀도) 이상인 사본 중 가장 작은 것(512 → 1024 → 원본).
+// 늘려 보이는 일이 없어 흐려지지 않고, 카드가 크면 보이는 장 수가 줄어 메모리는 카드 크기와 상관없이 '화면에 보이는 픽셀만큼'이다
+const TH = [512, 1024];
+let bucket = 512; // 지금 쓰는 사본 크기(Infinity = 원본)
+const thumbUrls = (thumbs = {}) => Object.fromEntries(Object.entries(thumbs).map(([s, b]) => [s, URL.createObjectURL(b)]));
+const dropUrls = (th) => th && Object.values(th).forEach((u) => URL.revokeObjectURL(u));
+const srcFor = (full, th) => (th ? th[bucket] || full : ""); // 원본이 사본보다 작으면 사본이 없어 원본을 쓴다
+function setSrc(it) {
+  const set = (img, url) => { if ((img.getAttribute("src") || "") !== url) url ? (img.src = url) : img.removeAttribute("src"); };
+  set($(".orig", it.card), srcFor(it.url, it.th.orig));
+  set($(".res", it.card), it.blob ? srcFor(it.resultUrl, it.th.res) : "");
+}
+// 카드 폭이 바뀔 때(카드 크기 −/+, 창 크기, 사이드바) 필요한 사본 크기가 달라졌으면 전부 바꿔 끼운다
+function fitThumbs() {
+  const col = parseFloat(getComputedStyle($("#list")).gridTemplateColumns) || 200; // 첫 칸 폭(px)
+  const b = TH.find((s) => s >= col * devicePixelRatio) ?? Infinity;
+  if (b !== bucket) { bucket = b; items.forEach(setSrc); }
+}
+new ResizeObserver(fitThumbs).observe($("#list")); // 카드 크기 −/+는 목록 폭이 그대로라 applyView에서 따로 부른다
 function bindPeek(it) {
   const th = $(".thumb", it.card);
   let timer = 0, held = false;
@@ -368,65 +405,80 @@ function applyView() {
   $("#smaller").disabled = view.card <= CARD[0];
   $("#bigger").disabled = view.card >= CARD.at(-1);
   document.body.classList.toggle("side-left", view.left);
+  fitThumbs();
 }
 const step = (d) => { view.card = CARD[Math.min(CARD.length - 1, Math.max(0, CARD.indexOf(view.card) + d))]; applyView(); };
 for (const r of document.querySelectorAll("input[name=bg]")) r.onchange = () => { view.bg = r.value; applyView(); };
 $("#smaller").onclick = () => step(-1);
 $("#bigger").onclick = () => step(1);
-$("#side").onclick = () => { view.left = !view.left; applyView(); };
+$("#swap").onclick = () => { view.left = !view.left; applyView(); };
 applyView();
 
-let stopReq = false; // 정지: 지금 처리 중인 한 장은 끝내고 멈춘다. 남은 것은 손대지 않아 '남은 n장 변환'으로 이어서 할 수 있다
+let stopReq = false; // 정지: 처리 중인 것만 끝내고 멈춘다. 남은 것은 손대지 않아 '남은 n장 변환'으로 이어서 할 수 있다
 
 async function run() {
   const todo = targets(), ran = [];
   busy = true; stopReq = false; refresh();
   Object.assign($("#stop"), { hidden: false, disabled: false, textContent: T.stop });
+  $("#run").hidden = true; // 변환 중에는 그 자리에 정지
   const runCfg = clone(cfg);
-  for (const it of todo) {
-    if (stopReq) break;
-    if (!items.includes(it)) continue; // 도중에 목록에서 뺀 것
-    ran.push(it);
-    $("#status").textContent = T.progress(ran.length, todo.length);
-    setSt(it, T.processing);
-    const det = it.card.querySelector(".detected");
-    det.hidden = true;
-    const t = performance.now();
-    const r = await call({ file: it.file, cfg: runCfg });
-    $(".out", it.card).hidden = !r.blob;
-    if (r.blob) {
-      if (it.resultUrl) URL.revokeObjectURL(it.resultUrl);
-      it.blob = r.blob; it.w = r.w; it.h = r.h;
-      it.resultUrl = URL.createObjectURL(r.blob);
-      $(".res", it.card).src = it.resultUrl;
-      paint(it);
-      if (zoom.open && items[zi] === it) showZoom(zi);
-      showOut(it);
-      setSt(it, T.done(((performance.now() - t) / 1000).toFixed(1)), "ok");
-      const a = document.createElement("a");
-      a.href = it.resultUrl; a.textContent = T.download;
-      a.onclick = async (e) => {
-        e.preventDefault();
-        try { download(await exported(it), pngName(it.file.name)); } catch (err) { $("#status").textContent = T.shrinkFail + err.message; }
-      };
-      it.card.querySelector(".st").append(a);
-      det.innerHTML = `<span class="sw"></span><span>${T.bg} <span class="mono"></span> · ${T.modeName[r.mode]}</span>`;
-      $(".sw", det).style.background = toHex(r.key);
-      $(".mono", det).textContent = toHex(r.key).toUpperCase();
-      det.hidden = false;
-    } else {
-      it.blob = null;
-      $(".dims", it.card).textContent = "";
-      paint(it);
-      setSt(it, r.skip ? T.skipped + T.skip[r.skip] : T.error + r.error, r.skip ? "skip" : "err");
+  // 처리기 수만큼 줄을 세워 동시에 돌린다
+  let next = 0;
+  const lane = async () => {
+    while (!stopReq && next < todo.length) {
+      const it = todo[next++];
+      if (!items.includes(it)) continue; // 도중에 목록에서 뺀 것
+      ran.push(it);
+      $("#status").textContent = T.progress(ran.length, todo.length);
+      await convert(it, runCfg);
     }
-  }
+  };
+  await Promise.all(Array.from({ length: POOL }, lane));
   busy = false;
   $("#stop").hidden = true;
+  $("#run").hidden = false;
   if (!stopReq) lastRunCfg = JSON.stringify(runCfg); // 도중에 멈췄으면 '바뀐 설정으로 다시 변환' 안내를 남긴다
   refresh();
   const ok = ran.filter((it) => it.blob).length;
   $("#status").textContent = T.summary(ok, ran.length - ok) + (stopReq ? T.stopped(todo.filter((it) => items.includes(it) && !ran.includes(it)).length) : "");
+}
+
+// 한 장 변환하고 카드를 바꾼다
+async function convert(it, runCfg) {
+  setSt(it, T.processing);
+  const det = it.card.querySelector(".detected");
+  det.hidden = true;
+  const r = await call({ job: "remove", file: it.file, cfg: runCfg });
+  $(".out", it.card).hidden = !r.blob;
+  if (r.blob) {
+    if (it.resultUrl) URL.revokeObjectURL(it.resultUrl);
+    dropUrls(it.th.res);
+    it.blob = r.blob; it.w = r.w; it.h = r.h;
+    it.resultUrl = URL.createObjectURL(r.blob);
+    it.th.res = thumbUrls(r.thumbs);
+    setSrc(it);
+    paint(it);
+    if (zoom.open && items[zi] === it) showZoom(zi);
+    showOut(it);
+    setSt(it, T.done((r.ms / 1000).toFixed(1)), "ok");
+    const a = document.createElement("a");
+    a.href = it.resultUrl; a.textContent = T.download;
+    a.onclick = async (e) => {
+      e.preventDefault();
+      try { download(await exported(it), pngName(it.file.name)); } catch (err) { $("#status").textContent = T.shrinkFail + err.message; }
+    };
+    it.card.querySelector(".st").append(a);
+    det.innerHTML = `<span class="sw"></span><span>${T.bg} <span class="mono"></span> · ${T.modeName[r.mode]}</span>`;
+    $(".sw", det).style.background = toHex(r.key);
+    $(".mono", det).textContent = toHex(r.key).toUpperCase();
+    det.hidden = false;
+  } else {
+    it.blob = null;
+    $(".dims", it.card).textContent = "";
+    setSrc(it);
+    paint(it);
+    setSt(it, r.skip ? T.skipped + T.skip[r.skip] : T.error + r.error, r.skip ? "skip" : "err");
+  }
 }
 $("#stop").onclick = () => { stopReq = true; Object.assign($("#stop"), { disabled: true, textContent: T.stopping }); };
 
@@ -445,9 +497,12 @@ async function zip() {
   let before = 0, after = 0;
   busy = true; refresh();
   try {
+    let n = 0;
+    $("#status").textContent = T.zipMaking(0, done.length);
+    // 카드마다 정한 크기·256색대로. 줄이는 작업은 처리기 묶음에서 동시에
+    const blobs = await Promise.all(done.map((it) => exported(it).then((b) => { $("#status").textContent = T.zipMaking(++n, done.length); return b; })));
     for (const [i, it] of done.entries()) {
-      $("#status").textContent = T.zipMaking(i + 1, done.length);
-      const blob = await exported(it); // 카드마다 정한 크기·256색대로
+      const blob = blobs[i];
       before += it.blob.size; after += blob.size;
       let name = pngName(it.path); // 폴더 구조 그대로
       const c = (used.get(name) || 0) + 1;
@@ -469,21 +524,34 @@ $("#file").onchange = $("#dir").onchange = (e) => {
   addFiles([...e.target.files].map((file) => ({ file, path: file.webkitRelativePath || file.name })));
   e.target.value = "";
 };
-$("#drop").ondragover = (e) => { e.preventDefault(); $("#drop").classList.add("over"); };
-$("#drop").ondragleave = () => $("#drop").classList.remove("over");
-$("#drop").ondrop = async (e) => {
+// 페이지 어디에 놓아도 받는다. 드롭 칸 밖에 놓으면 브라우저가 그 이미지를 열어 버려 작업이 날아간다
+document.ondragover = (e) => { e.preventDefault(); $("#drop").classList.add("over"); };
+document.ondragleave = (e) => { if (!e.relatedTarget) $("#drop").classList.remove("over"); }; // 창 밖으로 나갈 때만
+document.ondrop = async (e) => {
   e.preventDefault(); $("#drop").classList.remove("over");
   const entries = [...e.dataTransfer.items].map((i) => i.webkitGetAsEntry()).filter(Boolean); // items는 이벤트가 끝나면 비므로 먼저 꺼낸다
   addFiles((await Promise.all(entries.map(walk))).flat());
 };
+// 붙여넣기(Ctrl+V·⌘V)로도 추가. 글자를 붙여넣을 때는 그대로 둔다
+document.onpaste = (e) => {
+  const files = [...e.clipboardData.files].filter((f) => f.type.startsWith("image/"));
+  if (!files.length) return;
+  e.preventDefault();
+  addFiles(files.map((file) => ({ file, path: file.name })));
+};
+// 결과는 이 탭 메모리에만 있어서, 새로고침·탭 닫기·언어 바꾸기 전에 한 번 묻는다
+addEventListener("beforeunload", (e) => { if (items.some((it) => it.blob)) { e.preventDefault(); e.returnValue = ""; } });
 $("#run").onclick = run;
 $("#zip").onclick = zip;
 $("#clear").onclick = () => {
+  if (origAll) $("#orig").click();
   items.forEach(forget);
   items.length = 0; lastRunCfg = null; $("#list").innerHTML = ""; $("#status").textContent = ""; refresh();
 };
 $("#unpick").onclick = () => { for (const it of picked()) $(".pick", it.card).checked = false; refresh(); };
 $("#pickFail").onclick = () => { for (const it of items) $(".pick", it.card).checked = it.blob === null; refresh(); };
+// 휴대폰에서 아래 고정된 버튼 줄은 선택·상태 문구에 따라 높이가 바뀌어, 그만큼 페이지 아래를 비워 둔다
+new ResizeObserver(([e]) => document.body.style.setProperty("--bar", e.borderBoxSize[0].blockSize + "px")).observe($(".actions"));
 
 
 // 광고: <meta name="google-adsense-account">에 게시자 ID가 있을 때만 AdSense를 불러오고,
