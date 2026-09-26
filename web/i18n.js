@@ -3,28 +3,50 @@
 const I18N = {
   ko: {
     ctrl: {
-      lo: { name: "배경으로 지울 기준", ends: ["덜 지움", "더 지움"],
-        help: "배경색이 거의 전부인 픽셀을 완전히 투명하게 만드는 기준이에요. 올리면 배경이 덜 섞인 글로우·가장자리까지 투명해져요." },
-      hi: { name: "물체로 남길 기준", ends: ["또렷하게", "부드럽게"],
-        help: "물체 색이 이만큼 이상인 픽셀은 불투명하게 남겨요(두 기준 사이는 반투명). 올리면 가장자리가 반투명해지고, 내리면 또렷해지지만 배경색이 남을 수 있어요." },
-      edgePx: { name: "가장자리 색 빼기 폭", ends: ["좁게", "넓게"],
-        help: "투명해진 곳에서 이 거리 안의 픽셀은 섞인 배경색을 빼 줘요. 외곽선 둘레에 배경색 선이 남으면 올리세요." },
-      tintTol: { name: "연한 배경 인식", ends: ["좁게", "넓게"],
-        help: "배경에 흰빛이 섞인 연한 글로우나 반짝이를 배경으로 볼 범위예요(배경과 이어진 것만). 남으면 올리고, 물체 가장자리가 지워지면 내리세요." },
-      removeGlow: { name: "배경에 붙은 색 글로우도 지우기",
-        help: "배경과 이어진 보라·파랑 빛번짐을 지워요. 빛 효과를 살리고 싶으면 끄세요." },
-      glowHue: { name: "글로우로 볼 색 범위", start: "시작 (배경색에서 −)", end: "끝 (배경색에서 +)",
-        help: "배경색(가운데 선)을 기준으로 이 범위 색의 빛번짐만 지워요. 하늘색 글로우가 남으면 시작을 왼쪽으로 넓히세요(같은 색 물체도 지워질 수 있어요)." },
-      glowMinSat: { name: "글로우 최소 채도", ends: ["흐린 색도 지움", "진한 색만"],
-        help: "이보다 흐린(회색빛) 색은 물체로 보고 남겨요." },
-      dark: { name: "글로우 최소 밝기", ends: ["어두운 색도 지움", "밝은 색만"],
-        help: "이보다 어두운 색은 외곽선으로 보고 남겨요." },
-      repair: { name: "반쯤 물든 픽셀 보정",
-        help: "모래·주황·노랑 물줄기처럼 배경색이 반쯤 스며 분홍으로 남은 픽셀을 주변 물체색으로 되돌리고 반투명하게 해요." },
-      repairPx: { name: "보정할 때 주변을 찾는 거리", ends: ["가깝게·빠름", "멀리·느림"],
-        help: "2048px 도트 그림(한 칸 ≈ 10px) 기준 40이 알맞아요. 물든 부분이 남으면 올리세요." },
-      distTol: { name: "배경과 구분할 색 차이", ends: ["또렷하게", "배경색 더 빼기"],
-        help: "배경색과 이만큼 이상 다른 색은 완전히 남겨요. 글로우 주변에 배경색이 남으면 올리고, 물체가 반투명해지면 내리세요." },
+      lo: {
+        name: "배경으로 지울 기준", ends: ["덜 지움", "더 지움"],
+        help: "배경색이 거의 전부인 픽셀을 완전히 투명하게 만드는 기준이에요. 올리면 배경이 덜 섞인 글로우·가장자리까지 투명해져요."
+      },
+      hi: {
+        name: "물체로 남길 기준", ends: ["또렷하게", "부드럽게"],
+        help: "물체 색이 이만큼 이상인 픽셀은 불투명하게 남겨요(두 기준 사이는 반투명). 올리면 가장자리가 반투명해지고, 내리면 또렷해지지만 배경색이 남을 수 있어요."
+      },
+      edgePx: {
+        name: "가장자리 색 빼기 폭", ends: ["좁게", "넓게"],
+        help: "투명해진 곳에서 이 거리 안의 픽셀은 섞인 배경색을 빼 줘요. 외곽선 둘레에 배경색 선이 남으면 올리세요."
+      },
+      tintTol: {
+        name: "연한 배경 인식", ends: ["좁게", "넓게"],
+        help: "배경에 흰빛이 섞인 연한 글로우나 반짝이를 배경으로 볼 범위예요(배경과 이어진 것만). 남으면 올리고, 물체 가장자리가 지워지면 내리세요."
+      },
+      removeGlow: {
+        name: "배경에 붙은 색 글로우도 지우기",
+        help: "배경과 이어진 보라·파랑 빛번짐을 지워요. 빛 효과를 살리고 싶으면 끄세요."
+      },
+      glowHue: {
+        name: "글로우로 볼 색 범위", start: "시작 (배경색에서 −)", end: "끝 (배경색에서 +)",
+        help: "배경색(가운데 선)을 기준으로 이 범위 색의 빛번짐만 지워요. 하늘색 글로우가 남으면 시작을 왼쪽으로 넓히세요(같은 색 물체도 지워질 수 있어요)."
+      },
+      glowMinSat: {
+        name: "글로우 최소 채도", ends: ["흐린 색도 지움", "진한 색만"],
+        help: "이보다 흐린(회색빛) 색은 물체로 보고 남겨요."
+      },
+      dark: {
+        name: "글로우 최소 밝기", ends: ["어두운 색도 지움", "밝은 색만"],
+        help: "이보다 어두운 색은 외곽선으로 보고 남겨요."
+      },
+      repair: {
+        name: "반쯤 물든 픽셀 보정",
+        help: "모래·주황·노랑 물줄기처럼 배경색이 반쯤 스며 분홍으로 남은 픽셀을 주변 물체색으로 되돌리고 반투명하게 해요."
+      },
+      repairPx: {
+        name: "보정할 때 주변을 찾는 거리", ends: ["가깝게·빠름", "멀리·느림"],
+        help: "2048px 도트 그림(한 칸 ≈ 10px) 기준 40이 알맞아요. 물든 부분이 남으면 올리세요."
+      },
+      distTol: {
+        name: "배경과 구분할 색 차이", ends: ["또렷하게", "배경색 더 빼기"],
+        help: "배경색과 이만큼 이상 다른 색은 완전히 남겨요. 글로우 주변에 배경색이 남으면 올리고, 물체가 반투명해지면 내리세요."
+      },
     },
     valueLabel: (name) => `${name} 값`,
     bgMarker: "배경색",
@@ -73,13 +95,14 @@ const I18N = {
     customPx: "긴 변 길이(px)",
     colors: "256색으로 용량 줄이기",
     colorsShort: "256색",
-    exportHelp: "긴 변 기준으로 비율을 유지해 줄이고, 원본보다 키우지는 않아요. 여기서 바꾸면 모든 카드가 같이 바뀌고, 그다음 카드마다 따로 바꿀 수 있어요. 256색은 도트 그림·아이콘의 용량을 크게 줄이지만, 사진처럼 부드러운 그러데이션에는 줄무늬가 생길 수 있어요. 저장 형식은 모든 카드에 적용되고, 투명 배경은 PNG·WebP만 저장돼요. JPG는 투명한 부분이 흰색이 되고, 256색은 PNG에서만 쓸 수 있어요.",
+    exportHelp: "긴 변 기준으로 비율을 유지해 줄이고, 원본보다 키우지는 않아요. 여기서 바꾸면 모든 카드가 같이 바뀌고, 그다음 카드마다 따로 바꿀 수 있어요. 256색은 도트 그림·아이콘의 용량을 크게 줄이지만, 사진처럼 부드러운 그라데이션에는 줄무늬가 생길 수 있어요. 저장 형식은 모든 카드에 적용되고, 투명 배경은 PNG·WebP만 저장돼요. JPG는 투명한 부분이 흰색이 되고, 256색은 PNG에서만 쓸 수 있어요.",
     shrinkFail: "줄이기 실패: ",
     pick: "선택",
     remove: "목록에서 빼기",
     runPicked: (n) => `선택한 ${n}장 변환`,
     runNew: (n) => `남은 ${n}장 변환`,
     stop: "정지",
+    clearConfirm: (n) => `목록의 ${n}장을 모두 비울까요? 변환 결과도 함께 사라집니다.`,
     showOrig: "원본 보기",
     showResult: "결과 보기",
     pickFail: (n) => `실패 ${n}장 선택`,
@@ -93,28 +116,50 @@ const I18N = {
   },
   en: {
     ctrl: {
-      lo: { name: "Remove threshold", ends: ["Remove less", "Remove more"],
-        help: "Pixels that are almost entirely background become fully transparent. Raise it to also clear glows and edges that are only partly background." },
-      hi: { name: "Keep threshold", ends: ["Crisper", "Softer"],
-        help: "Pixels with at least this much object color stay fully opaque (between the two thresholds they are semi-transparent). Raise for softer edges; lower for crisper edges, which may keep some background tint." },
-      edgePx: { name: "Edge cleanup width", ends: ["Narrower", "Wider"],
-        help: "Within this distance of transparent areas, the blended-in background color is subtracted. Raise it if a colored line remains around outlines." },
-      tintTol: { name: "Light background detection", ends: ["Narrower", "Wider"],
-        help: "How far to treat pale, whitish glows and sparkles as background (only when connected to the background). Raise it if they remain; lower it if object edges get erased." },
-      removeGlow: { name: "Also remove colored glows",
-        help: "Removes purple and blue glows connected to the background. Turn off to keep light effects." },
-      glowHue: { name: "Glow color range", start: "Start (below background)", end: "End (above background)",
-        help: "Only glows within this hue range around the background color (center line) are removed. If a sky-blue glow remains, widen the start to the left (objects of that color may be erased too)." },
-      glowMinSat: { name: "Glow minimum saturation", ends: ["Remove duller colors", "Vivid colors only"],
-        help: "Colors duller (grayer) than this are treated as part of the object and kept." },
-      dark: { name: "Glow minimum brightness", ends: ["Remove darker colors", "Bright colors only"],
-        help: "Colors darker than this are treated as outlines and kept." },
-      repair: { name: "Fix half-tinted pixels",
-        help: "Pixels where the background color bled in halfway (like pink specks on sand, orange or yellow drips) are restored to the nearby object color and made semi-transparent." },
-      repairPx: { name: "Search distance for the fix", ends: ["Closer · faster", "Farther · slower"],
-        help: "40 suits 2048px pixel art (one art pixel ≈ 10px). Raise it if tinted spots remain." },
-      distTol: { name: "Color difference from background", ends: ["Crisper", "Remove more background"],
-        help: "Colors at least this different from the background are kept fully. Raise it if background color remains around glows; lower it if the object becomes semi-transparent." },
+      lo: {
+        name: "Remove threshold", ends: ["Remove less", "Remove more"],
+        help: "Pixels that are almost entirely background become fully transparent. Raise it to also clear glows and edges that are only partly background."
+      },
+      hi: {
+        name: "Keep threshold", ends: ["Crisper", "Softer"],
+        help: "Pixels with at least this much object color stay fully opaque (between the two thresholds they are semi-transparent). Raise for softer edges; lower for crisper edges, which may keep some background tint."
+      },
+      edgePx: {
+        name: "Edge cleanup width", ends: ["Narrower", "Wider"],
+        help: "Within this distance of transparent areas, the blended-in background color is subtracted. Raise it if a colored line remains around outlines."
+      },
+      tintTol: {
+        name: "Light background detection", ends: ["Narrower", "Wider"],
+        help: "How far to treat pale, whitish glows and sparkles as background (only when connected to the background). Raise it if they remain; lower it if object edges get erased."
+      },
+      removeGlow: {
+        name: "Also remove colored glows",
+        help: "Removes purple and blue glows connected to the background. Turn off to keep light effects."
+      },
+      glowHue: {
+        name: "Glow color range", start: "Start (below background)", end: "End (above background)",
+        help: "Only glows within this hue range around the background color (center line) are removed. If a sky-blue glow remains, widen the start to the left (objects of that color may be erased too)."
+      },
+      glowMinSat: {
+        name: "Glow minimum saturation", ends: ["Remove duller colors", "Vivid colors only"],
+        help: "Colors duller (grayer) than this are treated as part of the object and kept."
+      },
+      dark: {
+        name: "Glow minimum brightness", ends: ["Remove darker colors", "Bright colors only"],
+        help: "Colors darker than this are treated as outlines and kept."
+      },
+      repair: {
+        name: "Fix half-tinted pixels",
+        help: "Pixels where the background color bled in halfway (like pink specks on sand, orange or yellow drips) are restored to the nearby object color and made semi-transparent."
+      },
+      repairPx: {
+        name: "Search distance for the fix", ends: ["Closer · faster", "Farther · slower"],
+        help: "40 suits 2048px pixel art (one art pixel ≈ 10px). Raise it if tinted spots remain."
+      },
+      distTol: {
+        name: "Color difference from background", ends: ["Crisper", "Remove more background"],
+        help: "Colors at least this different from the background are kept fully. Raise it if background color remains around glows; lower it if the object becomes semi-transparent."
+      },
     },
     valueLabel: (name) => `${name} value`,
     bgMarker: "Background color",
@@ -170,6 +215,7 @@ const I18N = {
     runPicked: (n) => `Convert ${n} selected`,
     runNew: (n) => `Convert ${n} remaining`,
     stop: "Stop",
+    clearConfirm: (n) => `Remove all ${n} images from the list? Converted results will be lost too.`,
     showOrig: "Show originals",
     showResult: "Show results",
     pickFail: (n) => `Select ${n} failed`,

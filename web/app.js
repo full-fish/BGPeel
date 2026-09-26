@@ -562,6 +562,7 @@ addEventListener("beforeunload", (e) => { if (items.some((it) => it.blob)) { e.p
 $("#run").onclick = run;
 $("#zip").onclick = zip;
 $("#clear").onclick = () => {
+  if (!confirm(T.clearConfirm(items.length))) return;
   if (origAll) $("#orig").click();
   items.forEach(forget);
   items.length = 0; lastRunCfg = null; $("#list").innerHTML = ""; $("#status").textContent = ""; refresh();
