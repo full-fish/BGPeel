@@ -78,7 +78,7 @@ function render() {
   $("#keyHelp").textContent = T.keyHelp[cfg.key ? "manual" : "auto"];
   document.querySelector(`input[name=mode][value=${cfg.mode}]`).checked = true;
   $("#modeHelp").textContent = T.modeHelp[cfg.mode];
-  $("#adv").hidden = cfg.mode === "none"; // 지우지 않으면 세부 조절이 쓰이지 않는다
+  $("#adv").hidden = $("#keyLbl").parentElement.hidden = cfg.mode === "none"; // 지우지 않으면 배경색·세부 조절이 쓰이지 않는다
   $("#g-chroma").hidden = cfg.mode === "distance";
   $("#g-distance").hidden = cfg.mode === "chroma";
   $("#g-chroma-help").textContent = cfg.mode === "auto" ? T.groupHelpAuto.chroma : "";

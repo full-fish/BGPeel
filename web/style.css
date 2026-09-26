@@ -52,7 +52,12 @@ input[type=color] { width: 40px; height: 32px; padding: 0; border: 1px solid var
 
 details.adv { margin-top: 20px; border-top: 1px solid var(--line); padding-top: 12px; }
 details.adv > summary { cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-details.adv > summary .changed { font-weight: 400; font-size: 13px; color: var(--accent); }
+details.adv > summary .changed { font-weight: 400; font-size: 13px; color: var(--accent); order: 2; }
+/* flex라 기본 삼각형이 사라져서 펼침 표시를 직접 그린다(사파리 기본 표시는 숨김) */
+details.adv > summary { list-style: none; }
+details.adv > summary::-webkit-details-marker { display: none; }
+details.adv > summary::after { content: "▼"; order: 1; font-size: 10px; color: var(--muted); }
+details.adv[open] > summary::after { content: "▲"; }
 .group { margin-top: 18px; }
 .group[hidden] { display: none; }
 .group h3 { font-size: 14px; margin: 0 0 2px; }
