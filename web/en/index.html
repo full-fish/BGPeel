@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solid Color Background Remover – Magenta & Chroma Key to Transparent PNG | Free, No Upload</title>
+<meta name="description" content="Remove solid-color backgrounds like magenta, green or white and get transparent PNGs. Process many images at once and download them as a zip. Images never leave your browser.">
+<link rel="canonical" href="https://__DOMAIN__/en/">
+<link rel="alternate" hreflang="ko" href="https://__DOMAIN__/">
+<link rel="alternate" hreflang="en" href="https://__DOMAIN__/en/">
+<link rel="alternate" hreflang="x-default" href="https://__DOMAIN__/en/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://__DOMAIN__/en/">
+<meta property="og:title" content="Solid Color Background Remover – Magenta & Chroma Key to Transparent PNG">
+<meta property="og:description" content="Turn solid-color backgrounds into transparency. Batch processing, no upload — everything runs in your browser.">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ko_KR">
+<meta name="google-adsense-account" content="">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./">Solid Background Remover</a>
+    <nav class="lang" aria-label="Language"><a href="../" hreflang="ko" lang="ko">한국어</a> | <span aria-current="true">English</span></nav>
+  </div>
+
+  <h1>Solid Color Background Remover</h1>
+  <p class="sub">Drop in as many images as you like and solid backgrounds such as magenta are removed, leaving transparent PNGs. Images are never uploaded — they are processed only in this browser.</p>
+
+  <div class="drop" id="drop">
+    <input type="file" id="file" accept="image/*" multiple>
+    <input type="file" id="dir" webkitdirectory>
+    Drag images or folders here or <label for="file"><b>click to choose</b></label> · <label for="dir" class="dir"><b>choose a folder</b></label>
+  </div>
+
+  <div id="opts">
+  <div class="actions">
+    <button class="primary" id="run" disabled>Convert</button>
+    <button id="stop" hidden>Stop</button>
+    <button id="pickFail" hidden>Select failed</button>
+    <button id="unpick" hidden>Clear selection</button>
+    <button id="zip" disabled>Download all (zip)</button>
+    <button id="clear" disabled>Clear list</button>
+    <span id="status" role="status"></span>
+  </div>
+
+  <div class="view">
+    <button id="orig" aria-pressed="false" disabled>Show originals</button>
+    <span class="grp" role="radiogroup" aria-label="Preview background">Background
+      <label class="bgopt" title="Checkerboard"><input type="radio" name="bg" value="check" aria-label="Checkerboard"><span class="chip"></span></label>
+      <label class="bgopt" title="Black"><input type="radio" name="bg" value="black" aria-label="Black"><span class="chip"></span></label>
+      <label class="bgopt" title="White"><input type="radio" name="bg" value="white" aria-label="White"><span class="chip"></span></label>
+    </span>
+    <span class="grp">Card size <button id="smaller" aria-label="Smaller cards">−</button><button id="bigger" aria-label="Bigger cards">+</button></span>
+    <button id="side" aria-label="Move sidebar left / right" title="Move sidebar left / right">⇄</button>
+  </div>
+
+  <div class="export" id="export"></div>
+
+  <section class="panel" aria-label="Settings">
+    <div class="basic">
+      <div>
+        <div class="lbl" id="keyLbl">Background color <span class="var">KEY</span></div>
+        <div class="seg" role="radiogroup" aria-labelledby="keyLbl">
+          <label><input type="radio" name="keyMode" value="auto"> Auto-detect</label>
+          <label><input type="radio" name="keyMode" value="manual"> Pick a color</label>
+        </div>
+        <div class="keypick" id="keyPick" hidden>
+          <input type="color" id="key" aria-label="Background color to remove">
+          <span class="mono" id="keyHex"></span>
+        </div>
+        <p class="help" id="keyHelp"></p>
+      </div>
+      <div>
+        <div class="lbl" id="modeLbl">Background type <span class="var">MODE</span></div>
+        <div class="seg" role="radiogroup" aria-labelledby="modeLbl">
+          <label><input type="radio" name="mode" value="auto"> Auto</label>
+          <label><input type="radio" name="mode" value="chroma"> Vivid solid</label>
+          <label><input type="radio" name="mode" value="distance"> Dull / pale solid</label>
+        </div>
+        <p class="help" id="modeHelp"></p>
+      </div>
+    </div>
+
+    <details class="adv" id="adv">
+      <summary>Fine-tuning <span class="changed" id="changed"></span></summary>
+      <p class="help">The defaults work for most images. Adjust only if background remains or the object gets clipped. Each slider says what happens when you move it either way.</p>
+      <div class="group" id="g-common">
+        <h3>General</h3>
+        <div class="ctrls"></div>
+      </div>
+      <div class="group" id="g-chroma">
+        <h3>Vivid solid backgrounds</h3>
+        <p class="help" id="g-chroma-help"></p>
+        <div class="ctrls"></div>
+      </div>
+      <div class="group" id="g-distance">
+        <h3>Dull / pale solid backgrounds</h3>
+        <p class="help" id="g-distance-help"></p>
+        <div class="ctrls"></div>
+      </div>
+      <div class="reset-row"><button id="reset" type="button">Reset to defaults</button></div>
+    </details>
+  </section>
+  </div>
+
+  <div id="list"></div>
+
+  <aside class="ad" data-slot="" hidden aria-label="Advertisement"><span class="ad-label">Advertisement</span><ins class="adsbygoogle" style="display:block" data-ad-format="auto" data-full-width-responsive="true"></ins></aside>
+
+  <article class="guide">
+    <h2>How to use</h2>
+    <ol>
+      <li><b>Add images</b> — drag them onto the box above or click to choose. To pick a whole folder, use “choose a folder”. You can add many at once; dropping a folder adds everything inside, subfolders included.</li>
+      <li><b>Convert</b> — the background color and type are detected for each image automatically. Each card shows the detected color. To redo only a few, click their images to select them and convert: only the selected ones are converted and the other results stay. Use × at the top right of a card to remove it from the list. Shift-click selects everything from the last card you clicked, and “Select failed” picks only skipped or failed cards. Hover over a card image (or press and hold on a phone) to see the original, or press “Show originals” to switch all cards at once. The magnifier opens a large view (hold to see the original, ←/→ for the next image), and a black or white background makes leftover background color at the edges easy to spot.</li>
+      <li><b>Download</b> — use the Download link on each card, or “Download all (zip)” to get everything at once (dropped folders keep their structure inside the zip). Use “Download size” and “256 colors” to get smaller files, for all images or card by card. Results are PNGs with transparent backgrounds.</li>
+    </ol>
+
+    <h2>Works best with</h2>
+    <p>This tool is built for images whose background is <b>a single flat color</b>.</p>
+    <ul>
+      <li>Game sprites, icons and characters made with an AI image generator told to use a background like “magenta (#FF00FF)”</li>
+      <li>Illustrations drawn on a green or blue chroma key background</li>
+      <li>Icons or product shots on plain white or gray</li>
+    </ul>
+    <p>Photos with busy backgrounds are not a good fit — an AI tool that recognizes object shapes will do better there.</p>
+
+    <h3>Why is magenta a good background?</h3>
+    <p>Separating by color only works if the background color barely appears in the object. Magenta (#FF00FF) is full red and blue with zero green, so it is rare in characters and props, and how much of it is blended into an edge can be measured precisely. If your object has lots of green, use magenta; if it has lots of pink or purple, use green.</p>
+
+    <aside class="ad" data-slot="" hidden aria-label="Advertisement"><span class="ad-label">Advertisement</span><ins class="adsbygoogle" style="display:block" data-ad-format="auto" data-full-width-responsive="true"></ins></aside>
+
+    <h2>Not quite right? Settings guide</h2>
+    <p>Open “Fine-tuning” above to adjust these with sliders, then select only the cards that need it and press “Convert n selected” to redo just those. With nothing selected, “Convert again with new settings” redoes everything.</p>
+    <dl>
+      <dt>A line of background color remains around the object</dt>
+      <dd>Raise “Edge cleanup width”. If it still remains, raise “Keep threshold” a little for softer edges.</dd>
+      <dt>A glow around the object remains</dt>
+      <dd>Raise “Remove threshold” and “Light background detection”. For vivid backgrounds, turn on “Also remove colored glows”, and widen “Glow color range” if the glow color falls outside it.</dd>
+      <dt>Object edges get clipped</dt>
+      <dd>Lower “Remove threshold” and “Light background detection” instead. If the object contains colors close to the background, regenerating it with a different background color is the surest fix.</dd>
+      <dt>Pink specks remain on sand or orange areas</dt>
+      <dd>Turn on “Fix half-tinted pixels”, and raise “Search distance for the fix” if some remain.</dd>
+      <dt>An image was skipped</dt>
+      <dd>The card shows the reason. “No clear background color” means the object covers almost the whole border. Black backgrounds are skipped in Auto because outlines would be erased too; choose “Dull / pale solid” to process them anyway.</dd>
+    </dl>
+
+    <h2>FAQ</h2>
+    <dl>
+      <dt>Are my images uploaded to a server?</dt>
+      <dd>No. Images are processed only in this browser and are never uploaded. They are gone when you close the page.</dd>
+      <dt>Is it free?</dt>
+      <dd>Yes. The site is supported by ads.</dd>
+      <dt>Which files can I use?</dt>
+      <dd>Any image your browser can open, such as PNG, JPG, WebP, BMP or GIF (first frame). Results are always PNGs with transparent backgrounds.</dd>
+      <dt>How many images at once?</dt>
+      <dd>There is no fixed limit. Images are processed one after another; a 2048×2048 image usually takes about a second. Very large batches may slow down depending on your device's memory.</dd>
+      <dt>Are my settings saved?</dt>
+      <dd>Changed settings are remembered in this browser only, so they are still there next time. “Reset to defaults” clears them.</dd>
+    </dl>
+  </article>
+
+  <footer>
+    <span>© 2026 Solid Background Remover</span>
+    <a href="privacy.html">Privacy Policy</a>
+    <span>Contact: <a href="mailto:__CONTACT__">__CONTACT__</a></span>
+  </footer>
+</main>
+
+<script src="../core.js"></script>
+<script src="../i18n.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="../app.js"></script>
+</body>
+</html>

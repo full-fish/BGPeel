@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>단색 배경 제거 – 마젠타·크로마키 배경을 투명 PNG로 | 무료, 업로드 없음</title>
+<meta name="description" content="마젠타·초록·흰색처럼 한 가지 색으로 칠해진 배경을 지워 투명 PNG로 만듭니다. 여러 장을 한 번에 처리하고 zip으로 받을 수 있으며, 이미지는 서버로 업로드되지 않고 브라우저 안에서만 처리됩니다.">
+<link rel="canonical" href="https://__DOMAIN__/">
+<link rel="alternate" hreflang="ko" href="https://__DOMAIN__/">
+<link rel="alternate" hreflang="en" href="https://__DOMAIN__/en/">
+<link rel="alternate" hreflang="x-default" href="https://__DOMAIN__/en/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://__DOMAIN__/">
+<meta property="og:title" content="단색 배경 제거 – 마젠타·크로마키 배경을 투명 PNG로">
+<meta property="og:description" content="단색 배경을 지워 투명 PNG로. 여러 장 한 번에, 업로드 없이 브라우저에서 처리.">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="google-adsense-account" content="">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./">단색 배경 제거</a>
+    <nav class="lang" aria-label="언어"><span aria-current="true">한국어</span> | <a href="en/" hreflang="en" lang="en">English</a></nav>
+  </div>
+
+  <h1>단색 배경 제거</h1>
+  <p class="sub">이미지를 여러 장 올리면 마젠타 같은 단색 배경을 지워 투명 PNG로 만듭니다. 이미지는 서버로 업로드되지 않고 이 브라우저 안에서만 처리됩니다.</p>
+
+  <div class="drop" id="drop">
+    <input type="file" id="file" accept="image/*" multiple>
+    <input type="file" id="dir" webkitdirectory>
+    이미지나 폴더를 끌어다 놓거나 <label for="file"><b>클릭해서 선택</b></label> · <label for="dir" class="dir"><b>폴더 선택</b></label>
+  </div>
+
+  <div id="opts">
+  <div class="actions">
+    <button class="primary" id="run" disabled>변환 시작</button>
+    <button id="stop" hidden>정지</button>
+    <button id="pickFail" hidden>실패만 선택</button>
+    <button id="unpick" hidden>선택 해제</button>
+    <button id="zip" disabled>전체 zip 다운로드</button>
+    <button id="clear" disabled>목록 비우기</button>
+    <span id="status" role="status"></span>
+  </div>
+
+  <div class="view">
+    <button id="orig" aria-pressed="false" disabled>원본 보기</button>
+    <span class="grp" role="radiogroup" aria-label="미리보기 배경">배경
+      <label class="bgopt" title="체크무늬"><input type="radio" name="bg" value="check" aria-label="체크무늬"><span class="chip"></span></label>
+      <label class="bgopt" title="검정"><input type="radio" name="bg" value="black" aria-label="검정"><span class="chip"></span></label>
+      <label class="bgopt" title="흰색"><input type="radio" name="bg" value="white" aria-label="흰색"><span class="chip"></span></label>
+    </span>
+    <span class="grp">카드 크기 <button id="smaller" aria-label="카드 작게">−</button><button id="bigger" aria-label="카드 크게">+</button></span>
+    <button id="side" aria-label="사이드바 왼쪽·오른쪽 바꾸기" title="사이드바 왼쪽·오른쪽 바꾸기">⇄</button>
+  </div>
+
+  <div class="export" id="export"></div>
+
+  <section class="panel" aria-label="설정">
+    <div class="basic">
+      <div>
+        <div class="lbl" id="keyLbl">배경색 <span class="var">KEY</span></div>
+        <div class="seg" role="radiogroup" aria-labelledby="keyLbl">
+          <label><input type="radio" name="keyMode" value="auto"> 자동 감지</label>
+          <label><input type="radio" name="keyMode" value="manual"> 직접 지정</label>
+        </div>
+        <div class="keypick" id="keyPick" hidden>
+          <input type="color" id="key" aria-label="지울 배경색">
+          <span class="mono" id="keyHex"></span>
+        </div>
+        <p class="help" id="keyHelp"></p>
+      </div>
+      <div>
+        <div class="lbl" id="modeLbl">배경 종류 <span class="var">MODE</span></div>
+        <div class="seg" role="radiogroup" aria-labelledby="modeLbl">
+          <label><input type="radio" name="mode" value="auto"> 자동</label>
+          <label><input type="radio" name="mode" value="chroma"> 쨍한 단색</label>
+          <label><input type="radio" name="mode" value="distance"> 탁한·연한 단색</label>
+        </div>
+        <p class="help" id="modeHelp"></p>
+      </div>
+    </div>
+
+    <details class="adv" id="adv">
+      <summary>세부 조절 <span class="changed" id="changed"></span></summary>
+      <p class="help">대부분 기본값으로 충분해요. 결과에 배경이 남거나 물체가 깎일 때만 조절하세요. 각 막대 양 끝에 올리고 내렸을 때 달라지는 점을 적어 뒀어요.</p>
+      <div class="group" id="g-common">
+        <h3>공통</h3>
+        <div class="ctrls"></div>
+      </div>
+      <div class="group" id="g-chroma">
+        <h3>쨍한 단색 배경</h3>
+        <p class="help" id="g-chroma-help"></p>
+        <div class="ctrls"></div>
+      </div>
+      <div class="group" id="g-distance">
+        <h3>탁한·연한 단색 배경</h3>
+        <p class="help" id="g-distance-help"></p>
+        <div class="ctrls"></div>
+      </div>
+      <div class="reset-row"><button id="reset" type="button">기본값으로 되돌리기</button></div>
+    </details>
+  </section>
+  </div>
+
+  <div id="list"></div>
+
+  <aside class="ad" data-slot="" hidden aria-label="광고"><span class="ad-label">광고</span><ins class="adsbygoogle" style="display:block" data-ad-format="auto" data-full-width-responsive="true"></ins></aside>
+
+  <article class="guide">
+    <h2>사용 방법</h2>
+    <ol>
+      <li><b>이미지 올리기</b> — 위 칸에 이미지를 끌어다 놓거나 클릭해서 고릅니다. 폴더째 고르려면 ‘폴더 선택’을 누르세요. 여러 장을 한 번에 올려도 되고, 폴더를 놓으면 하위 폴더까지 전부 들어갑니다.</li>
+      <li><b>변환 시작</b> — 배경색과 배경 종류는 이미지마다 자동으로 잡습니다. 각 카드에 감지된 배경색이 표시됩니다. 몇 장만 다시 하고 싶으면 카드 이미지를 눌러 고른 뒤 변환하면 고른 것만 변환되고, 나머지 결과는 그대로 남습니다. 카드 오른쪽 위 ×로 목록에서 뺄 수 있습니다. Shift를 누른 채 누르면 앞에 고른 카드부터 여기까지 한 번에 고르고, ‘실패만 선택’은 건너뛰거나 실패한 카드만 고릅니다. 카드 이미지에 마우스를 올리면(휴대폰은 꾹 누르면) 그동안 원본이 보이고, ‘원본 보기’를 누르면 전체를 원본으로 바꿔 볼 수 있습니다. 돋보기 버튼은 크게 보기(누르고 있는 동안 원본, ←/→로 다음 장)이고, ‘배경’을 검정·흰색으로 바꾸면 가장자리에 남은 배경색이 잘 보입니다.</li>
+      <li><b>받기</b> — 카드마다 있는 ‘다운로드’로 한 장씩 받거나, ‘전체 zip 다운로드’로 한 번에 받습니다. 폴더로 올렸다면 zip 안에 같은 폴더 구조로 담깁니다. ‘내려받을 크기’와 ‘256색’으로 용량을 줄여 받을 수 있고, 카드마다 따로 정할 수도 있습니다. 결과는 투명 배경 PNG입니다.</li>
+    </ol>
+
+    <h2>이런 이미지에 잘 맞아요</h2>
+    <p>배경이 <b>한 가지 색으로 칠해진</b> 이미지에 맞춰 만든 도구입니다.</p>
+    <ul>
+      <li>AI 이미지 생성기에 “마젠타(#FF00FF) 배경”처럼 배경색을 지정해 만든 게임 스프라이트, 아이콘, 캐릭터</li>
+      <li>초록·파랑 크로마키 배경으로 그린 일러스트</li>
+      <li>흰색·회색 같은 단색 배경의 아이콘이나 제품 컷</li>
+    </ul>
+    <p>사진처럼 배경이 복잡한 이미지는 대상이 아닙니다. 그런 이미지는 물체 모양을 인식하는 AI 방식 도구가 더 알맞습니다.</p>
+
+    <h3>배경색은 왜 마젠타가 좋을까요?</h3>
+    <p>배경을 색으로 구분하려면 물체에 거의 없는 색이어야 합니다. 마젠타(#FF00FF)는 빨강과 파랑이 가득하고 초록이 0인 색이라, 캐릭터나 소품에 쓰이는 일이 드물고 가장자리에 섞인 정도도 정확히 잴 수 있습니다. 물체에 초록이 많다면 마젠타, 분홍·보라가 많다면 초록 배경을 고르세요.</p>
+
+    <aside class="ad" data-slot="" hidden aria-label="광고"><span class="ad-label">광고</span><ins class="adsbygoogle" style="display:block" data-ad-format="auto" data-full-width-responsive="true"></ins></aside>
+
+    <h2>결과가 아쉬울 때: 설정 가이드</h2>
+    <p>위의 ‘세부 조절’을 펼치면 아래 항목을 막대로 조절할 수 있습니다. 바꾼 뒤 결과가 아쉬운 카드만 골라 ‘선택한 n장 변환’을 누르면 그것만 다시 변환됩니다. 아무것도 고르지 않으면 ‘바뀐 설정으로 다시 변환’으로 전부 다시 합니다.</p>
+    <dl>
+      <dt>물체 둘레에 배경색 선이 남아요</dt>
+      <dd>‘가장자리 색 빼기 폭’을 올리세요. 그래도 남으면 ‘물체로 남길 기준’을 조금 올려 가장자리를 부드럽게 합니다.</dd>
+      <dt>배경 주변의 빛번짐(글로우)이 남아요</dt>
+      <dd>‘배경으로 지울 기준’과 ‘연한 배경 인식’을 올리세요. 쨍한 배경이라면 ‘배경에 붙은 색 글로우도 지우기’를 켜고, 글로우 색이 범위 밖이면 ‘글로우로 볼 색 범위’를 넓히세요.</dd>
+      <dt>물체 가장자리가 깎여요</dt>
+      <dd>반대로 ‘배경으로 지울 기준’과 ‘연한 배경 인식’을 내리세요. 물체에 배경과 비슷한 색이 있다면 배경색을 바꿔서 다시 만드는 편이 가장 확실합니다.</dd>
+      <dt>모래·주황색 부분에 분홍 점이 남아요</dt>
+      <dd>‘반쯤 물든 픽셀 보정’을 켜고, 남으면 ‘보정할 때 주변을 찾는 거리’를 올리세요.</dd>
+      <dt>이미지가 건너뛰어져요</dt>
+      <dd>카드에 이유가 표시됩니다. 테두리에 뚜렷한 배경색이 없으면 물체가 테두리를 거의 다 덮은 경우입니다. 검정 배경은 외곽선까지 지워질 수 있어 자동에서는 건너뛰며, 배경 종류를 ‘탁한·연한 단색’으로 직접 고르면 처리합니다.</dd>
+    </dl>
+
+    <h2>자주 묻는 질문</h2>
+    <dl>
+      <dt>이미지가 서버로 올라가나요?</dt>
+      <dd>아니요. 이미지는 이 브라우저 안에서만 처리되고 어디에도 업로드되지 않습니다. 페이지를 닫으면 사라집니다.</dd>
+      <dt>무료인가요?</dt>
+      <dd>네, 무료입니다. 사이트는 광고로 운영됩니다.</dd>
+      <dt>어떤 파일을 쓸 수 있나요?</dt>
+      <dd>PNG, JPG, WebP, BMP, GIF(첫 프레임) 등 브라우저가 여는 이미지 파일이면 됩니다. 결과는 항상 투명 배경 PNG입니다.</dd>
+      <dt>몇 장까지 한 번에 되나요?</dt>
+      <dd>정해진 제한은 없습니다. 한 장씩 차례로 처리하며, 2048×2048 이미지 한 장에 보통 1초 안팎이 걸립니다. 아주 많이 올리면 기기 메모리에 따라 느려질 수 있습니다.</dd>
+      <dt>설정은 저장되나요?</dt>
+      <dd>바꾼 설정은 이 브라우저에만 기억되어 다음에 열어도 그대로입니다. ‘기본값으로 되돌리기’로 초기화할 수 있습니다.</dd>
+    </dl>
+  </article>
+
+  <footer>
+    <span>© 2026 단색 배경 제거</span>
+    <a href="privacy.html">개인정보처리방침</a>
+    <span>문의: <a href="mailto:__CONTACT__">__CONTACT__</a></span>
+  </footer>
+</main>
+
+<script src="core.js"></script>
+<script src="i18n.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

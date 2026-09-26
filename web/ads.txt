@@ -1,0 +1,2 @@
+# AdSense 게시자 ID를 받으면 아래 줄의 주석(#)을 지우고 pub-… 값을 채운다
+# google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
