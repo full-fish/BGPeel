@@ -85,11 +85,10 @@ input[type=range] { width: 100%; margin: 10px 0 2px; accent-color: var(--accent)
 .reset-row { margin-top: 16px; display: flex; justify-content: flex-end; }
 
 .actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 16px; }
-.actions .main { display: flex; flex-wrap: wrap; gap: 8px; flex-basis: 100%; } /* 변환·zip·선택 해제, 비우기는 오른쪽 끝(자리가 모자라면 다음 줄 오른쪽) */
+.actions .main { display: flex; flex-wrap: wrap; gap: 8px; flex-basis: 100%; } /* 변환·zip·선택 해제는 왼쪽, 비우기는 오른쪽 끝(자리가 모자라면 다음 줄 오른쪽) */
 .actions .main > #clear { margin-left: auto; }
 .actions .main > button { flex: none; white-space: nowrap; padding-inline: 10px; }
-/* 줄바꿈은 변환 버튼의 가장 좁은 폭으로 따져서 비우기가 먼저 다음 줄로 가고, 남는 폭은 변환 버튼이 채운다 */
-.actions .main > #run { flex: 1 1 0; min-width: min-content; white-space: normal; word-break: keep-all; }
+.actions .main > #run { flex: 0 1 auto; min-width: 0; white-space: normal; } /* 길이가 바뀌는 변환 버튼만 줄어든다 */
 button { font: inherit; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--panel); color: var(--text); cursor: pointer; }
 button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); font-weight: 600; }
 button:disabled { opacity: .45; cursor: not-allowed; }
