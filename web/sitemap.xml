@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://__DOMAIN__/</loc>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://__DOMAIN__/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://__DOMAIN__/en/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://__DOMAIN__/en/"/>
+    <loc>https://bgpeel.com/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bgpeel.com/en/"/>
   </url>
   <url>
-    <loc>https://__DOMAIN__/en/</loc>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://__DOMAIN__/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://__DOMAIN__/en/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://__DOMAIN__/en/"/>
+    <loc>https://bgpeel.com/en/</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://bgpeel.com/en/"/>
   </url>
   <url>
-    <loc>https://__DOMAIN__/privacy.html</loc>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://__DOMAIN__/privacy.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://__DOMAIN__/en/privacy.html"/>
+    <loc>https://bgpeel.com/privacy.html</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/privacy.html"/>
   </url>
   <url>
-    <loc>https://__DOMAIN__/en/privacy.html</loc>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://__DOMAIN__/privacy.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://__DOMAIN__/en/privacy.html"/>
+    <loc>https://bgpeel.com/en/privacy.html</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/privacy.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/privacy.html"/>
   </url>
 </urlset>

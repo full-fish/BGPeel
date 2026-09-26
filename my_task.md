@@ -31,20 +31,20 @@ grep -rl "__DOMAIN__\|__CONTACT__" . | xargs sed -i '' -e 's/__DOMAIN__/내도�
 - [ ] 바꾸기 실행
 - [ ] 확인: `grep -rn "__DOMAIN__\|__CONTACT__" .` 결과가 한 줄도 없어야 한다.
 
-## 3. 올리기 (Cloudflare Pages)
+## 3. 올리기 (Cloudflare Workers 정적 배포)
+
+설정은 `wrangler.jsonc`에 있다(`web/` 폴더를 올리고, `bgpeel.com`을 연결).
+GitHub 저장소를 Cloudflare에 연결해 뒀으면 `git push`만 하면 자동 배포된다. 배포 명령은 `npx wrangler deploy`, 빌드 명령은 비운다.
+손으로 올릴 때는:
 
 ```bash
 cd ~/dev/bgpeel
-npx wrangler pages deploy web --project-name=nobg
+npx wrangler deploy
 ```
 
-처음 실행하면 브라우저에 Cloudflare 로그인 창이 뜨고, 프로젝트를 새로 만들지 묻는다.
-터미널이 싫으면 대시보드 → Workers & Pages → Create → Pages → 파일 직접 업로드(Upload assets)에서 `web` 폴더를 통째로 끌어다 놓아도 같다.
-
 - [ ] 올리기
-- [ ] `nobg.pages.dev`(프로젝트 이름)로 열어서 확인: 폴더 드래그, 폴더 선택, 변환, zip 다운로드
-- [ ] Pages 프로젝트 → Custom domains → 내 도메인 연결 (`www`도 쓰고 싶으면 따로 추가)
-- [ ] `https://내도메인.com`으로 열어서 한 번 더 확인 (영어 페이지 `/en/`, `/privacy.html`도)
+- [ ] `https://bgpeel.com`으로 열어서 확인: 폴더 드래그, 폴더 선택, 변환, zip 다운로드 (영어 페이지 `/en/`, `/privacy.html`도)
+- [ ] `www`도 쓰고 싶으면 `wrangler.jsonc`의 `routes`에 `www.bgpeel.com`을 추가
 
 ## 4. 검색 등록
 
@@ -68,15 +68,15 @@ npx wrangler pages deploy web --project-name=nobg
 
 ## 6. 나중에 고칠 때
 
-- [ ] 코드를 고친 뒤 3번 명령을 다시 실행하면 끝.
-  - Cloudflare Pages는 브라우저가 매번 새 버전인지 확인하게 해서, 로컬 서버에서 겪은 "예전 app.js가 남는" 문제는 생기지 않는다.
+- [ ] 코드를 고친 뒤 `git push`(또는 3번 명령)하면 끝.
+  - Cloudflare는 브라우저가 매번 새 버전인지 확인하게 해서, 로컬 서버에서 겪은 "예전 app.js가 남는" 문제는 생기지 않는다.
 - [ ] 개인정보처리방침 내용을 바꾸면 `시행일`도 같이 바꾸기 (한/영 두 파일).
 
 ## 비용
 
 | 항목                                  | 비용                                                   |
 | ------------------------------------- | ------------------------------------------------------ |
-| Cloudflare Pages 호스팅               | 0원. 정적 사이트는 트래픽 무제한                       |
+| Cloudflare Workers 호스팅             | 0원. 정적 사이트는 트래픽 무제한                       |
 | 이미지 변환 서버                      | 없음. 방문자 브라우저에서 처리하니 사용자가 늘어도 0원 |
 | 도메인 `.com` (Cloudflare)            | 연 $10.44, 2026-11-01부터 연 $11.15 (약 1.5만 원)      |
 | AdSense · Search Console · JSZip(CDN) | 0원                                                    |

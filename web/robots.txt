@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://__DOMAIN__/sitemap.xml
+Sitemap: https://bgpeel.com/sitemap.xml
