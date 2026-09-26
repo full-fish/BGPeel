@@ -22,4 +22,44 @@
     <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/privacy.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/privacy.html"/>
   </url>
+  <url>
+    <loc>https://bgpeel.com/nano-banana-watermark.html</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/nano-banana-watermark.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/nano-banana-watermark.html"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/en/nano-banana-watermark.html</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/nano-banana-watermark.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/nano-banana-watermark.html"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/magenta-background.html</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/magenta-background.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/magenta-background.html"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/en/magenta-background.html</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/magenta-background.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/magenta-background.html"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/features.html</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/features.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/features.html"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/en/features.html</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/features.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/features.html"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/resize.html</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/resize.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/resize.html"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/en/resize.html</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/resize.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/resize.html"/>
+  </url>
 </urlset>

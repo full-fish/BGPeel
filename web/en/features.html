@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Features and Fine-Tuning Guide – BGPeel</title>
+<meta name="description" content="Every BGPeel feature explained: background color and type, what each fine-tuning slider does and its default, reconverting only some images, and resizing, 256 colors and PNG/WebP/JPG downloads.">
+<link rel="canonical" href="https://bgpeel.com/en/features.html">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/features.html">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/features.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./">BGPeel</a>
+    <nav class="lang" aria-label="Language"><a href="../features.html" hreflang="ko" lang="ko">한국어</a> | <span aria-current="true">English</span></nav>
+  </div>
+
+  <article class="doc">
+    <h1>Features and Fine-Tuning Guide</h1>
+    <p class="sub">All of BGPeel's features and settings in one place. The defaults work for most images; look up only the item you need when a result isn't quite right.</p>
+
+    <p><b><a href="./">→ Go to the BGPeel tool</a></b></p>
+
+    <h2>1. Adding images</h2>
+    <dl>
+      <dt>Drag and drop</dt>
+      <dd>Drop images anywhere on the page, not just on the drop area. Many at once is fine.</dd>
+      <dt>Whole folders</dt>
+      <dd>Click “choose a folder” or drop a folder to add everything in it, including subfolders. Images are sorted in folder order, and the zip download keeps the same folder structure.</dd>
+      <dt>Paste</dt>
+      <dd>Paste a screenshot with Ctrl+V (⌘V on a Mac).</dd>
+      <dt>Supported files</dt>
+      <dd>Any image your browser can open, such as PNG, JPG, WebP, BMP or GIF (first frame). Images are never uploaded to a server.</dd>
+    </dl>
+
+    <h2>2. Basic settings</h2>
+    <dl>
+      <dt>Background color — Auto-detect (default)</dt>
+      <dd>For each image, the most common color along the border is used as the background. It works even if the object touches the border. After conversion, each card shows the detected background color.</dd>
+      <dt>Background color — Pick a color</dt>
+      <dd>Only images whose border is close to this color (within 80 per channel) are processed; others are skipped. The exact color to remove is still measured from each image's border. Use it to process only one background color out of a mixed batch.</dd>
+      <dt>Background type — Auto (default)</dt>
+      <dd>Chosen per image from its background. Vivid colors like magenta, green or blue use “Vivid solid”; dull or pale colors like dusty pink, white or gray use “Dull / pale solid”. Black backgrounds are skipped because outlines would be erased too.</dd>
+      <dt>Background type — Vivid solid</dt>
+      <dd>For vivid backgrounds like magenta, green or blue. Removes color fringes and glows cleanly. Images with dull backgrounds are skipped.</dd>
+      <dt>Background type — Dull / pale solid</dt>
+      <dd>For dusty pink, white, gray or black backgrounds. Pixels are judged only by how different they are from the background, so object areas with similar colors may be removed too. Choose it yourself when you need to remove a black background.</dd>
+      <dt>Background type — Keep background</dt>
+      <dd>Leaves the background as is. Use it with the size and format settings under “Downloading” to just resize images or convert them to JPG, PNG or WebP. Fine-tuning is not used in this mode. See <a href="resize.html">Resize images</a> for details.</dd>
+    </dl>
+
+    <h2>3. Fine-tuning</h2>
+    <p>Open “Fine-tuning” to change the items below with sliders or numbers. The number of changed items appears as “n changed from default”, and “Reset to defaults” resets only fine-tuning, keeping the background color and type. After you change settings, the convert button becomes “Convert again with new settings”.</p>
+
+    <h3>General (both background types)</h3>
+    <dl>
+      <dt>Remove threshold <span class="var">LO</span> · default 0.12 (0–0.9)</dt>
+      <dd>Pixels that are almost entirely background become fully transparent. Raise it to also clear glows and edges that are only partly background; lower it to remove less. It always stays below the keep threshold.</dd>
+      <dt>Keep threshold <span class="var">HI</span> · default 0.5 (0.1–1)</dt>
+      <dd>Pixels with at least this much object color stay fully opaque; pixels between the two thresholds become semi-transparent. Raise it for softer edges; lower it for crisper edges, which may keep some background tint.</dd>
+      <dt>Edge cleanup width <span class="var">EDGE_PX</span> · default 4px (0–16)</dt>
+      <dd>Within this distance of transparent areas, the blended-in background color is subtracted to restore the object's own color. Raise it if a colored line remains around outlines.</dd>
+      <dt>Light background detection <span class="var">TINT_TOL</span> · default 40 (0–120)</dt>
+      <dd>How far to treat pale, whitish glows and sparkles as background, only when they are connected to the background. This is also what removes the Nano Banana mark in the bottom-right corner. Raise it if they remain; lower it if object edges get erased.</dd>
+    </dl>
+
+    <h3>Vivid solid backgrounds only</h3>
+    <dl>
+      <dt>Also remove colored glows <span class="var">REMOVE_GLOW</span> · default on</dt>
+      <dd>Removes purple and blue glows connected to the background. Turn it off to keep light effects; the three glow settings below then have no effect.</dd>
+      <dt>Glow color range <span class="var">GLOW_HUE</span> · default −85° to +30°</dt>
+      <dd>With the background hue at the center (0°), only glows within this hue range are removed. If a sky-blue glow remains, widen the start to the left. Objects of that color may be erased too.</dd>
+      <dt>Glow minimum saturation <span class="var">GLOW_MIN_SAT</span> · default 0.3 (0–1)</dt>
+      <dd>Colors duller (grayer) than this are treated as part of the object and kept. Lower it to remove duller glows; raise it to remove only vivid ones.</dd>
+      <dt>Glow minimum brightness <span class="var">DARK</span> · default 80 (0–255)</dt>
+      <dd>Colors darker than this are treated as outlines and kept. Lowering it removes darker glows but may trim outlines.</dd>
+      <dt>Fix half-tinted pixels <span class="var">REPAIR</span> · default on</dt>
+      <dd>Pixels where the background color bled in halfway (like pink specks on sand, orange or yellow drips) are restored to the nearby object color and made semi-transparent.</dd>
+      <dt>Search distance for the fix <span class="var">REPAIR_PX</span> · default 40px (0–100)</dt>
+      <dd>40 suits 2048px pixel art (one art pixel ≈ 10px). Raise it if tinted spots remain; higher values are slower.</dd>
+    </dl>
+
+    <h3>Dull / pale solid backgrounds only</h3>
+    <dl>
+      <dt>Color difference from background <span class="var">DIST_TOL</span> · default 160 (20–255)</dt>
+      <dd>Colors at least this different from the background are kept fully. Raise it if background color remains around glows; lower it if the object becomes semi-transparent.</dd>
+    </dl>
+    <p>With the background type on Auto, both type-specific groups are shown, and each image uses only the group for the type it was detected as.</p>
+
+    <h2>4. Converting and reconverting</h2>
+    <dl>
+      <dt>Convert</dt>
+      <dd>Processes the added images. Several are processed at once (one at a time on phones, up to four on computers depending on the CPU), and the page stays responsive meanwhile.</dd>
+      <dt>What gets converted?</dt>
+      <dd>Selected cards if any (“Convert n selected”); otherwise only newly added images (“Convert n remaining”); otherwise everything. Other results are kept.</dd>
+      <dt>Selecting cards</dt>
+      <dd>Click a card image to select it. Shift-click selects everything from the last clicked card to this one. “Select failed” selects only skipped or failed cards, and “Clear selection” deselects all.</dd>
+      <dt>Stop</dt>
+      <dd>Finishes the images in progress and stops. Continue the rest with “Convert n remaining”.</dd>
+      <dt>Removing cards</dt>
+      <dd>The × at a card's top right removes that card; “Clear list” removes all of them.</dd>
+    </dl>
+
+    <h2>5. Checking results</h2>
+    <dl>
+      <dt>Compare with the original</dt>
+      <dd>Hover over a card image (or press and hold on a phone) to see the original. “Show originals” switches every card at once.</dd>
+      <dt>Large view</dt>
+      <dd>The magnifier button on a card opens it full screen. Hold to see the original, use ←/→ for the previous or next image, and press Esc or click outside to close.</dd>
+      <dt>Preview background</dt>
+      <dd>Choose checkerboard, black or white. Black or white makes leftover background color at the edges easy to spot.</dd>
+      <dt>Card size and sidebar position</dt>
+      <dd>“Card size” −/+ fits more or fewer images on screen, and ⇄ moves the settings sidebar left or right on wide screens.</dd>
+    </dl>
+
+    <h2>6. Downloading</h2>
+    <dl>
+      <dt>Format — PNG (default), WebP or JPG</dt>
+      <dd><b>Only PNG and WebP</b> keep a transparent background. WebP is often smaller than PNG, and browsers that cannot save WebP give you a PNG instead. <b>JPG cannot store transparency</b>, so transparent areas are filled with white; if you removed the background, choose PNG or WebP. The format applies to every card.</dd>
+      <dt>Download size</dt>
+      <dd>Original size, 1024, 512, 256, 128 or 64px, or a custom size. Scales by the long side and keeps the aspect ratio; never enlarges.</dd>
+      <dt>Reduce to 256 colors</dt>
+      <dd>Makes pixel art and icons much smaller, but can cause banding on smooth gradients like photos. Available for PNG only.</dd>
+      <dt>All cards or card by card</dt>
+      <dd>Changing size or 256 colors in the top settings updates every card; after that you can change cards one by one. Each card shows “original size and file size → download size and file size” (the download file size appears after the first download).</dd>
+      <dt>One by one or as a zip</dt>
+      <dd>Use the Download link on each card, or “Download zip” for everything. The zip keeps the folder structure you added, and duplicate names get a number.</dd>
+    </dl>
+
+    <h2>7. When an image is skipped</h2>
+    <p>Skipped cards show the reason.</p>
+    <dl>
+      <dt>No clear background color on the border</dt>
+      <dd>The object covers almost the whole border. Regenerate with some background margin.</dd>
+      <dt>Border is not the chosen background color</dt>
+      <dd>You picked a background color, but this image's background is a different color.</dd>
+      <dt>Background is near black</dt>
+      <dd>Black backgrounds are skipped in Auto because outlines would be erased too. Choose “Dull / pale solid” to process them anyway.</dd>
+      <dt>Background is not a vivid solid color</dt>
+      <dd>You chose “Vivid solid”, but the background is dull. Switch to “Auto” or “Dull / pale solid”.</dd>
+    </dl>
+
+    <h2>8. What is saved and what isn't</h2>
+    <ul>
+      <li>Settings (background color, fine-tuning, download size and format, view options) are remembered in this browser and stay the same next time.</li>
+      <li>Added images and results live only in this tab's memory. The page asks before you reload or close the tab.</li>
+    </ul>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">Go to the tool</a>
+    <a href="features.html">Features guide</a>
+    <a href="resize.html">Resize images</a>
+    <a href="nano-banana-watermark.html">Remove the Nano Banana watermark</a>
+    <a href="magenta-background.html">Magenta background to transparent</a>
+    <a href="privacy.html">Privacy Policy</a>
+  </footer>
+</main>
+</body>
+</html>

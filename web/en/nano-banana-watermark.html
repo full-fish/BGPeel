@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Remove the Nano Banana Watermark + Make the Background Transparent – BGPeel</title>
+<meta name="description" content="Remove the sparkle mark in the bottom-right corner of Nano Banana (Gemini) images along with the solid background, and get a transparent PNG. Free, runs in your browser.">
+<link rel="canonical" href="https://bgpeel.com/en/nano-banana-watermark.html">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/nano-banana-watermark.html">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/nano-banana-watermark.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./">BGPeel</a>
+    <nav class="lang" aria-label="Language"><a href="../nano-banana-watermark.html" hreflang="ko" lang="ko">한국어</a> | <span aria-current="true">English</span></nav>
+  </div>
+
+  <article class="doc">
+    <h1>Remove the Nano Banana Watermark and Make the Background Transparent</h1>
+    <p class="sub">Images made with Nano Banana (Gemini) on a solid background get a sparkle mark in the bottom-right corner. BGPeel treats that mark as part of the background and removes it together with the background.</p>
+
+    <p><b><a href="./">→ Try it on BGPeel</a></b></p>
+
+    <h2>Why does it get removed too?</h2>
+    <p>The mark is a semi-transparent white overlay on top of the background. BGPeel treats background-colored pixels tinted with white as background, like a pale glow, <b>as long as they are connected to the background</b>. So a mark sitting on the background becomes transparent along with it, with no extra step.</p>
+
+    <h2>How to use it</h2>
+    <ol>
+      <li>Generate the image in Nano Banana with a set background color, e.g. “solid magenta (#FF00FF) background”.</li>
+      <li>Drop the images onto <a href="./">BGPeel</a>. Many at once is fine.</li>
+      <li>Click “Convert”, check the results, and download PNGs or a zip.</li>
+    </ol>
+
+    <h2>If the mark remains</h2>
+    <ul>
+      <li><b>The mark overlaps the object:</b> it isn't connected to the background, so it stays. The surest fix is to regenerate with some margin so the object stays clear of the bottom-right corner.</li>
+      <li><b>It sits on the background but a faint trace remains:</b> raise “Light background detection” under “Fine-tuning”. Raising it too far can erase white object edges.</li>
+    </ul>
+
+    <h2>Good to know</h2>
+    <ul>
+      <li>Only the visible mark is removed. Invisible identifiers embedded in the image, such as SynthID, stay intact.</li>
+      <li>Images are never uploaded; they are processed only in your browser.</li>
+      <li>Photos with busy backgrounds are out of scope. The tool is built for images made on a solid background.</li>
+    </ul>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">Go to the tool</a>
+    <a href="features.html">Features guide</a>
+    <a href="resize.html">Resize images</a>
+    <a href="nano-banana-watermark.html">Remove the Nano Banana watermark</a>
+    <a href="magenta-background.html">Magenta background to transparent</a>
+    <a href="privacy.html">Privacy Policy</a>
+  </footer>
+</main>
+</body>
+</html>

@@ -109,7 +109,7 @@ button:disabled { opacity: .45; cursor: not-allowed; }
 .export .help { flex-basis: 100%; margin: 0; }
 .out { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 6px; }
 .out[hidden] { display: none; }
-.side { font: inherit; font-size: 13px; padding: 3px 6px; color: var(--text); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; }
+.side, .fmt { font: inherit; font-size: 13px; padding: 3px 6px; color: var(--text); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; }
 .chk { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px; }
 .dims { color: var(--muted); margin-top: 2px; font-variant-numeric: tabular-nums; }
 .sw { width: 12px; height: 12px; border-radius: 3px; border: 1px solid var(--line); flex: none; }

@@ -29,6 +29,9 @@ const SLIDERS = {
 const clone = (o) => JSON.parse(JSON.stringify(o));
 let cfg = clone(D);
 try { Object.assign(cfg, JSON.parse(localStorage.getItem("nobg-cfg")) || {}); } catch {}
+// 안내 페이지에서 ?mode=none(크기만 바꾸기)처럼 배경 종류를 정해 들어올 수 있다
+const qMode = new URLSearchParams(location.search).get("mode");
+if (qMode && Object.hasOwn(T.modeHelp, qMode)) cfg.mode = qMode;
 const save = () => { try { localStorage.setItem("nobg-cfg", JSON.stringify(cfg)); } catch {} };
 
 const toHex = (c) => "#" + c.map((v) => Math.round(v).toString(16).padStart(2, "0")).join("");
@@ -75,6 +78,7 @@ function render() {
   $("#keyHelp").textContent = T.keyHelp[cfg.key ? "manual" : "auto"];
   document.querySelector(`input[name=mode][value=${cfg.mode}]`).checked = true;
   $("#modeHelp").textContent = T.modeHelp[cfg.mode];
+  $("#adv").hidden = cfg.mode === "none"; // 지우지 않으면 세부 조절이 쓰이지 않는다
   $("#g-chroma").hidden = cfg.mode === "distance";
   $("#g-distance").hidden = cfg.mode === "chroma";
   $("#g-chroma-help").textContent = cfg.mode === "auto" ? T.groupHelpAuto.chroma : "";
@@ -147,10 +151,12 @@ for (let i = 0; i < POOL; i++) {
 // 작업 하나를 줄에 세우고 결과를 기다린다. job: remove(배경 제거) · shrink(받기용 줄이기) · thumbs(미리보기 사본)
 const call = (msg) => new Promise((res) => { const id = ++seq; pending.set(id, res); queue.push({ id, ...msg }); pump(); });
 
-// 내려받을 크기(긴 변 px, 0=원본)와 256색. 전체 기본값은 이 브라우저에 기억하고, 카드마다 따로 가진다
+// 내려받을 크기(긴 변 px, 0=원본)와 256색. 전체 기본값은 이 브라우저에 기억하고, 카드마다 따로 가진다.
+// 저장 형식(png·webp)은 전체에 하나만 둔다
 const SIDES = [0, 1024, 512, 256, 128, 64];
-let out = { side: 0, colors: false };
+let out = { side: 0, colors: false, format: "png" };
 try { Object.assign(out, JSON.parse(localStorage.getItem("nobg-out")) || {}); } catch {}
+const saveOut = () => { try { localStorage.setItem("nobg-out", JSON.stringify(out)); } catch {} };
 
 const outHTML = (colorsLabel) => `<select class="side" aria-label="${T.side}">${SIDES.map((v) => `<option value="${v}">${v ? v + " px" : T.original}</option>`).join("")}<option value="custom">${T.custom}</option></select>
   <input class="num px" type="number" min="1" step="1" placeholder="px" aria-label="${T.customPx}" hidden>
@@ -162,6 +168,7 @@ function setOutUI(el, { side, colors }) {
   $(".px", el).hidden = !custom;
   if (custom) $(".px", el).value = side;
   $(".colors", el).checked = colors;
+  $(".colors", el).disabled = out.format !== "png"; // 256색은 PNG에만
 }
 // 크기·256색 칸 → onChange({side} 또는 {colors}). 바뀐 쪽만 넘겨서, 전체에서 크기만 바꾸면 카드의 256색은 그대로 둔다
 function bindOut(el, onChange) {
@@ -174,19 +181,28 @@ function bindOut(el, onChange) {
   $(".colors", el).onchange = (e) => onChange({ colors: e.target.checked });
 }
 
-$("#export").innerHTML = `<span class="lbl">${T.side}</span>${outHTML(T.colors)}<p class="help">${T.exportHelp}</p>`;
+$("#export").innerHTML = `<span class="lbl">${T.format}</span><select class="fmt" aria-label="${T.format}"><option value="png">PNG</option><option value="webp">WebP</option><option value="jpg">${T.jpg}</option></select>
+  <span class="lbl">${T.side}</span>${outHTML(T.colors)}<p class="help">${T.exportHelp}</p>`;
+$("#export .fmt").value = out.format;
 setOutUI($("#export"), out);
 // 전체에서 바꾸면 모든 카드가 따라가고, 그다음 카드마다 따로 바꿀 수 있다
 bindOut($("#export"), (patch) => {
   Object.assign(out, patch);
-  try { localStorage.setItem("nobg-out", JSON.stringify(out)); } catch {}
+  saveOut();
   setOutUI($("#export"), out);
   for (const it of items) { Object.assign(it, patch); showOut(it); }
 });
+$("#export .fmt").onchange = (e) => {
+  out.format = e.target.value;
+  saveOut();
+  setOutUI($("#export"), out);
+  items.forEach(showOut);
+};
 
 const fmtSize = (b) => (b >= 1048576 ? (b / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(b / 1024)) + " KB");
-const expKey = (it) => `${it.side}|${it.colors}`;
-const shrinks = (it) => { const [W, H] = fitSize(it.w, it.h, it.side); return it.colors || W !== it.w || H !== it.h; };
+const colorsOn = (it) => it.colors && out.format === "png";
+const expKey = (it) => `${it.side}|${colorsOn(it)}|${out.format}`;
+const shrinks = (it) => { const [W, H] = fitSize(it.w, it.h, it.side); return out.format !== "png" || colorsOn(it) || W !== it.w || H !== it.h; };
 
 // 카드의 크기 칸과 '원본 크기·용량 → 내려받을 크기·용량' 줄. 용량은 한 번 내려받은 뒤에 보인다
 function showOut(it) {
@@ -202,7 +218,7 @@ async function exported(it) {
   if (!shrinks(it)) return it.blob;
   const key = expKey(it), src = it.blob;
   if (it.exp?.key !== key || it.exp.src !== src) {
-    const r = await call({ job: "shrink", blob: src, side: it.side, colors: it.colors });
+    const r = await call({ job: "shrink", blob: src, side: it.side, colors: colorsOn(it), format: out.format });
     if (r.error) throw new Error(r.error);
     it.exp = { key, src, blob: r.blob };
     showOut(it);
@@ -465,9 +481,10 @@ async function convert(it, runCfg) {
     a.href = it.resultUrl; a.textContent = T.download;
     a.onclick = async (e) => {
       e.preventDefault();
-      try { download(await exported(it), pngName(it.file.name)); } catch (err) { $("#status").textContent = T.shrinkFail + err.message; }
+      try { const b = await exported(it); download(b, outName(it.file.name, b)); } catch (err) { $("#status").textContent = T.shrinkFail + err.message; }
     };
     it.card.querySelector(".st").append(a);
+    if (!r.key) return; // '지우지 않음'은 감지한 배경색이 없다
     det.innerHTML = `<span class="sw"></span><span>${T.bg} <span class="mono"></span> · ${T.modeName[r.mode]}</span>`;
     $(".sw", det).style.background = toHex(r.key);
     $(".mono", det).textContent = toHex(r.key).toUpperCase();
@@ -482,7 +499,8 @@ async function convert(it, runCfg) {
 }
 $("#stop").onclick = () => { stopReq = true; Object.assign($("#stop"), { disabled: true, textContent: T.stopping }); };
 
-const pngName = (name) => name.replace(/\.[^./]+$/, "") + ".png"; // 경로의 폴더 이름에 붙은 점은 건드리지 않는다
+// 확장자는 실제로 만들어진 형식을 따른다(WebP를 못 만드는 브라우저는 PNG). 경로의 폴더 이름에 붙은 점은 건드리지 않는다
+const outName = (name, blob) => name.replace(/\.[^./]+$/, "") + ({ "image/webp": ".webp", "image/jpeg": ".jpg" }[blob.type] || ".png");
 const download = (blob, name) => {
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob); a.download = name; a.click();
@@ -504,13 +522,13 @@ async function zip() {
     for (const [i, it] of done.entries()) {
       const blob = blobs[i];
       before += it.blob.size; after += blob.size;
-      let name = pngName(it.path); // 폴더 구조 그대로
+      let name = outName(it.path, blob); // 폴더 구조 그대로
       const c = (used.get(name) || 0) + 1;
       used.set(name, c);
-      if (c > 1) name = name.replace(/\.png$/, `_${c}.png`); // 이름이 겹치면 번호를 붙인다
+      if (c > 1) name = name.replace(/(\.\w+)$/, `_${c}$1`); // 이름이 겹치면 번호를 붙인다
       z.file(name, blob);
     }
-    download(await z.generateAsync({ type: "blob", compression: "STORE" }), "nobg.zip"); // PNG는 이미 압축돼 있어 STORE
+    download(await z.generateAsync({ type: "blob", compression: "STORE" }), "nobg.zip"); // PNG·WebP는 이미 압축돼 있어 STORE
     $("#status").textContent = T.zipSaved(done.length, fmtSize(before), fmtSize(after));
   } catch (e) {
     $("#status").textContent = T.shrinkFail + e.message;

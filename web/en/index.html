@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BGPeel – Solid & Chroma Key Background Remover, Free Transparent PNG</title>
-<meta name="description" content="Remove solid-color and chroma key backgrounds plus the Nano Banana watermark, and get transparent PNGs. Batch processing, no upload — everything runs in your browser.">
+<meta name="description" content="Remove solid-color and chroma key backgrounds plus the Nano Banana watermark, and get transparent PNGs. Also resize images and save as JPG or WebP, in bulk, with no upload.">
 <link rel="canonical" href="https://bgpeel.com/en/">
 <link rel="alternate" hreflang="ko" href="https://bgpeel.com/">
 <link rel="alternate" hreflang="en" href="https://bgpeel.com/en/">
@@ -82,6 +82,7 @@
           <label><input type="radio" name="mode" value="auto"> Auto</label>
           <label><input type="radio" name="mode" value="chroma"> Vivid solid</label>
           <label><input type="radio" name="mode" value="distance"> Dull / pale solid</label>
+          <label><input type="radio" name="mode" value="none"> Keep background</label>
         </div>
         <p class="help" id="modeHelp"></p>
       </div>
@@ -123,7 +124,7 @@
           <li><b>Check</b>: a black or white background makes leftover background color at the edges easy to spot. Use “Card size” −/+ to fit more or fewer images on screen.</li>
           <li><b>Redo a few</b>: click images to select them and convert: only the selected ones are redone and the other results stay. Shift-click selects a range, and “Select failed” picks only skipped or failed cards. × at the top right of a card removes it from the list.</li>
         </ul></li>
-      <li><b>Download</b> — use the Download link on each card, or “Download zip” to get everything at once (dropped folders keep their structure inside the zip). Use “Download size” and “256 colors” to get smaller files, for all images or card by card. Results are PNGs with transparent backgrounds.</li>
+      <li><b>Download</b> — use the Download link on each card, or “Download zip” to get everything at once (dropped folders keep their structure inside the zip). Use “Download size” and “256 colors” to get smaller files, for all images or card by card. Choose PNG, WebP or JPG under “Format”. Only PNG and WebP keep a transparent background; JPG fills transparent areas with white. To just resize without removing the background, set the background type to “Keep background”.</li>
     </ol>
 
     <h2>Works best with</h2>
@@ -162,7 +163,7 @@
       <dt>Is it free?</dt>
       <dd>Yes. The site is supported by ads.</dd>
       <dt>Which files can I use?</dt>
-      <dd>Any image your browser can open, such as PNG, JPG, WebP, BMP or GIF (first frame). Results are always PNGs with transparent backgrounds.</dd>
+      <dd>Any image your browser can open, such as PNG, JPG, WebP, BMP or GIF (first frame). Results are PNG or WebP (transparency kept) or JPG (transparent areas become white).</dd>
       <dt>How many images at once?</dt>
       <dd>There is no fixed limit. Images are processed one after another; a 2048×2048 image usually takes about a second. Very large batches may slow down depending on your device's memory.</dd>
       <dt>Are my settings saved?</dt>
@@ -172,6 +173,10 @@
 
   <footer>
     <span>© 2026 BGPeel</span>
+    <a href="features.html">Features guide</a>
+    <a href="resize.html">Resize images</a>
+    <a href="nano-banana-watermark.html">Remove the Nano Banana watermark</a>
+    <a href="magenta-background.html">Magenta background to transparent</a>
     <a href="privacy.html">Privacy Policy</a>
     <span>Contact: <a href="mailto:manseon94@gmail.com">manseon94@gmail.com</a></span>
   </footer>

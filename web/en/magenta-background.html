@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Magenta & Chroma Key Background to Transparent PNG – BGPeel</title>
+<meta name="description" content="How to turn a magenta (#FF00FF) or green chroma key background into a transparent PNG. Batch-process AI game sprites and icons at once, with no upload.">
+<link rel="canonical" href="https://bgpeel.com/en/magenta-background.html">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/magenta-background.html">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/magenta-background.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./">BGPeel</a>
+    <nav class="lang" aria-label="Language"><a href="../magenta-background.html" hreflang="ko" lang="ko">한국어</a> | <span aria-current="true">English</span></nav>
+  </div>
+
+  <article class="doc">
+    <h1>Turn a Magenta or Chroma Key Background into a Transparent PNG</h1>
+    <p class="sub">AI image generators don't give you a transparent background for game sprites or icons. Instead, generate on a solid color like magenta or green, then remove just that color to get a clean transparent PNG.</p>
+
+    <p><b><a href="./">→ Try it on BGPeel</a></b></p>
+
+    <h2>Which background color should I use?</h2>
+    <p>The key is a color that barely appears in the object.</p>
+    <ul>
+      <li><b>Magenta (#FF00FF):</b> full red and blue with zero green, so it rarely shows up in characters or props. The safest choice in most cases.</li>
+      <li><b>Green (#00FF00):</b> pick this when the object has a lot of pink or purple.</li>
+      <li><b>Blue (#0000FF):</b> an option when the object has plenty of both green and pink.</li>
+    </ul>
+    <p>In the prompt, ask for no shadows or gradients, e.g. “solid magenta (#FF00FF) background, no shadow, no gradient”, for cleaner results.</p>
+
+    <h2>How to use it</h2>
+    <ol>
+      <li>Drop images or a folder onto <a href="./">BGPeel</a>.</li>
+      <li>The background color and type are detected automatically. Click “Convert”.</li>
+      <li>Check the results on a checkerboard, black or white preview, then download them all as a zip.</li>
+    </ol>
+
+    <h2>How is this different from just deleting the color?</h2>
+    <p>If you delete the background color with an editor's magic wand, a pink or green fringe stays around the object, because edge pixels are partly mixed with the background. BGPeel measures how much background is mixed into each pixel, makes it only that transparent, and subtracts the mixed-in background color to restore the object's own color. It can also remove glows attached to the background.</p>
+
+    <h2>If the result isn't quite right</h2>
+    <p>If a background-colored line remains around the object or its edges get trimmed, see the settings guide at the bottom of the tool page and adjust “Fine-tuning”. You can then reconvert only the cards that need it.</p>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">Go to the tool</a>
+    <a href="features.html">Features guide</a>
+    <a href="resize.html">Resize images</a>
+    <a href="nano-banana-watermark.html">Remove the Nano Banana watermark</a>
+    <a href="magenta-background.html">Magenta background to transparent</a>
+    <a href="privacy.html">Privacy Policy</a>
+  </footer>
+</main>
+</body>
+</html>

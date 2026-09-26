@@ -19,6 +19,10 @@ async function remove({ file, cfg }) {
   const ctx = cv.getContext("2d", { willReadFrequently: true });
   ctx.drawImage(bmp, 0, 0);
   bmp.close();
+  if (cfg.mode === "none") { // 배경은 그대로 두고 크기·형식만 바꿀 때. 결과는 늘 PNG로 둔다(내려받을 때 형식을 바꾼다)
+    const blob = await cv.convertToBlob({ type: "image/png" });
+    return { blob, key: null, mode: "none", w, h, thumbs: await thumbsOf(cv), ms: performance.now() - t };
+  }
   const r = removeBg(ctx.getImageData(0, 0, w, h).data, w, h, cfg);
   if (r.skip) return { skip: r.skip };
   ctx.putImageData(new ImageData(r.out, w, h), 0, 0);
@@ -45,11 +49,18 @@ async function thumbsOf(src) {
   return out;
 }
 
-// 긴 변을 side 이하로 줄이고(0이면 그대로), colors면 256색 PNG로. {blob}
-async function shrink({ blob, side, colors }) {
+// 긴 변을 side 이하로 줄이고(0이면 그대로), format(png·webp·jpg)으로. colors면 256색 PNG. {blob}
+// WebP를 저장하지 못하는 브라우저(Safari)는 PNG를 돌려주므로 확장자는 blob.type으로 정한다
+async function shrink({ blob, side, colors, format }) {
   const bmp = await createImageBitmap(blob);
   const cv = resize(bmp, side);
   bmp.close();
+  if (format === "webp") return { blob: await cv.convertToBlob({ type: "image/webp", quality: 1 }) }; // 크롬은 1이면 무손실
+  if (format === "jpg") { // JPG는 투명을 저장하지 못해 흰 바탕에 얹는다
+    const bg = new OffscreenCanvas(cv.width, cv.height), c = bg.getContext("2d");
+    c.fillStyle = "#fff"; c.fillRect(0, 0, bg.width, bg.height); c.drawImage(cv, 0, 0);
+    return { blob: await bg.convertToBlob({ type: "image/jpeg", quality: 0.92 }) };
+  }
   if (!colors) return { blob: await cv.convertToBlob({ type: "image/png" }) };
   if (!self.UPNG) {
     // 256색을 처음 쓸 때만 불러온다. UPNG.js는 window 전역에 붙으므로 워커에서는 self를 window로 둔다
