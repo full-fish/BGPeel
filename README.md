@@ -37,6 +37,8 @@ python3 -m http.server 8000
 
 코드를 고친 뒤에는 개발자 도구 → Network 탭의 **Disable cache**를 켜고 새로고침하세요. `python -m http.server`는 캐시 헤더를 보내지 않아서, 브라우저가 예전 JS(특히 `worker.js`)를 그대로 쓰는 일이 생깁니다.
 
+페이지 사이 링크와 canonical·sitemap 주소는 `.html` 없이(`/features`) 씁니다. Cloudflare가 `/features.html`을 `/features`로 리디렉션하기 때문에, `.html`로 적으면 구글이 페이지를 색인하지 않습니다. python 서버는 이런 주소를 못 여니 링크까지 확인하려면 저장소 루트에서 `npx wrangler dev`로 띄우세요(배포와 똑같이 동작).
+
 ## CLI
 
 ```bash
