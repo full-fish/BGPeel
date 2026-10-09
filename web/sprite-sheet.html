@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 스프라이트를 Unity·Godot 스프라이트 시트로 만들기 – BGPeel</title>
+<meta name="description" content="AI로 만든 캐릭터 이미지를 배경 제거, 크기·위치 맞추기, 시트로 묶기, Unity·Godot 가져오기까지. 테스트한 파이썬 스크립트와 엔진별 설정을 정리했습니다.">
+<link rel="canonical" href="https://bgpeel.com/sprite-sheet">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/sprite-sheet">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/sprite-sheet">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./"><img src="logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="메뉴"><a href="guides">가이드</a><a href="about">소개</a></nav>
+    <nav class="lang" aria-label="언어"><span aria-current="true">한국어</span> | <a href="en/sprite-sheet" hreflang="en" lang="en">English</a></nav>
+  </div>
+
+  <article class="doc">
+    <h1>AI 스프라이트를 Unity·Godot 스프라이트 시트로 만들기</h1>
+    <p class="sub">AI 이미지 도구로 캐릭터나 몬스터를 만들면 한 장에 하나씩, 큰 캔버스 위 제각각의 위치에 그려져 나옵니다. 게임 엔진은 같은 크기의 칸에 같은 기준점으로 놓인 그림을 원합니다. 그 사이를 잇는 과정을 배경 제거부터 엔진 가져오기까지 순서대로 정리했습니다.</p>
+    <p class="byline">2026년 10월 10일 · <a href="about">BGPeel</a></p>
+
+    <h2>1. 배경부터 같은 기준으로 지우기</h2>
+    <p>먼저 모든 이미지를 단색 배경으로 만들고(<a href="ai-background-prompts">프롬프트 모음</a> 참고), <a href="./">BGPeel</a>에 폴더째 올려 배경을 지웁니다. 한 번에 여러 장을 같은 설정으로 처리하므로, 프레임마다 가장자리 처리가 달라 애니메이션에서 테두리가 깜박이는 일을 막을 수 있습니다. 저장 형식은 PNG로 두고, 크기는 아직 줄이지 말고 원본 크기로 받으세요. 크기는 시트를 만들 때 한 번에 맞추는 편이 정확합니다.</p>
+
+    <h2>2. AI 이미지는 위치와 크기가 제각각이다</h2>
+    <p>배경을 지운 결과를 나란히 놓고 물체를 감싸는 상자를 그려 보면 문제가 바로 보입니다. 실험에 쓴 세 몬스터는 모두 2048×2048 캔버스였지만, 식물은 캔버스의 가로 84%를, 슬라임은 58%를 차지했고, 위아래 위치도 달랐습니다.</p>
+    <figure>
+      <img src="img/sheet-bbox.webp" width="760" height="248" alt="세 몬스터의 원래 캔버스. 하늘색 상자가 물체 범위, 빨간 점이 바닥 가운데 기준점이며 위치와 크기가 모두 다르다" loading="lazy">
+      <figcaption>원래 2048px 캔버스에서 물체 범위(하늘색 상자)와 바닥 가운데 기준점(빨간 점). 세 장 모두 위치와 크기가 다릅니다.</figcaption>
+    </figure>
+    <p>이대로 시트에 넣으면 애니메이션에서 캐릭터가 프레임마다 위아래로 튀거나 커졌다 작아집니다. 그래서 시트로 묶기 전에 두 가지를 맞춥니다.</p>
+    <ul>
+      <li><b>기준점(피벗):</b> 서 있는 캐릭터는 발이 닿는 <b>바닥 가운데</b>를 기준으로 맞추는 것이 일반적입니다. 날아다니는 몬스터나 이펙트라면 가운데를 기준으로 합니다.</li>
+      <li><b>배율:</b> 같은 캐릭터의 프레임은 모두 <b>같은 배율</b>로 줄여야 합니다. 프레임마다 칸에 꽉 차게 따로 줄이면 몸집이 계속 바뀝니다.</li>
+    </ul>
+
+    <h2>3. 실제 도트 크기 확인하기</h2>
+    <p>AI가 만든 도트풍 그림은 진짜 도트 그림을 크게 확대한 것처럼 보입니다. 세 몬스터에서 색이 바뀌는 간격을 재 보니 2048px 캔버스에서 도트 한 칸이 식물은 약 10px, 슬라임과 정령은 약 20px이었습니다. 즉 이 그림들의 실제 해상도는 각각 200px, 100px 안팎입니다.</p>
+    <p>그러니 게임에 2048px 그대로 넣을 이유가 없습니다. 화면에 보일 크기에 맞춰 128px나 256px 칸으로 줄이면 파일과 메모리가 수십 분의 1로 줄어듭니다. 다만 AI 그림의 도트는 격자에 정확히 맞지 않아서, 최근접 방식으로 정확히 10분의 1로 줄여도 도트 모양이 들쭉날쭉해질 수 있습니다. 부드럽게 줄이고(BGPeel과 아래 스크립트가 쓰는 방식) 화면에서 필요한 크기로 보여 주는 편이 무난합니다.</p>
+
+    <h2>4. 시트로 묶기 (파이썬 스크립트)</h2>
+    <p>아래 스크립트는 폴더 안의 투명 PNG를 이름 순서대로 읽어, 투명한 여백을 잘라 내고, 가장 큰 물체가 칸에 들어가는 배율 하나로 모두 줄인 뒤, 칸마다 바닥 가운데에 맞춰 한 장으로 묶습니다. Pillow만 있으면 됩니다(<code>pip install pillow</code>). 실제로 위 세 몬스터로 돌려 768×256 시트를 만든 코드입니다.</p>
+    <pre><code>import math, sys
+from pathlib import Path
+from PIL import Image
+
+src = Path(sys.argv[1])                     # BGPeel에서 받은 PNG 폴더
+cell = int(sys.argv[2])                     # 칸 크기(px), 예: 256
+cols = int(sys.argv[3]) if len(sys.argv) &gt; 3 else 8
+
+frames = [Image.open(p).convert("RGBA") for p in sorted(src.glob("*.png"))]
+boxes = [f.getbbox() for f in frames]       # 투명하지 않은 부분의 상자
+biggest = max(max(b[2] - b[0], b[3] - b[1]) for b in boxes)
+scale = (cell - 8) / biggest                # 모든 프레임에 같은 배율
+cols = min(cols, len(frames))
+sheet = Image.new("RGBA", (cell * cols, cell * math.ceil(len(frames) / cols)))
+for i, (f, b) in enumerate(zip(frames, boxes)):
+    body = f.crop(b)
+    body = body.resize((max(1, round(body.width * scale)), max(1, round(body.height * scale))), Image.LANCZOS)
+    x = (i % cols) * cell + (cell - body.width) // 2   # 가로 가운데
+    y = (i // cols) * cell + cell - 4 - body.height    # 바닥에서 4px 위
+    sheet.alpha_composite(body, (x, y))
+sheet.save("sheet.png")
+print(f"{len(frames)} frames, {cell}px cells, {cols} columns -> sheet.png {sheet.size}")</code></pre>
+    <p>사용법은 <code>python make_sheet.py 폴더 256 8</code>처럼 폴더, 칸 크기, 열 수를 주는 것입니다. 프레임 순서는 파일 이름 순서이니 <code>walk_01.png</code>처럼 자릿수를 맞춰 두세요.</p>
+    <figure>
+      <img src="img/sheet-grid.webp" width="760" height="253" alt="세 몬스터를 256px 칸 세 개에 바닥 가운데 기준으로 맞춰 묶은 스프라이트 시트" loading="lazy">
+      <figcaption>스크립트 결과(격자선과 기준점은 설명용으로 덧그림). 서로 다른 몬스터라 칸마다 꽉 차 보이지만, 같은 캐릭터의 프레임이라면 같은 배율이라 몸집이 일정하게 유지됩니다.</figcaption>
+    </figure>
+    <p>이 스크립트는 프레임마다 물체를 따로 잘라 바닥 가운데에 맞춥니다. AI가 프레임을 각각 따로 그렸을 때 알맞은 방식입니다. 반대로 한 장면 안에서 캐릭터가 앞으로 뛰어나가는 공격 동작처럼 <b>위치 변화 자체가 동작</b>이라면, 모든 프레임을 같은 상자로 잘라야 움직임이 살아납니다. 그 경우 <code>boxes</code>를 모든 상자를 합친 하나의 상자로 바꾸면 됩니다.</p>
+
+    <h2>5. Unity로 가져오기</h2>
+    <ol>
+      <li>시트 PNG를 프로젝트에 넣고 Inspector에서 <b>Texture Type</b>을 ‘Sprite (2D and UI)’, <b>Sprite Mode</b>를 ‘Multiple’로 바꿉니다.</li>
+      <li><b>Sprite Editor</b>를 열고 Slice에서 Type을 ‘Grid By Cell Size’로, Pixel Size를 칸 크기(예: 256×256)로, Pivot을 ‘Bottom’으로 고른 뒤 Slice, Apply를 누릅니다.</li>
+      <li>도트 그림이라면 <b>Filter Mode</b>를 ‘Point (no filter)’, <b>Compression</b>을 ‘None’으로 둡니다. 압축하면 도트 경계에 색 얼룩이 생깁니다.</li>
+      <li><b>Max Size</b>를 확인하세요. 시트 가로가 이 값보다 크면 가져올 때 줄어들어 흐려집니다.</li>
+      <li>부드러운 필터(Bilinear)를 쓴다면 <b>Alpha Is Transparency</b>를 켭니다. 투명한 픽셀의 색을 주변 색으로 채워, 가장자리에 검은 테두리가 생기는 것을 막습니다.</li>
+    </ol>
+    <p>마지막 항목은 BGPeel 결과에 특히 중요합니다. BGPeel은 완전히 투명한 픽셀의 색을 0(검정)으로 저장합니다. 엔진이 가장자리를 부드럽게 보간할 때 이 검은색이 섞이면 어두운 테두리가 생길 수 있는데, 위 옵션이 그것을 막아 줍니다. Point 필터에서는 보간을 하지 않으니 영향이 없습니다.</p>
+
+    <h2>6. Godot 4로 가져오기</h2>
+    <ol>
+      <li>도트 그림이라면 프로젝트 설정의 Rendering → Textures에서 <b>Default Texture Filter</b>를 ‘Nearest’로 바꿉니다. 노드마다 Texture Filter를 따로 정할 수도 있습니다.</li>
+      <li><b>AnimatedSprite2D</b> 노드를 만들고 Sprite Frames에 새 SpriteFrames를 만든 뒤, 아래 SpriteFrames 패널에서 ‘스프라이트 시트에서 프레임 추가(Add frames from sprite sheet)’ 버튼으로 시트를 엽니다.</li>
+      <li>가로·세로 칸 수(예: 8×1)를 맞추고 쓸 프레임을 골라 추가합니다. 속도(FPS)와 반복 여부도 여기서 정합니다.</li>
+      <li>기준점을 바닥 가운데로 하려면 노드의 <b>Offset</b>을 칸 높이의 절반만큼 위로(예: 256px 칸이면 y = −128) 옮깁니다.</li>
+    </ol>
+    <p>애니메이션이 없는 몬스터나 아이템이라면 꼭 시트로 묶을 필요는 없습니다. Sprite2D 노드에 Hframes·Vframes를 지정해 시트의 한 칸을 고를 수도 있고, 그냥 낱장 PNG를 써도 됩니다. Godot은 가져올 때 ‘Fix Alpha Border’ 처리로 투명 가장자리 색을 정리해 주므로 Unity보다 신경 쓸 것이 적습니다.</p>
+
+    <h2>정리</h2>
+    <ul>
+      <li>배경은 BGPeel에서 한 번에, 같은 설정으로 지운다.</li>
+      <li>AI 이미지는 위치와 크기가 제각각이므로, 같은 배율로 줄이고 바닥 가운데에 맞춘다.</li>
+      <li>AI 도트 그림의 실제 해상도는 100~200px 정도라 128~256px 칸이면 충분하다.</li>
+      <li>엔진에서는 도트 그림이면 Point·Nearest 필터와 무압축, 부드러운 필터면 투명 가장자리 보정 옵션을 켠다.</li>
+    </ul>
+    <section class="related">
+      <h2>함께 보면 좋은 글</h2>
+      <ul>
+        <li><a href="png-webp-jpg">PNG·WebP·JPG 용량 비교 실측</a></li>
+        <li><a href="color-fringe">가장자리 색 번짐이 생기는 이유와 없애는 법</a></li>
+        <li><a href="background-color-test">마젠타·초록·파랑 배경 비교 실험</a></li>
+      </ul>
+    </section>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">도구</a>
+    <a href="guides">가이드</a>
+    <a href="features">기능 설명</a>
+    <a href="about">소개</a>
+    <a href="contact">문의</a>
+    <a href="privacy">개인정보처리방침</a>
+  </footer>
+</main>
+</body>
+</html>

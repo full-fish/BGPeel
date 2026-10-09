@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>마젠타·초록·파랑 배경 비교 실험: 어떤 배경색이 잘 지워질까 – BGPeel</title>
+<meta name="description" content="같은 캐릭터 세 개를 마젠타·초록·파랑 배경에 얹고 같은 설정으로 지운 결과를 수치로 비교했습니다. 배경색만큼 외곽선이 중요했습니다.">
+<link rel="canonical" href="https://bgpeel.com/background-color-test">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/background-color-test">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/background-color-test">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./"><img src="logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="메뉴"><a href="guides">가이드</a><a href="about">소개</a></nav>
+    <nav class="lang" aria-label="언어"><span aria-current="true">한국어</span> | <a href="en/background-color-test" hreflang="en" lang="en">English</a></nav>
+  </div>
+
+  <article class="doc">
+    <h1>마젠타·초록·파랑 배경 비교 실험: 어떤 배경색이 잘 지워질까</h1>
+    <p class="sub">AI로 게임 캐릭터를 만들 때 배경색을 무엇으로 할지 고민된다면 이 실험부터 보세요. 같은 캐릭터 세 개를 마젠타·초록·파랑 배경에 얹고 똑같은 설정으로 지운 뒤, 깎인 정도를 픽셀 단위로 쟀습니다. 결론부터 말하면 배경색만큼이나 캐릭터에 외곽선이 있는지가 결과를 갈랐습니다.</p>
+    <p class="byline">2026년 10월 10일 · <a href="about">BGPeel</a></p>
+
+    <h2>실험 방법</h2>
+    <p>실험에 쓴 캐릭터는 나노바나나(Gemini)로 만든 도트풍 몬스터 세 개입니다. 식물 몬스터는 빨강·노랑 줄무늬 꽃잎과 짙은 외곽선이 있는 초록 덩굴, 슬라임은 짙은 초록 외곽선을 두른 초록 몸통, 정령은 외곽선 없이 빛나는 금색 몸에 하늘색 눈과 보라색 빛번짐이 있습니다. 세 장 모두 원래 마젠타 배경으로 만들었고, BGPeel 기본 설정으로 배경을 지운 투명 PNG를 출발점으로 삼았습니다.</p>
+    <p>이 투명 PNG를 순수한 마젠타(#FF00FF), 초록(#00FF00), 파랑(#0000FF) 배경 위에 다시 얹어 2048×2048 이미지 아홉 장을 만들었습니다. 그리고 모두 BGPeel 기본 설정(배경색 자동 감지, 배경 종류 자동)으로 다시 지운 뒤, 원래 투명 PNG와 픽셀 단위로 비교해 세 가지를 쟀습니다.</p>
+    <ul>
+      <li><b>물체 손실:</b> 원래 완전히 불투명했던 픽셀 중 결과에서 반 넘게 투명해진 비율입니다. 물체가 얼마나 깎였는지를 뜻합니다.</li>
+      <li><b>배경 잔여:</b> 원래 완전히 투명했던 픽셀 중 결과에 조금이라도 남은 비율입니다. 배경이 덜 지워진 정도입니다.</li>
+      <li><b>색 오차:</b> 불투명하게 남은 픽셀이 원래 색과 채널당 평균 몇 단계(0~255) 다른지입니다.</li>
+    </ul>
+    <p>AI에게 처음부터 다른 배경색으로 다시 그리게 한 것이 아니라, 같은 그림의 배경만 바꿔 얹은 실험입니다. 그래서 AI가 그릴 때마다 달라지는 모양이나 배경 얼룩의 영향은 빠지고, <b>물체 색과 배경색의 관계</b>만 따로 볼 수 있습니다. 실제 AI 이미지는 배경에 미세한 얼룩과 빛번짐이 있어서 결과가 이보다 조금 나쁠 수 있습니다.</p>
+
+    <figure>
+      <img src="img/bgtest-inputs.webp" width="760" height="248" alt="금색 정령 캐릭터를 마젠타, 초록, 파랑 배경에 각각 얹은 입력 이미지 세 장" loading="lazy">
+      <figcaption>입력 예시. 같은 정령 캐릭터를 마젠타·초록·파랑 배경에 얹었습니다.</figcaption>
+    </figure>
+
+    <h2>결과</h2>
+    <p>아래 표는 물체 손실입니다. 배경 잔여는 아홉 경우 모두 0%였고, 색 오차는 가장 큰 경우(초록 배경의 식물)도 채널당 0.45로 눈으로는 구분할 수 없는 수준이었습니다. 실험용 배경이 완벽한 단색이라 배경 자체는 어떤 색이든 깨끗하게 지워진 것입니다. 차이는 물체 손실에서만 났고, 그것도 정령 한 캐릭터에 몰렸습니다.</p>
+    <div class="table"><table>
+      <thead><tr><th>캐릭터</th><th class="n">마젠타 배경</th><th class="n">초록 배경</th><th class="n">파랑 배경</th></tr></thead>
+      <tbody>
+        <tr><td>식물 (외곽선 있음)</td><td class="n">0%</td><td class="n">0.92%</td><td class="n">0%</td></tr>
+        <tr><td>슬라임 (외곽선 있음, 몸이 초록)</td><td class="n">0%</td><td class="n">0%</td><td class="n">0%</td></tr>
+        <tr><td>정령 (외곽선 없음, 금색)</td><td class="n">1.13%</td><td class="n"><b>55.02%</b></td><td class="n">2.39%</td></tr>
+      </tbody>
+    </table></div>
+
+    <figure>
+      <img src="img/bgtest-results.webp" width="760" height="778" alt="식물, 슬라임, 정령을 마젠타, 초록, 파랑 배경에서 지운 결과 아홉 장. 초록 배경의 정령만 몸 대부분이 사라졌다" loading="lazy">
+      <figcaption>결과. 위에서부터 식물·슬라임·정령, 왼쪽부터 마젠타·초록·파랑 배경이고, 칸 위쪽 띠가 배경색입니다. 초록 배경의 정령만 몸 대부분이 지워졌습니다.</figcaption>
+    </figure>
+
+    <h2>초록 슬라임은 왜 초록 배경에서 멀쩡했을까</h2>
+    <p>가장 의외인 결과는 슬라임입니다. 몸 전체가 초록인데 초록 배경에서도 한 픽셀도 깎이지 않았습니다. 이유는 두 가지입니다.</p>
+    <p>첫째, 슬라임의 초록은 #00FF00처럼 쨍한 초록이 아닙니다. BGPeel은 쨍한 배경에서 픽셀에 배경이 얼마나 섞였는지 잴 때, 배경색의 강한 채널(초록 배경이면 G)이 약한 채널(R·B)보다 얼마나 높은지를 봅니다. 순수한 초록 배경은 이 차이가 255인데, 슬라임 몸은 빨강·파랑이 꽤 섞인 탁한 초록이라 차이가 그 절반에도 못 미칩니다. 그래서 '배경이 반 넘게 섞인 픽셀'로 판정되지 않고 물체로 남습니다.</p>
+    <p>둘째, 더 중요한 이유는 <b>어두운 외곽선</b>입니다. BGPeel은 배경과 비슷한 색을 이미지 전체에서 무조건 지우지 않고, 이미지 테두리에서 출발해 배경과 이어진 영역만 지웁니다. 이때 밝기가 일정 값(‘글로우 최소 밝기’, 기본 80)보다 어두운 픽셀은 외곽선으로 보고 거기서 멈춥니다. 슬라임과 식물은 짙은 외곽선이 몸을 한 바퀴 두르고 있어서, 배경과 색이 비슷한 안쪽까지 지우기가 번지지 못했습니다.</p>
+
+    <h2>정령은 왜 초록 배경에서 절반 넘게 사라졌을까</h2>
+    <p>정령은 정반대입니다. 외곽선 없이 빛나는 몸을 금색으로 칠한 캐릭터라, 테두리에서 출발한 지우기를 막아 줄 경계가 없습니다. 게다가 금색·노랑은 색상환에서 초록과 가깝습니다. BGPeel은 배경 주변의 빛번짐(글로우)까지 지우려고 배경색의 색상을 기준으로 일정 범위(‘글로우로 볼 색 범위’, 기본 −85°~+30°) 안의 색을 배경 쪽으로 봅니다. 초록(120°) 배경이면 이 범위가 35°~150°인데, 정령의 금색(약 40~55°)이 그 안에 들어갑니다. 결국 정령 몸의 55%가 배경과 함께 지워졌습니다.</p>
+    <p>파랑 배경에서 2.39%가 깎인 것도 같은 원리입니다. 파랑(240°) 기준 범위는 155°~270°이고, 정령의 하늘색 눈과 빛(약 165~185°)이 여기에 들어갑니다. 마젠타(300°) 기준 범위 215°~330°에는 금색도 하늘색도 들어가지 않아 손실이 가장 적었습니다. 마젠타에서 생긴 1.13%는 색 범위 때문이 아니라, 배경과 맞닿은 흰색에 가까운 밝은 부분이 ‘연한 배경 인식’에 걸려 연한 글로우처럼 지워진 것입니다.</p>
+
+    <h2>배경색 고르는 법</h2>
+    <ol>
+      <li><b>물체의 주요 색과 색상환에서 먼 색을 고르세요.</b> 캐릭터와 소품에는 빨강·노랑·초록·갈색이 많아서 대부분 마젠타가 가장 안전합니다. 분홍·보라가 많은 캐릭터라면 초록, 초록과 분홍이 모두 많다면 파랑을 고려하세요.</li>
+      <li><b>외곽선 없는 캐릭터일수록 배경색을 신중하게 고르세요.</b> 불꽃, 유령, 마법 효과, 빛나는 정령처럼 테두리가 흐린 그림은 배경색과 가까운 색이 있으면 크게 깎입니다. 외곽선이 뚜렷한 도트 그림은 훨씬 너그럽습니다.</li>
+      <li><b>이미 만든 이미지라면 설정으로 구할 수 있습니다.</b> 초록 배경의 정령은 ‘배경에 붙은 색 글로우도 지우기’를 끄자 손실이 55.02%에서 2.88%로 줄었습니다. 자세한 방법은 <a href="fix-eroded-edges">물체가 깎일 때</a>에 정리했습니다.</li>
+    </ol>
+
+    <h2>프롬프트에는 색 코드까지 적으세요</h2>
+    <p>배경색을 정했으면 프롬프트에 색 이름과 색 코드를 같이 적으세요. 예를 들어 “solid magenta (#FF00FF) background, flat color, no shadow, no gradient”처럼 씁니다. 그래도 AI는 요청한 색을 정확히 지키지 않습니다. 이 실험에 쓴 원본 세 장의 실제 배경색은 #FC01FB, #FA25FE, #D506D9로 모두 조금씩 달랐습니다. BGPeel은 이미지마다 테두리에서 배경색을 다시 재기 때문에 이 정도 차이는 문제가 되지 않습니다. AI별로 잘 통하는 문구는 <a href="ai-background-prompts">AI 단색 배경 프롬프트 모음</a>에서 다룹니다.</p>
+
+    <h2>정리</h2>
+    <ul>
+      <li>완벽한 단색 배경이라면 마젠타·초록·파랑 모두 배경은 깨끗하게 지워졌습니다(잔여 0%).</li>
+      <li>결과를 가른 것은 물체 색과 배경색이 색상환에서 얼마나 먼지, 그리고 외곽선이 있는지였습니다.</li>
+      <li>외곽선 있는 도트 캐릭터는 배경과 비슷한 색이어도 거의 깎이지 않았고, 외곽선 없는 빛나는 캐릭터는 가까운 색 배경에서 절반 넘게 사라졌습니다.</li>
+      <li>무엇을 고를지 모르겠다면 마젠타로 시작하세요. 세 캐릭터 모두에서 손실이 가장 적었거나 같았습니다.</li>
+    </ul>
+    <p><b><a href="./">→ BGPeel에서 내 이미지로 해 보기</a></b></p>
+    <section class="related">
+      <h2>함께 보면 좋은 글</h2>
+      <ul>
+        <li><a href="ai-background-prompts">AI 단색 배경 프롬프트 모음</a></li>
+        <li><a href="fix-eroded-edges">문제 해결: 물체가 깎일 때</a></li>
+        <li><a href="magenta-background">마젠타·크로마키 배경을 투명 PNG로 만들기</a></li>
+      </ul>
+    </section>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">도구</a>
+    <a href="guides">가이드</a>
+    <a href="features">기능 설명</a>
+    <a href="about">소개</a>
+    <a href="contact">문의</a>
+    <a href="privacy">개인정보처리방침</a>
+  </footer>
+</main>
+</body>
+</html>

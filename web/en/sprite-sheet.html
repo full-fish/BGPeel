@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Turn AI Sprites into Unity and Godot Sprite Sheets – BGPeel</title>
+<meta name="description" content="From AI-generated character images to a game-ready sprite sheet: background removal, matching scale and pivot, packing with a tested Python script, and Unity and Godot import settings.">
+<link rel="canonical" href="https://bgpeel.com/en/sprite-sheet">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/sprite-sheet">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/sprite-sheet">
+<link rel="icon" href="../icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="stylesheet" href="../style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./"><img src="../logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="Menu"><a href="guides">Guides</a><a href="about">About</a></nav>
+    <nav class="lang" aria-label="Language"><a href="../sprite-sheet" hreflang="ko" lang="ko">한국어</a> | <span aria-current="true">English</span></nav>
+  </div>
+
+  <article class="doc">
+    <h1>Turn AI Sprites into Unity and Godot Sprite Sheets</h1>
+    <p class="sub">AI image tools give you one character per image, drawn at a different spot on a large canvas every time. Game engines want frames of the same size, aligned to the same pivot. This guide covers every step in between, from background removal to engine import.</p>
+    <p class="byline">October 10, 2026 · <a href="about">BGPeel</a></p>
+
+    <h2>1. Remove every background with the same rules</h2>
+    <p>Generate every image on a solid background (see <a href="ai-background-prompts">the prompt guide</a>), then drop the whole folder onto <a href="./">BGPeel</a>. Processing all frames in one batch with the same settings means edges are treated identically, so outlines don't flicker between animation frames. Keep the format on PNG and download at the original size for now; scaling is more accurate when done once, while building the sheet.</p>
+
+    <h2>2. AI images vary in position and size</h2>
+    <p>Put the results side by side and draw a box around each object, and the problem is obvious. All three test monsters were on 2048×2048 canvases, but the plant spans 84% of the canvas width and the slime 58%, and their vertical positions differ too.</p>
+    <figure>
+      <img src="../img/sheet-bbox.webp" width="760" height="248" alt="The original canvases of three monsters. Cyan boxes show each object's extent and red dots the bottom-center pivot; position and size differ" loading="lazy">
+      <figcaption>Object extents (cyan boxes) and bottom-center pivots (red dots) on the original 2048px canvases. Position and size differ in all three.</figcaption>
+    </figure>
+    <p>Packed as is, an animated character would jump up and down and grow and shrink from frame to frame. So before packing, align two things:</p>
+    <ul>
+      <li><b>Pivot:</b> for standing characters the usual choice is the <b>bottom center</b>, where the feet touch the ground. For flying monsters or effects, use the center.</li>
+      <li><b>Scale:</b> all frames of the same character must be scaled by the <b>same factor</b>. Fitting each frame to its cell separately makes the character's size keep changing.</li>
+    </ul>
+
+    <h2>3. Check the real pixel size</h2>
+    <p>AI-generated pixel art looks like real pixel art scaled up. Measuring how often colors change along rows, we found that one "pixel" on a 2048px canvas was about 10px wide for the plant and about 20px for the slime and the spirit. In other words, their effective resolution is roughly 200px and 100px.</p>
+    <p>There's no reason to ship 2048px images to the game. Scaling to 128px or 256px cells, matched to the on-screen size, cuts file size and memory dramatically. AI pixels don't sit on an exact grid, though, so even an exact 1/10 nearest-neighbor reduction can leave the pixels uneven. Scaling smoothly (as BGPeel and the script below do) and displaying at the size you need is the safer route.</p>
+
+    <h2>4. Pack the sheet (Python script)</h2>
+    <p>The script below reads the transparent PNGs in a folder in name order, crops the transparent margins, scales everything by the single factor that fits the largest object in a cell, and places each frame at the bottom center of its cell. All you need is Pillow (<code>pip install pillow</code>). This is the exact code we ran on the three monsters above to produce a 768×256 sheet.</p>
+    <pre><code>import math, sys
+from pathlib import Path
+from PIL import Image
+
+src = Path(sys.argv[1])                     # folder of PNGs from BGPeel
+cell = int(sys.argv[2])                     # cell size in px, e.g. 256
+cols = int(sys.argv[3]) if len(sys.argv) &gt; 3 else 8
+
+frames = [Image.open(p).convert("RGBA") for p in sorted(src.glob("*.png"))]
+boxes = [f.getbbox() for f in frames]       # box around non-transparent pixels
+biggest = max(max(b[2] - b[0], b[3] - b[1]) for b in boxes)
+scale = (cell - 8) / biggest                # one scale for every frame
+cols = min(cols, len(frames))
+sheet = Image.new("RGBA", (cell * cols, cell * math.ceil(len(frames) / cols)))
+for i, (f, b) in enumerate(zip(frames, boxes)):
+    body = f.crop(b)
+    body = body.resize((max(1, round(body.width * scale)), max(1, round(body.height * scale))), Image.LANCZOS)
+    x = (i % cols) * cell + (cell - body.width) // 2   # centered horizontally
+    y = (i // cols) * cell + cell - 4 - body.height    # 4px above the bottom
+    sheet.alpha_composite(body, (x, y))
+sheet.save("sheet.png")
+print(f"{len(frames)} frames, {cell}px cells, {cols} columns -> sheet.png {sheet.size}")</code></pre>
+    <p>Run it as <code>python make_sheet.py folder 256 8</code>: folder, cell size, columns. Frame order follows file names, so pad the numbers, as in <code>walk_01.png</code>.</p>
+    <figure>
+      <img src="../img/sheet-grid.webp" width="760" height="253" alt="A sprite sheet with three monsters in three 256px cells, aligned at the bottom center" loading="lazy">
+      <figcaption>The script's output (grid lines and pivots drawn on top for illustration). These are different monsters so each fills its cell; frames of one character share one scale and keep a constant size.</figcaption>
+    </figure>
+    <p>The script crops each frame separately and aligns it at the bottom center, which suits frames the AI drew independently. If instead <b>the change in position is the motion</b>, such as an attack where the character lunges forward, crop every frame with the same box to preserve the movement: replace <code>boxes</code> with a single box that contains all of them.</p>
+
+    <h2>5. Importing into Unity</h2>
+    <ol>
+      <li>Add the sheet PNG to your project and, in the Inspector, set <b>Texture Type</b> to “Sprite (2D and UI)” and <b>Sprite Mode</b> to “Multiple”.</li>
+      <li>Open the <b>Sprite Editor</b>, choose Slice, set Type to “Grid By Cell Size”, Pixel Size to your cell size (e.g. 256×256) and Pivot to “Bottom”, then click Slice and Apply.</li>
+      <li>For pixel art, set <b>Filter Mode</b> to “Point (no filter)” and <b>Compression</b> to “None”. Compression smears color along pixel boundaries.</li>
+      <li>Check <b>Max Size</b>. If the sheet is wider than this value, it is scaled down on import and turns blurry.</li>
+      <li>If you use smooth (Bilinear) filtering, enable <b>Alpha Is Transparency</b>. It fills the color of transparent pixels from their neighbors, preventing dark outlines.</li>
+    </ol>
+    <p>That last point matters for BGPeel output in particular. BGPeel stores fully transparent pixels with the color 0 (black). When the engine smoothly interpolates at edges, that black can bleed in as a dark outline; the option above prevents it. Point filtering doesn't interpolate, so it isn't affected.</p>
+
+    <h2>6. Importing into Godot 4</h2>
+    <ol>
+      <li>For pixel art, set <b>Default Texture Filter</b> to “Nearest” under Rendering → Textures in Project Settings. You can also set Texture Filter per node.</li>
+      <li>Create an <b>AnimatedSprite2D</b> node, give it a new SpriteFrames resource, and in the SpriteFrames panel use “Add frames from sprite sheet” to open the sheet.</li>
+      <li>Set the horizontal and vertical cell counts (e.g. 8×1), select the frames to add, and set the speed (FPS) and looping there.</li>
+      <li>To pivot at the bottom center, move the node's <b>Offset</b> up by half the cell height (y = −128 for 256px cells).</li>
+    </ol>
+    <p>Monsters and items without animation don't need a sheet at all. A Sprite2D with Hframes and Vframes can pick one cell of a sheet, or you can simply use separate PNGs. Godot's “Fix Alpha Border” import step cleans up the color of transparent edges, so there's less to worry about than in Unity.</p>
+
+    <h2>Summary</h2>
+    <ul>
+      <li>Remove all backgrounds in BGPeel at once, with the same settings.</li>
+      <li>AI images vary in position and size: scale by one factor and align at the bottom center.</li>
+      <li>AI pixel art has an effective resolution of about 100 to 200px, so 128 to 256px cells are plenty.</li>
+      <li>In the engine, use Point/Nearest filtering and no compression for pixel art; with smooth filtering, enable the transparent-edge fix.</li>
+    </ul>
+    <section class="related">
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="png-webp-jpg">PNG vs WebP vs JPG measured file sizes</a></li>
+        <li><a href="color-fringe">Why color fringes appear and how to remove them</a></li>
+        <li><a href="background-color-test">Magenta vs green vs blue background test</a></li>
+      </ul>
+    </section>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">Tool</a>
+    <a href="guides">Guides</a>
+    <a href="features">Features</a>
+    <a href="about">About</a>
+    <a href="contact">Contact</a>
+    <a href="privacy">Privacy policy</a>
+  </footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KakaoTalk Emoticon Sizes and Clean Transparent PNGs – BGPeel</title>
+<meta name="description" content="How to make clean 360px and 540px transparent PNGs for KakaoTalk emoticon proposals, with measured file sizes, edge fringes on dark chat themes and margin handling.">
+<link rel="canonical" href="https://bgpeel.com/en/kakao-emoticon">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/kakao-emoticon">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/kakao-emoticon">
+<link rel="icon" href="../icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="stylesheet" href="../style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./"><img src="../logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="Menu"><a href="guides">Guides</a><a href="about">About</a></nav>
+    <nav class="lang" aria-label="Language"><a href="../kakao-emoticon" hreflang="ko" lang="ko">한국어</a> | <span aria-current="true">English</span></nav>
+  </div>
+
+  <article class="doc">
+    <h1>KakaoTalk Emoticon Sizes and Clean Transparent PNGs</h1>
+    <p class="sub">KakaoTalk emoticons sit directly on top of the chat room background. That makes a transparent PNG the default, and even a one-pixel line of leftover background color stands out in a dark chat theme. This guide walks through turning an AI-generated or hand-drawn character into a clean transparent PNG at proposal size, with real measurements along the way.</p>
+    <p class="byline">October 10, 2026 · <a href="about">BGPeel</a></p>
+
+    <h2>The sizes to know</h2>
+    <p>Below are the proposal specs that Kakao Emoticon Studio has listed for a long time. On November 26, 2025, Kakao announced a redesigned Emoticon Studio with simplified production steps and specs, and opened mini emoticon proposals to everyone. Details such as counts and file size limits may have changed, so <b>check the studio's current production guide before you submit</b>. This guide focuses on what every spec needs: a clean transparent PNG at an exact size.</p>
+    <div class="table"><table>
+      <thead><tr><th>Type</th><th>Count (proposal)</th><th>Size</th><th>Background</th></tr></thead>
+      <tbody>
+        <tr><td>Still emoticons</td><td>32</td><td>360×360px</td><td>Transparent PNG</td></tr>
+        <tr><td>Animated emoticons</td><td>24</td><td>360×360px</td><td>Transparent</td></tr>
+        <tr><td>Big emoticons</td><td>16</td><td>540×540px base</td><td>Transparent</td></tr>
+      </tbody>
+    </table></div>
+    <p>Every type shares three requirements: a square canvas, a transparent background, and consistent size and margins across the whole set.</p>
+
+    <h2>Edges show up in dark chat rooms</h2>
+    <p>Emoticons appear on whatever chat background the user chose. A pink outline you can't see on a light background becomes obvious in a dark theme. Below, a spirit character generated on magenta has been scaled to 360px and placed on a dark background. The left version was made the way a simple “remove color” tool works, deleting only pixels close to the background color. The right one is BGPeel's default result.</p>
+    <figure>
+      <img src="../img/kakao-dark.webp" width="736" height="360" alt="A 360px spirit emoticon on a dark background. The left version has a purple outline and a sparkle mark; the right is clean" loading="lazy">
+      <figcaption>360px on a dark chat background. Left: only background-like pixels removed (purple outline and the corner mark remain). Right: BGPeel.</figcaption>
+    </figure>
+    <p>On the left, a purple band survives around the body and the Nano Banana mark is still in the bottom-right corner. Edge pixels are partly mixed with the background color, so deleting only pixels that closely match it leaves that mixed band behind. The mechanism is illustrated in <a href="color-fringe">Why color fringes appear</a>. BGPeel makes each pixel only as transparent as its background share and subtracts the mixed-in color, so no outline appears on dark backgrounds.</p>
+
+    <h2>Deal with the margins first</h2>
+    <p>AI generators often draw the character small in the middle of the canvas. Our test slime covered only 58% of the width and 48% of the height of its 2048px canvas. Scaled straight down to 360px, the slime would be about 208px wide, with the rest empty space. Emoticons are viewed small, so a character that fills its square reads much better.</p>
+    <figure>
+      <img src="../img/kakao-trim.webp" width="744" height="364" alt="A slime inside a 360px square. Left: scaled from the original canvas and small. Right: margins cropped so it fills the square" loading="lazy">
+      <figcaption>The same slime at 360×360. Left: the original canvas scaled down. Right: margins around the object cropped first.</figcaption>
+    </figure>
+    <p>BGPeel scales images but doesn't crop margins. There are three ways to tighten them:</p>
+    <ul>
+      <li><b>Ask for a bigger subject:</b> add “fill the frame, close-up, small margin” to the prompt, but keep a little margin, because a character touching the border prevents the background color from being detected.</li>
+      <li><b>Crop in an image editor:</b> crop the transparent PNG to a square. To keep margins consistent across 32 images, crop with the same frame each time.</li>
+      <li><b>Script it:</b> if you can run Python, this crops away the transparent area and re-centers the character on a square canvas.</li>
+    </ul>
+    <pre><code>from PIL import Image
+im = Image.open("slime.png")          # transparent PNG from BGPeel
+body = im.crop(im.getbbox())          # crop transparent margins
+side = int(max(body.size) * 1.08)     # 4% margin on each side
+canvas = Image.new("RGBA", (side, side), (0, 0, 0, 0))
+canvas.paste(body, ((side - body.width) // 2, (side - body.height) // 2))
+canvas.resize((360, 360), Image.LANCZOS).save("slime_360.png")</code></pre>
+
+    <h2>Making 360px transparent PNGs with BGPeel</h2>
+    <ol>
+      <li>Generate the characters on a solid background (magenta in most cases). For a set, using the same background color for all 32 is easiest.</li>
+      <li>Drop the folder onto <a href="./">BGPeel</a> and click “Convert”.</li>
+      <li>Switch the preview background between <b>black</b> and <b>white</b> to check that no background color remains on the edges. It's a preview of light and dark chat rooms.</li>
+      <li>Under “Download size”, choose a custom size and enter 360 (540 for big emoticons).</li>
+      <li>Keep “Format” on PNG. If the file size limit is tight, turn on “Reduce to 256 colors”.</li>
+      <li>Click “Download zip”. Your folder structure and file names are preserved.</li>
+    </ol>
+    <p>BGPeel scales by the long side and keeps the aspect ratio, so a non-square original comes out as something like 360×270 rather than 360×360. Generate at 1:1 or put the character on a square canvas first, as above. BGPeel never enlarges, so originals must be larger than 360px.</p>
+
+    <h2>How big are the files at 360px?</h2>
+    <p>Actual file sizes of our three test characters saved from BGPeel at 360px and 540px (measured in Chrome):</p>
+    <div class="table"><table>
+      <thead><tr><th>Character</th><th class="n">360 PNG</th><th class="n">360 PNG 256 colors</th><th class="n">540 PNG</th><th class="n">540 PNG 256 colors</th></tr></thead>
+      <tbody>
+        <tr><td>Slime (simple)</td><td class="n">55KB</td><td class="n">19KB</td><td class="n">118KB</td><td class="n">42KB</td></tr>
+        <tr><td>Plant (detailed)</td><td class="n">171KB</td><td class="n">44KB</td><td class="n">334KB</td><td class="n">80KB</td></tr>
+        <tr><td>Spirit (light effects)</td><td class="n">175KB</td><td class="n">41KB</td><td class="n">340KB</td><td class="n">70KB</td></tr>
+      </tbody>
+    </table></div>
+    <p>A simple character is light even as a regular PNG, but detailed or glowing characters passed 170KB even at 360px. Reducing to 256 colors brings files down to roughly a quarter. With pixel art and simple illustrations the difference is hard to see, but smooth gradients can show banding, so zoom in and check. A fuller format comparison is in <a href="png-webp-jpg">PNG vs WebP vs JPG</a>.</p>
+
+    <h2>Animated emoticons</h2>
+    <p>BGPeel reads only the first frame of a GIF and doesn't create animations. For animated emoticons, export each frame as a separate PNG, remove the backgrounds of the whole folder in BGPeel, then assemble the PNGs in an animation tool. Every frame gets the same settings, so edge quality doesn't jump between frames. If order matters, name files with fixed-width numbers such as 001, 002.</p>
+
+    <h2>Pre-submission checklist</h2>
+    <ul>
+      <li>No background color left on the edges, in both the black and white previews?</li>
+      <li>Every file exactly 360×360 (or 540×540)?</li>
+      <li>Character size and margins similar across the set?</li>
+      <li>No stray elements such as an AI watermark in the corner?</li>
+      <li>Counts, size limits and formats match the studio's current guide?</li>
+    </ul>
+    <section class="related">
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="color-fringe">Why color fringes appear and how to remove them</a></li>
+        <li><a href="png-webp-jpg">PNG vs WebP vs JPG measured file sizes</a></li>
+        <li><a href="resize">Resize images</a></li>
+      </ul>
+    </section>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">Tool</a>
+    <a href="guides">Guides</a>
+    <a href="features">Features</a>
+    <a href="about">About</a>
+    <a href="contact">Contact</a>
+    <a href="privacy">Privacy policy</a>
+  </footer>
+</main>
+</body>
+</html>

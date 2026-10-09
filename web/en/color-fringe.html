@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Why Color Fringes Appear Around Cutouts and How to Remove Them – BGPeel</title>
+<meta name="description" content="Why a pink or green outline survives around an object after background removal, explained with diagrams and measurements, and why subtracting the background works where deleting it doesn't.">
+<link rel="canonical" href="https://bgpeel.com/en/color-fringe">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/color-fringe">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/color-fringe">
+<link rel="icon" href="../icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="stylesheet" href="../style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./"><img src="../logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="Menu"><a href="guides">Guides</a><a href="about">About</a></nav>
+    <nav class="lang" aria-label="Language"><a href="../color-fringe" hreflang="ko" lang="ko">한국어</a> | <span aria-current="true">English</span></nav>
+  </div>
+
+  <article class="doc">
+    <h1>Why Color Fringes Appear Around Cutouts and How to Remove Them</h1>
+    <p class="sub">If a pink outline is left around your character after removing a magenta background, it's not because the removal didn't go far enough. It's because edge pixels are a mix of the object color and the background color. This guide explains, with diagrams and measurements, why that mixing happens, why deleting colors can't fix it, and how to remove it properly.</p>
+    <p class="byline">October 10, 2026 · <a href="about">BGPeel</a></p>
+
+    <h2>What a fringe is</h2>
+    <p>A fringe is the band of background color left around an object after its background is removed. It's also called a halo, color spill or matte line. It often goes unnoticed on white, then shows up the moment the image lands on a dark or colored background: a game scene, a dark-mode web page, a dark chat theme.</p>
+
+    <h2>Why it happens: edge pixels are part object, part background</h2>
+    <p>Pixels are square cells, and an object's boundary cuts across them at angles. A cell on the boundary is partly object and partly background, so it's painted with a color in between. As a formula:</p>
+    <p><b>visible color = α × object color + (1 − α) × background color</b></p>
+    <p>Here α (alpha) is the share of the cell covered by the object: 1 in the middle of the object, 0 in the background, somewhere in between on the edge. AI images add more on top. Generation softens boundaries over several pixels (typically 3 to 4px in a 2048px image), effects like light or shadow get painted onto the background around the character, and saving as JPG spreads color information further.</p>
+    <figure>
+      <img src="../img/fringe-mix.webp" width="736" height="222" alt="An eight-step strip blending gold into magenta, a strip where the first five steps survive as pinkish colors, and a strip where gold fades to transparent" loading="lazy">
+      <figcaption>Top: a gold object mixed with a magenta background in eight steps (α=1 on the left to α=0 on the right). Middle: what remains when only background-like cells are deleted. Bottom: the background subtracted and each cell made transparent by its mix ratio.</figcaption>
+    </figure>
+    <p>The middle row is a fringe being born. Keep the cells that differ enough from the background and delete the similar ones, and the cells you keep aren't gold; they're orange and pink mixtures of gold and magenta. Wrapped around an object, those cells form a pink outline.</p>
+
+    <h2>Why changing the threshold doesn't solve it</h2>
+    <p>An editor's “color range” or “magic wand” decides delete-or-keep with a single threshold. Widen it and the outline shrinks but the object gets eaten; narrow it and the object survives but the outline stays. We checked on a real image. Deleting only pixels within 60 per channel of the background color in the Nano Banana spirit image left 143,194 pixels opaque that are transparent in BGPeel's result. That's 6.3% of the object's area, and the median hue of those pixels was 262°, a purple. Widening the threshold to 100 cut the leftover to 1.5%, but this time 12,188 object pixels were deleted.</p>
+    <div class="table"><table>
+      <thead><tr><th>Simple color deletion threshold</th><th class="n">Spirit: background left</th><th class="n">Spirit: object deleted</th><th class="n">Plant: background left</th><th class="n">Slime: background left</th></tr></thead>
+      <tbody>
+        <tr><td>Within 40 per channel</td><td class="n">9.5%</td><td class="n">0px</td><td class="n">1.8%</td><td class="n">1.1%</td></tr>
+        <tr><td>Within 60 per channel</td><td class="n">6.3%</td><td class="n">690px</td><td class="n">1.3%</td><td class="n">0.8%</td></tr>
+        <tr><td>Within 100 per channel</td><td class="n">1.5%</td><td class="n">12,188px</td><td class="n">0.8%</td><td class="n">0.4%</td></tr>
+      </tbody>
+    </table></div>
+    <p>Background left is relative to the object's area, compared against BGPeel's default result. The spirit, full of light effects, had the worst fringe; the clearly outlined slime had the least. The key point: no threshold gives you “no outline” and “no object loss” at the same time.</p>
+    <figure>
+      <img src="../img/fringe-compare.webp" width="736" height="312" alt="Close-up of the spirit's edge: the original, a simple deletion with a pink outline and purple glow left, and BGPeel's clean result" loading="lazy">
+      <figcaption>Close-up of the spirit's right edge. Left: original. Middle: only colors within 60 per channel deleted (pink outline, purple glow). Right: BGPeel defaults.</figcaption>
+    </figure>
+
+    <h2>The fix: subtract, don't delete</h2>
+    <p>The solution is to solve the formula backwards. The background color can be measured from the image border, so it's known. If you can estimate how much background is mixed into each pixel (1 − α), the object color can be recovered:</p>
+    <p><b>object color = (visible color − (1 − α) × background color) ÷ α</b></p>
+    <p>Then set the pixel's opacity to α, and on any background the original object color shows through by exactly α. The bottom row of the strip above was processed this way: the pink is gone and the gold fades out. Here's what BGPeel does, step by step:</p>
+    <ol>
+      <li><b>Measure the mix:</b> for vivid backgrounds, the background share is measured by how far the background's strong channels (red and blue for magenta) rise above its weak channel (green).</li>
+      <li><b>Set opacity:</b> pixels that are almost all background (“Remove threshold”, 0.12 or less) become fully transparent, pixels at least half object color (“Keep threshold”, 0.5 or more) stay opaque, and those in between become semi-transparent.</li>
+      <li><b>Subtract the background:</b> within 4px of the transparent area (“Edge cleanup width”), pixels have the background subtracted with the formula above, restoring their original color.</li>
+      <li><b>Clear connected glows:</b> starting from the border, pale light, purple and blue glows and AI watermarks connected to the background are treated as background. Similar colors inside the object aren't connected, so they're left alone.</li>
+      <li><b>Fix yellows and oranges:</b> yellow, orange and sand colors tend to come out of step 1 as less mixed than they are, so they're recalculated using nearby clean object colors.</li>
+    </ol>
+    <figure>
+      <img src="../img/fringe-alpha.webp" width="488" height="312" alt="Opacity maps of the same area. Simple deletion keeps a large opaque blob including the glow; BGPeel keeps only the pixel shapes" loading="lazy">
+      <figcaption>Opacity maps of the same area (white = opaque). Left: simple deletion kept the glow as part of the object. Right: BGPeel kept only the pixel shapes.</figcaption>
+    </figure>
+
+    <h2>Checking and fixing a fringe</h2>
+    <ul>
+      <li><b>Make it visible first:</b> switch BGPeel's preview background to black and white, open the zoom view, and press and hold to flip between the original and the result.</li>
+      <li><b>A thin line of background color:</b> raise “Edge cleanup width”. It helps most on large images with wide, soft boundaries.</li>
+      <li><b>Hard, jagged edges:</b> raise “Keep threshold” slightly to soften them.</li>
+      <li><b>A wide purple or blue glow left behind:</b> check that “Also remove colored glows” is on, and widen “Glow color range” if the glow's color falls outside it.</li>
+      <li><b>Pink specks on yellow or orange areas:</b> turn on “Fix half-tinted pixels” and raise “Search distance for the fix” if some remain.</li>
+    </ul>
+
+    <h2>Preventing fringes at the source</h2>
+    <ul>
+      <li><b>Use PNG originals, not JPG.</b> JPG stores color information in blocks shared with neighboring pixels, widening color bleed at boundaries.</li>
+      <li><b>Remove the background first, resize afterwards.</b> Shrinking with the background still there mixes more background into edge pixels. BGPeel removes the background at full resolution and resizes when you download.</li>
+      <li><b>Keep light effects off the background.</b> Adding “no glow, no rim light, no outer glow” to the prompt reduces glow spilling onto the background.</li>
+      <li><b>Prefer outlined art styles.</b> A dark outline cuts the mixing zone between background and object short.</li>
+    </ul>
+    <section class="related">
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="background-color-test">Magenta vs green vs blue background test</a></li>
+        <li><a href="ai-vs-color-removal">AI vs color-based background removal</a></li>
+        <li><a href="fix-eroded-edges">Troubleshooting: parts of the object disappear</a></li>
+      </ul>
+    </section>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">Tool</a>
+    <a href="guides">Guides</a>
+    <a href="features">Features</a>
+    <a href="about">About</a>
+    <a href="contact">Contact</a>
+    <a href="privacy">Privacy policy</a>
+  </footer>
+</main>
+</body>
+</html>

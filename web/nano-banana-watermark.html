@@ -17,6 +17,7 @@
 <main>
   <div class="topbar">
     <a class="brand" href="./"><img src="logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="메뉴"><a href="guides">가이드</a><a href="about">소개</a></nav>
     <nav class="lang" aria-label="언어"><span aria-current="true">한국어</span> | <a href="en/nano-banana-watermark" hreflang="en" lang="en">English</a></nav>
   </div>
 
@@ -28,6 +29,11 @@
 
     <h2>왜 같이 지워지나요?</h2>
     <p>이 마크는 배경 위에 반투명한 흰빛을 얹은 모양입니다. BGPeel은 배경색에 흰빛이 섞인 픽셀 중 <b>배경과 이어진 것</b>을 연한 글로우처럼 배경으로 처리하기 때문에, 배경 위에 놓인 마크는 따로 손대지 않아도 배경과 함께 투명해집니다.</p>
+
+    <figure>
+      <img src="img/watermark-crop.webp" width="760" height="372" alt="나노바나나 이미지 오른쪽 아래의 반짝이 마크 확대. 왼쪽 원본에는 마크가 있고 오른쪽 결과에는 없다" loading="lazy">
+      <figcaption>나노바나나로 만든 슬라임 이미지의 오른쪽 아래 200×200px을 확대. 왼쪽: 원본. 오른쪽: BGPeel 기본 설정 결과(체크무늬는 투명한 부분).</figcaption>
+    </figure>
 
     <h2>사용 방법</h2>
     <ol>
@@ -48,15 +54,23 @@
       <li>이미지는 서버로 업로드되지 않고 브라우저 안에서만 처리됩니다.</li>
       <li>배경이 사진처럼 복잡한 이미지는 대상이 아닙니다. 단색 배경으로 만든 이미지에 맞춘 도구입니다.</li>
     </ul>
+    <section class="related">
+      <h2>함께 보면 좋은 글</h2>
+      <ul>
+        <li><a href="ai-background-prompts">AI 단색 배경 프롬프트 모음</a></li>
+        <li><a href="magenta-background">마젠타·크로마키 배경을 투명 PNG로 만들기</a></li>
+        <li><a href="fix-shadow">문제 해결: 그림자가 남을 때</a></li>
+      </ul>
+    </section>
   </article>
 
   <footer>
     <span>© 2026 BGPeel</span>
-    <a href="./">도구로 가기</a>
+    <a href="./">도구</a>
+    <a href="guides">가이드</a>
     <a href="features">기능 설명</a>
-    <a href="resize">이미지 크기 바꾸기</a>
-    <a href="nano-banana-watermark">나노바나나 워터마크 제거</a>
-    <a href="magenta-background">마젠타 배경 투명하게</a>
+    <a href="about">소개</a>
+    <a href="contact">문의</a>
     <a href="privacy">개인정보처리방침</a>
   </footer>
 </main>

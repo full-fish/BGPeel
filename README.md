@@ -19,7 +19,9 @@ bgpeel/
 │  ├─ worker.js       백그라운드 처리: 배경 제거, 카드 미리보기 사본, 내려받기용 줄이기·256색
 │  ├─ i18n.js         JS가 만드는 한/영 문구 (HTML에 적힌 문구는 각 언어 페이지에 있다)
 │  ├─ style.css
-│  └─ privacy.html, robots.txt, sitemap.xml, ads.txt, favicon.svg
+│  ├─ guides.html     가이드 목록. 글은 web/*.html, 영어판은 en/에 같은 이름 (새 글은 sitemap.xml에도 추가)
+│  ├─ img/            가이드 글 그림(WebP)
+│  └─ privacy.html, about.html, contact.html, robots.txt, sitemap.xml, ads.txt
 ├─ tests/             실제 Chrome으로 web/을 돌려 보는 테스트 (npm test)
 ├─ remove_bh.py       같은 알고리즘의 Python CLI
 ├─ my_task.md         배포할 때 할 일 목록

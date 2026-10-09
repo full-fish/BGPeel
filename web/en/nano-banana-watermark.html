@@ -17,6 +17,7 @@
 <main>
   <div class="topbar">
     <a class="brand" href="./"><img src="../logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="Menu"><a href="guides">Guides</a><a href="about">About</a></nav>
     <nav class="lang" aria-label="Language"><a href="../nano-banana-watermark" hreflang="ko" lang="ko">한국어</a> | <span aria-current="true">English</span></nav>
   </div>
 
@@ -28,6 +29,11 @@
 
     <h2>Why does it get removed too?</h2>
     <p>The mark is a semi-transparent white overlay on top of the background. BGPeel treats background-colored pixels tinted with white as background, like a pale glow, <b>as long as they are connected to the background</b>. So a mark sitting on the background becomes transparent along with it, with no extra step.</p>
+
+    <figure>
+      <img src="../img/watermark-crop.webp" width="760" height="372" alt="Close-up of the sparkle mark in the bottom-right corner of a Nano Banana image. The original has the mark; the result does not" loading="lazy">
+      <figcaption>The bottom-right 200×200px of a slime image made with Nano Banana, enlarged. Left: original. Right: BGPeel with default settings (the checkerboard is transparency).</figcaption>
+    </figure>
 
     <h2>How to use it</h2>
     <ol>
@@ -48,16 +54,24 @@
       <li>Images are never uploaded; they are processed only in your browser.</li>
       <li>Photos with busy backgrounds are out of scope. The tool is built for images made on a solid background.</li>
     </ul>
+    <section class="related">
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="ai-background-prompts">Solid background prompts for AI image tools</a></li>
+        <li><a href="magenta-background">Magenta or chroma key background to transparent PNG</a></li>
+        <li><a href="fix-shadow">Troubleshooting: a shadow is left behind</a></li>
+      </ul>
+    </section>
   </article>
 
   <footer>
     <span>© 2026 BGPeel</span>
-    <a href="./">Go to the tool</a>
-    <a href="features">Features guide</a>
-    <a href="resize">Resize images</a>
-    <a href="nano-banana-watermark">Remove the Nano Banana watermark</a>
-    <a href="magenta-background">Magenta background to transparent</a>
-    <a href="privacy">Privacy Policy</a>
+    <a href="./">Tool</a>
+    <a href="guides">Guides</a>
+    <a href="features">Features</a>
+    <a href="about">About</a>
+    <a href="contact">Contact</a>
+    <a href="privacy">Privacy policy</a>
   </footer>
 </main>
 </body>

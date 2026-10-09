@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Troubleshooting: A Shadow Is Left Behind – BGPeel</title>
+<meta name="description" content="Why a shadow under a character survives background removal as a black blob, and how to fix it. Tests with different shadow strengths and colors show which shadows defaults remove and why some remain.">
+<link rel="canonical" href="https://bgpeel.com/en/fix-shadow">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/fix-shadow">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/fix-shadow">
+<link rel="icon" href="../icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="stylesheet" href="../style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./"><img src="../logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="Menu"><a href="guides">Guides</a><a href="about">About</a></nav>
+    <nav class="lang" aria-label="Language"><a href="../fix-shadow" hreflang="ko" lang="ko">한국어</a> | <span aria-current="true">English</span></nav>
+  </div>
+
+  <article class="doc">
+    <h1>Troubleshooting: A Shadow Is Left Behind</h1>
+    <p class="sub">Ask an AI to draw a standing character and it often adds a shadow under the feet. If a black oval is still there after removing the background, read on. Testing shadows of different strengths and colors showed that most are removed with default settings, and the ones that remain meet clear conditions.</p>
+    <p class="byline">October 10, 2026 · <a href="about">BGPeel</a></p>
+
+    <h2>A shadow is “darkened background color”</h2>
+    <p>On a solid background, a shadow is usually the background color made darker. On magenta it's a deep purple that approaches black at its darkest. When BGPeel clears glows connected to the background, it checks three things: whether the hue is close to the background's, whether saturation is high enough (“Glow minimum saturation”, default 0.3), and whether the pixel isn't too dark (“Glow minimum brightness”, default 80). Pixels meeting all three and connected to the background are removed. The last condition exists to protect the black outlines of pixel art, and it's exactly why very dark shadows survive as if they were outlines.</p>
+
+    <h2>Test: varying shadow strength</h2>
+    <p>We placed background-removed slime and plant monsters back on magenta and painted a soft oval shadow under their feet. It's a test shadow imitating what AI tools draw, at three strengths; the brightness at the darkest point (the largest RGB value) was 159, 87 and 51. After removing the background with default settings, we measured the share of the shadow area left over.</p>
+    <div class="table"><table>
+      <thead><tr><th>Shadow (brightness at darkest point)</th><th class="n">Slime: shadow left</th><th class="n">Plant: shadow left</th></tr></thead>
+      <tbody>
+        <tr><td>Light (159)</td><td class="n">0%</td><td class="n">0%</td></tr>
+        <tr><td>Medium (87)</td><td class="n">0%</td><td class="n">0%</td></tr>
+        <tr><td>Dark (51)</td><td class="n">18.8%</td><td class="n">24.0%</td></tr>
+      </tbody>
+    </table></div>
+    <p>Light and medium shadows were removed without a trace. In the dark shadow, the center was darker than brightness 80 and was judged to be outline: 18.8–24.0% of the shadow area survived as a fully opaque black oval. The rule turned out to be simple: where the darkest part of the shadow was brighter than 80, nothing remained, and only the parts darker than that survived. So measuring the color of the darkest point of your own shadow tells you in advance whether it will remain.</p>
+    <figure>
+      <img src="../img/shadow-dark.webp" width="760" height="154" alt="The bottom of the slime with a dark shadow. The default result in the middle leaves a black oval; the fixed result on the right does not" loading="lazy">
+      <figcaption>Bottom of the slime. Left: input (dark shadow). Middle: defaults, a black oval remains. Right: “Glow minimum brightness” at 30.</figcaption>
+    </figure>
+    <p><b>Fix:</b> lowering “Glow minimum brightness” from 80 to 30 left 0% of the shadow for both characters. In exchange, the slime lost part of its bottom outline, 0.17% of the body; the plant lost nothing. The darker a drawing's outline, the more lowering this value breaks it, so stop as soon as the shadow disappears. This setting applies only to “Vivid solid” backgrounds.</p>
+    <p>Switching the background type to “Dull / pale solid”, on the other hand, made things worse. That mode looks only at the difference from the background color, so it judged the shadow to be “not background” (object) and left 55–86% of it.</p>
+
+    <h2>Test: gray shadows</h2>
+    <p>AI-drawn shadows aren't always darkened background color; sometimes they're painted in a gray or black unrelated to the background. So we also tested shadows blended toward gray. More gray means less saturation: in the two grayest cases, the least saturated shadow pixels measured 0.25 and 0.15, below the 0.3 default.</p>
+    <figure>
+      <img src="../img/shadow-gray.webp" width="760" height="154" alt="The bottom of the slime with a gray shadow. The default result in the middle leaves a thin gray band; the fixed result on the right does not" loading="lazy">
+      <figcaption>Left: input (gray shadow). Middle: defaults, the shadow's center remains. Right: “Glow minimum saturation” at 0.05.</figcaption>
+    </figure>
+    <p>With defaults, lightly gray shadows were removed completely, but in the two grayest cases 6.3% and 11.8% of the shadow area remained. <b>Fix:</b> lowering “Glow minimum saturation” from 0.3 to 0.05 left 0% in both cases with no object loss. Lowering it can also remove grayish parts of the object that touch the background, like steel armor or stone, so check the result.</p>
+    <p>There's a limit. Pure gray or black with zero saturation has no hue, so there's no way to tell whether it belongs to the background's color family; no setting can remove it as glow. If the center of a shadow is perfectly neutral, regenerate the image or erase it in an editor.</p>
+
+    <h2>Limits of this test</h2>
+    <p>The test shadows were smooth ovals of evenly spreading color. Real AI shadows carry blotches and texture, and often come with a drawn floor underneath: tiles, grass, soil. A shadow is darkened background color, so the settings above can remove it, but grass and tiles are entirely different colors and, to BGPeel, part of the object. No setting removes a drawn floor; leave the floor out in the prompt or crop it off in an editor. And when a shadow touches the object's dark outline directly, the further you lower the thresholds to remove the shadow, the greater the risk of removing the outline with it.</p>
+
+    <h2>How to spot leftover shadows</h2>
+    <ul>
+      <li>A black shadow is invisible on a <b>black</b> preview background, so switch to <b>white</b> or the checkerboard.</li>
+      <li>The semi-transparent rim of a shadow is hard to see on white, so open the zoom view and alternate with a dark background.</li>
+      <li>If you processed many images, increase the card size and scan just the feet.</li>
+    </ul>
+
+    <h2>Settings summary</h2>
+    <div class="table"><table>
+      <thead><tr><th>Leftover shadow</th><th>Setting</th><th>Test result</th></tr></thead>
+      <tbody>
+        <tr><td>Oval with a very dark purple or black center</td><td>Glow minimum brightness 80 → 30</td><td>Shadow left 18.8–24.0% → 0%; slime outline 0.17% lost</td></tr>
+        <tr><td>Grayish shadow</td><td>Glow minimum saturation 0.3 → 0.05</td><td>Shadow left 6.3–11.8% → 0%</td></tr>
+        <tr><td>Pure gray or black, zero saturation</td><td>Not fixable with settings</td><td>Regenerate</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2>Keeping shadows out in the first place</h2>
+    <p>Add “no shadow, no floor, no ground, no cast shadow” to the prompt, and “floating” to make the character hover, and ground shadows become rare. If you love an image that already has a shadow, a conversational tool like Nano Banana can take a request like “remove only the shadow and keep the background solid magenta”. More wording is in <a href="ai-background-prompts">Solid background prompts</a>.</p>
+    <p>If your game needs shadows, add them in the engine rather than painting them into sprites. A single semi-transparent black oval sprite under every character gives consistent shadow shape and strength regardless of the artwork, and makes effects like keeping the shadow on the ground during a jump easy.</p>
+    <section class="related">
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="fix-gradient-background">Troubleshooting: gradient backgrounds</a></li>
+        <li><a href="fix-eroded-edges">Troubleshooting: parts of the object disappear</a></li>
+        <li><a href="ai-background-prompts">Solid background prompts for AI image tools</a></li>
+      </ul>
+    </section>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">Tool</a>
+    <a href="guides">Guides</a>
+    <a href="features">Features</a>
+    <a href="about">About</a>
+    <a href="contact">Contact</a>
+    <a href="privacy">Privacy policy</a>
+  </footer>
+</main>
+</body>
+</html>

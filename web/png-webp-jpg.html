@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PNG·WebP·JPG 용량 비교: 같은 이미지로 직접 재 본 결과 – BGPeel</title>
+<meta name="description" content="투명 배경 캐릭터 세 장을 PNG, 256색 PNG, WebP, JPG로 저장해 크기별 용량을 직접 쟀습니다. WebP가 늘 작지는 않았고, 256색 PNG는 용량을 64~81% 줄였습니다.">
+<link rel="canonical" href="https://bgpeel.com/png-webp-jpg">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/png-webp-jpg">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/png-webp-jpg">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./"><img src="logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="메뉴"><a href="guides">가이드</a><a href="about">소개</a></nav>
+    <nav class="lang" aria-label="언어"><span aria-current="true">한국어</span> | <a href="en/png-webp-jpg" hreflang="en" lang="en">English</a></nav>
+  </div>
+
+  <article class="doc">
+    <h1>PNG·WebP·JPG 용량 비교: 같은 이미지로 직접 재 본 결과</h1>
+    <p class="sub">“WebP가 PNG보다 작다”, “256색으로 줄이면 가볍다”는 말은 많이 들어 보셨을 겁니다. 정말 그런지 배경을 지운 캐릭터 세 장을 네 가지 형식, 네 가지 크기로 저장해 용량을 직접 쟀습니다. 대부분은 예상대로였지만, 예상과 다른 결과도 하나 있었습니다.</p>
+    <p class="byline">2026년 10월 10일 · <a href="about">BGPeel</a></p>
+
+    <h2>측정 방법</h2>
+    <p>대상은 나노바나나로 만들고 BGPeel로 배경을 지운 2048×2048 투명 PNG 세 장입니다. 단순한 초록 슬라임, 세밀한 식물 몬스터, 빛 효과가 많은 금색 정령으로 성격이 서로 다릅니다. 각 이미지를 원본 크기, 1024, 512, 256, 128px로 줄이고 네 형식으로 저장했습니다.</p>
+    <ul>
+      <li><b>PNG:</b> 손실 없는 기본 저장.</li>
+      <li><b>PNG 256색:</b> 색을 256개로 줄인 PNG(UPNG.js 사용, BGPeel의 ‘256색으로 용량 줄이기’).</li>
+      <li><b>WebP:</b> Chrome의 무손실 WebP(품질 1).</li>
+      <li><b>JPG:</b> 품질 0.92, 투명한 부분은 흰색으로 채움.</li>
+    </ul>
+    <p>모든 파일은 Chrome에서 BGPeel의 저장 코드를 그대로 돌려 만들었습니다. 즉 BGPeel에서 같은 설정으로 받으면 같은 용량이 나옵니다. 다른 프로그램은 압축 방식이 달라서 숫자가 조금씩 다를 수 있습니다.</p>
+
+    <p>AVIF처럼 더 새로운 형식은 이번 비교에서 뺐습니다. BGPeel이 아직 AVIF로 저장하지 않고, 브라우저에서 AVIF로 저장할 수 있는지도 브라우저마다 다르기 때문입니다. 세 캐릭터를 고른 이유는 용량을 좌우하는 성격이 서로 달라서입니다. 슬라임은 넓은 단색 면과 넓은 투명 영역, 식물은 촘촘한 덩굴과 이빨, 정령은 수많은 중간색으로 된 빛 효과가 특징입니다.</p>
+
+    <h2>원본 크기(2048px) 결과</h2>
+    <div class="table"><table>
+      <thead><tr><th>캐릭터</th><th class="n">PNG</th><th class="n">PNG 256색</th><th class="n">WebP</th><th class="n">JPG</th></tr></thead>
+      <tbody>
+        <tr><td>슬라임 (단순)</td><td class="n">1.17MB</td><td class="n">434KB (−64%)</td><td class="n"><b>1.61MB (+38%)</b></td><td class="n">101KB</td></tr>
+        <tr><td>식물 (세밀함)</td><td class="n">3.34MB</td><td class="n">771KB (−77%)</td><td class="n">2.06MB (−38%)</td><td class="n">536KB</td></tr>
+        <tr><td>정령 (빛 효과)</td><td class="n">3.41MB</td><td class="n">653KB (−81%)</td><td class="n">2.17MB (−36%)</td><td class="n">459KB</td></tr>
+      </tbody>
+    </table></div>
+    <p>괄호 안은 PNG 대비 증감입니다. 식물과 정령은 WebP가 PNG보다 36~38% 작았지만, <b>슬라임은 WebP가 오히려 38% 컸습니다.</b> 넓은 단색 면과 투명 영역으로 이루어진 단순한 그림은 PNG의 압축 방식에 이미 잘 맞아서, 무손실 WebP가 더 줄일 여지가 없었던 것으로 보입니다. “WebP가 늘 작다”는 말은 이 실험에서는 맞지 않았습니다.</p>
+
+    <h2>웹에 많이 쓰는 512px 결과</h2>
+    <div class="table"><table>
+      <thead><tr><th>캐릭터</th><th class="n">PNG</th><th class="n">PNG 256색</th><th class="n">WebP</th><th class="n">JPG</th></tr></thead>
+      <tbody>
+        <tr><td>슬라임</td><td class="n">104KB</td><td class="n">38KB (−63%)</td><td class="n">85KB (−18%)</td><td class="n">16KB</td></tr>
+        <tr><td>식물</td><td class="n">302KB</td><td class="n">75KB (−75%)</td><td class="n">227KB (−25%)</td><td class="n">81KB</td></tr>
+        <tr><td>정령</td><td class="n">305KB</td><td class="n">64KB (−79%)</td><td class="n">209KB (−32%)</td><td class="n">81KB</td></tr>
+      </tbody>
+    </table></div>
+    <p>512px로 줄이면 슬라임도 WebP가 18% 작아졌습니다. 줄이는 과정에서 가장자리가 부드럽게 섞이며 색 수가 늘어나, PNG에 유리했던 조건이 약해졌기 때문입니다. 256px에서는 슬라임만 다시 WebP가 4% 컸고, 식물과 정령은 WebP가 16~26% 작았습니다.</p>
+
+    <h2>형식보다 크기가 먼저다</h2>
+    <p>표를 세로로 읽으면 더 큰 차이가 보입니다. 세 캐릭터 모두 가로세로를 절반으로 줄일 때마다 PNG 용량이 원래의 27~32%로 줄었습니다. 픽셀 수는 4분의 1이 되는데 용량은 그보다 조금 덜 줄어드는 셈입니다. 정령을 예로 들면 2048px PNG 3.41MB가 512px로 줄이기만 해도 305KB로 91% 줄었고, 여기에 256색까지 적용하면 64KB로 원본보다 98% 가벼워졌습니다. 형식을 바꿔서 얻는 30~40%보다 쓸 크기로 줄이는 효과가 훨씬 큽니다. 웹페이지에 200px로 보일 그림을 2048px로 올리고 있다면, 형식 고민보다 크기를 먼저 맞추세요. 화면 밀도가 높은 기기를 생각해도 보이는 크기의 2배면 충분합니다.</p>
+
+    <h2>256색 PNG가 가장 효과가 컸다</h2>
+    <p>모든 크기, 모든 캐릭터에서 가장 크게 줄어든 것은 256색 PNG였습니다. 원본 크기에서 64~81%, 512px에서 63~79%가 줄었고, 투명 배경도 그대로 유지됩니다. 화질은 어떨까요? 정령 이미지는 원래 서로 다른 색이 98,971개였는데, 이를 256개로 줄여도 보이는 픽셀의 평균 색 차이는 채널당 2.9단계(0~255 기준)에 그쳤습니다.</p>
+    <figure>
+      <img src="img/format-256.webp" width="760" height="372" alt="정령 이미지에서 색 차이가 가장 큰 부분을 확대한 비교. 왼쪽 원본과 오른쪽 256색이 거의 같아 보인다" loading="lazy">
+      <figcaption>정령 이미지에서 256색 변환으로 색이 가장 많이 달라진 200×200 영역을 확대. 왼쪽: 원본 PNG, 오른쪽: 256색 PNG.</figcaption>
+    </figure>
+    <p>차이가 가장 큰 부분을 골라 확대해도 구분이 쉽지 않습니다. 도트 그림은 원래 쓰는 색이 적고 경계가 뚜렷해서 256색 변환에 아주 잘 맞습니다. 반대로 사진이나 부드러운 그라데이션이 넓은 그림은 줄무늬(밴딩)가 생길 수 있으니 확대해서 확인하세요.</p>
+
+    <h2>JPG는 가장 작지만 투명을 잃는다</h2>
+    <p>JPG는 단순한 슬라임에서는 모든 크기에서 가장 작았고, 식물과 정령도 원본 크기에서는 가장 작았습니다. 하지만 JPG는 투명을 저장할 수 없어서, 배경을 지운 부분이 흰색으로 채워집니다. 흰 배경 웹페이지에서는 티가 안 나지만, 어두운 배경이나 다른 그림 위에 올리면 흰 네모가 드러납니다.</p>
+    <figure>
+      <img src="img/format-jpg.webp" width="760" height="372" alt="어두운 체크무늬 위의 정령. 왼쪽 PNG는 배경이 투명하고 오른쪽 JPG는 흰 사각형 배경이 생겼다" loading="lazy">
+      <figcaption>512px 정령을 어두운 배경에 올린 모습. 왼쪽: PNG(투명 유지, 305KB). 오른쪽: JPG(흰 배경, 81KB).</figcaption>
+    </figure>
+    <p>그리고 세밀한 식물과 정령은 512px 이하에서 JPG가 256색 PNG보다 오히려 컸습니다. 512px 정령은 JPG가 81KB, 256색 PNG가 64KB였습니다. 투명이 필요 없더라도 도트 그림이라면 256색 PNG가 더 작고 깨끗할 수 있습니다.</p>
+
+    <h2>덤: 배경을 지우면 용량이 줄어든다</h2>
+    <p>같은 방식(Chrome PNG)으로 저장했을 때, 마젠타 배경이 있던 원본보다 배경을 지운 결과가 더 작았습니다. 슬라임은 4.51MB에서 1.17MB로 74%, 식물은 5.69MB에서 3.34MB로 41%, 정령은 5.44MB에서 3.41MB로 37% 줄었습니다. AI가 만든 ‘단색’ 배경에는 눈에 안 보이는 미세한 얼룩이 있어 압축이 잘 안 되는데, 투명해진 픽셀은 모두 똑같은 값이라 거의 공간을 차지하지 않기 때문입니다. 배경이 넓은 슬라임에서 효과가 가장 컸습니다.</p>
+
+    <h2>어떤 형식을 고를까</h2>
+    <div class="table"><table>
+      <thead><tr><th>용도</th><th>추천</th><th>이유</th></tr></thead>
+      <tbody>
+        <tr><td>게임 에셋 원본, 편집용 보관</td><td>PNG</td><td>손실 없음, 어디서나 열림</td></tr>
+        <tr><td>도트 그림, 아이콘, 이모티콘</td><td>PNG 256색</td><td>투명 유지, 용량 64~81% 감소, 화질 차이 거의 없음</td></tr>
+        <tr><td>웹페이지에 올릴 투명 이미지</td><td>WebP 또는 PNG 256색</td><td>복잡한 그림은 WebP가 작음. 단순한 그림은 둘 다 받아 비교</td></tr>
+        <tr><td>투명이 필요 없는 사진</td><td>JPG</td><td>가장 작음</td></tr>
+      </tbody>
+    </table></div>
+    <p>BGPeel에서는 결과를 원본 해상도로 메모리에 두고, 크기와 형식은 받을 때 적용합니다. 그래서 ‘저장 형식’과 ‘256색’을 바꿔 가며 같은 이미지를 여러 번 받아 보고 카드에 표시된 용량을 비교할 수 있습니다. Safari처럼 WebP로 저장하지 못하는 브라우저에서는 WebP를 골라도 PNG로 받습니다. 크기 줄이는 방법은 <a href="resize">이미지 크기 바꾸기</a>에 정리했습니다.</p>
+    <section class="related">
+      <h2>함께 보면 좋은 글</h2>
+      <ul>
+        <li><a href="resize">이미지 크기 줄이기 · 리사이즈</a></li>
+        <li><a href="app-icon-sizes">앱 아이콘·파비콘 크기 규격 정리</a></li>
+        <li><a href="sprite-sheet">AI 스프라이트를 Unity·Godot 스프라이트 시트로</a></li>
+      </ul>
+    </section>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">도구</a>
+    <a href="guides">가이드</a>
+    <a href="features">기능 설명</a>
+    <a href="about">소개</a>
+    <a href="contact">문의</a>
+    <a href="privacy">개인정보처리방침</a>
+  </footer>
+</main>
+</body>
+</html>

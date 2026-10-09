@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PNG vs WebP vs JPG: File Sizes Measured on the Same Images – BGPeel</title>
+<meta name="description" content="We saved three transparent characters as PNG, 256-color PNG, WebP and JPG at several sizes and measured the files. WebP wasn't always smaller, and 256-color PNG cut size by 64–81%.">
+<link rel="canonical" href="https://bgpeel.com/en/png-webp-jpg">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/png-webp-jpg">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/png-webp-jpg">
+<link rel="icon" href="../icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="stylesheet" href="../style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./"><img src="../logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="Menu"><a href="guides">Guides</a><a href="about">About</a></nav>
+    <nav class="lang" aria-label="Language"><a href="../png-webp-jpg" hreflang="ko" lang="ko">한국어</a> | <span aria-current="true">English</span></nav>
+  </div>
+
+  <article class="doc">
+    <h1>PNG vs WebP vs JPG: File Sizes Measured on the Same Images</h1>
+    <p class="sub">You've probably heard that WebP is smaller than PNG and that reducing to 256 colors makes files lighter. To check, we saved three background-removed characters in four formats at several sizes and measured every file. Most results were as expected, but one wasn't.</p>
+    <p class="byline">October 10, 2026 · <a href="about">BGPeel</a></p>
+
+    <h2>How we measured</h2>
+    <p>The subjects are three 2048×2048 transparent PNGs made with Nano Banana and cleaned up with BGPeel: a simple green slime, a detailed plant monster and a gold spirit full of light effects. Each was scaled to its original size, 1024, 512, 256 and 128px, and saved in four formats:</p>
+    <ul>
+      <li><b>PNG:</b> standard lossless.</li>
+      <li><b>PNG, 256 colors:</b> reduced to a 256-color palette with UPNG.js (BGPeel's “Reduce to 256 colors”).</li>
+      <li><b>WebP:</b> Chrome's lossless WebP (quality 1).</li>
+      <li><b>JPG:</b> quality 0.92, with transparent areas filled white.</li>
+    </ul>
+    <p>Every file was produced in Chrome by BGPeel's own export code, so downloading with the same settings in BGPeel gives the same sizes. Other programs compress differently and will produce somewhat different numbers.</p>
+
+    <p>Newer formats such as AVIF were left out: BGPeel doesn't save AVIF yet, and whether a browser can encode AVIF varies. The three characters were chosen because they differ in exactly the traits that drive file size. The slime has large flat areas and a lot of transparency, the plant has dense vines and teeth, and the spirit's light effects are made of countless in-between colors.</p>
+
+    <h2>Results at original size (2048px)</h2>
+    <div class="table"><table>
+      <thead><tr><th>Character</th><th class="n">PNG</th><th class="n">PNG 256 colors</th><th class="n">WebP</th><th class="n">JPG</th></tr></thead>
+      <tbody>
+        <tr><td>Slime (simple)</td><td class="n">1.17MB</td><td class="n">434KB (−64%)</td><td class="n"><b>1.61MB (+38%)</b></td><td class="n">101KB</td></tr>
+        <tr><td>Plant (detailed)</td><td class="n">3.34MB</td><td class="n">771KB (−77%)</td><td class="n">2.06MB (−38%)</td><td class="n">536KB</td></tr>
+        <tr><td>Spirit (light effects)</td><td class="n">3.41MB</td><td class="n">653KB (−81%)</td><td class="n">2.17MB (−36%)</td><td class="n">459KB</td></tr>
+      </tbody>
+    </table></div>
+    <p>Percentages are relative to PNG. For the plant and the spirit, WebP was 36–38% smaller than PNG, but <b>for the slime WebP was 38% larger</b>. A simple drawing made of large flat areas and transparency already suits PNG's compression well, and lossless WebP apparently had nothing more to squeeze. “WebP is always smaller” didn't hold in this test.</p>
+
+    <h2>Results at 512px, a common web size</h2>
+    <div class="table"><table>
+      <thead><tr><th>Character</th><th class="n">PNG</th><th class="n">PNG 256 colors</th><th class="n">WebP</th><th class="n">JPG</th></tr></thead>
+      <tbody>
+        <tr><td>Slime</td><td class="n">104KB</td><td class="n">38KB (−63%)</td><td class="n">85KB (−18%)</td><td class="n">16KB</td></tr>
+        <tr><td>Plant</td><td class="n">302KB</td><td class="n">75KB (−75%)</td><td class="n">227KB (−25%)</td><td class="n">81KB</td></tr>
+        <tr><td>Spirit</td><td class="n">305KB</td><td class="n">64KB (−79%)</td><td class="n">209KB (−32%)</td><td class="n">81KB</td></tr>
+      </tbody>
+    </table></div>
+    <p>At 512px, WebP beat PNG for the slime too, by 18%. Scaling blends the edges and adds intermediate colors, weakening the conditions that favored PNG. At 256px the slime flipped back, with WebP 4% larger, while the plant and the spirit were 16–26% smaller as WebP.</p>
+
+    <h2>Size matters more than format</h2>
+    <p>Read the tables vertically and a bigger effect appears. For all three characters, every halving of width and height cut the PNG to 27–32% of its previous size: the pixel count drops to a quarter, and the file shrinks a little less than that. Take the spirit: the 3.41MB 2048px PNG dropped to 305KB at 512px, a 91% reduction from resizing alone, and adding 256 colors brought it to 64KB, 98% lighter than the original. That dwarfs the 30–40% you gain by switching formats. If you're uploading 2048px images that appear at 200px on a web page, fix the size before worrying about the format. Even for high-density screens, twice the displayed size is enough.</p>
+
+    <h2>256-color PNG made the biggest difference</h2>
+    <p>At every size and for every character, the 256-color PNG shrank the most: 64–81% at full size and 63–79% at 512px, with transparency intact. What about quality? The spirit image originally had 98,971 distinct colors. Reducing them to 256 changed visible pixels by just 2.9 levels per channel on average (on a 0–255 scale).</p>
+    <figure>
+      <img src="../img/format-256.webp" width="760" height="372" alt="Zoomed comparison of the region of the spirit image that changed most. The original on the left and the 256-color version on the right look nearly identical" loading="lazy">
+      <figcaption>The 200×200 region of the spirit image where 256-color conversion changed colors the most, enlarged. Left: original PNG. Right: 256-color PNG.</figcaption>
+    </figure>
+    <p>Even the region with the largest difference is hard to tell apart. Pixel art uses few colors and has crisp boundaries, so it suits 256-color conversion very well. Photos and illustrations with wide smooth gradients can show banding, so zoom in and check.</p>
+
+    <h2>JPG is smallest but loses transparency</h2>
+    <p>JPG was the smallest at every size for the simple slime, and at full size for the plant and the spirit too. But JPG cannot store transparency, so the removed background is filled with white. On a white web page you won't notice, but on a dark background or over another image a white box appears.</p>
+    <figure>
+      <img src="../img/format-jpg.webp" width="760" height="372" alt="The spirit on a dark checkerboard. The PNG on the left keeps transparency; the JPG on the right has a white square background" loading="lazy">
+      <figcaption>The 512px spirit on a dark background. Left: PNG (transparent, 305KB). Right: JPG (white background, 81KB).</figcaption>
+    </figure>
+    <p>And for the detailed plant and spirit at 512px and below, the JPG was actually larger than the 256-color PNG; at 512px the spirit was 81KB as JPG and 64KB as a 256-color PNG. Even when you don't need transparency, a 256-color PNG can be smaller and cleaner for pixel art.</p>
+
+    <h2>Bonus: removing the background shrinks the file</h2>
+    <p>Saved the same way (Chrome PNG), the background-removed results were smaller than the magenta originals. The slime went from 4.51MB to 1.17MB (−74%), the plant from 5.69MB to 3.34MB (−41%) and the spirit from 5.44MB to 3.41MB (−37%). An AI-generated “solid” background carries faint invisible noise that compresses poorly, while transparent pixels all share one value and take almost no space. The slime, with the most background, benefited most.</p>
+
+    <h2>Which format to choose</h2>
+    <div class="table"><table>
+      <thead><tr><th>Use</th><th>Recommended</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Game asset masters, files you'll edit</td><td>PNG</td><td>Lossless, opens everywhere</td></tr>
+        <tr><td>Pixel art, icons, emoticons</td><td>PNG, 256 colors</td><td>Keeps transparency, 64–81% smaller, barely visible difference</td></tr>
+        <tr><td>Transparent images for a website</td><td>WebP or 256-color PNG</td><td>WebP wins on complex images; for simple ones, export both and compare</td></tr>
+        <tr><td>Photos without transparency</td><td>JPG</td><td>Smallest</td></tr>
+      </tbody>
+    </table></div>
+    <p>BGPeel keeps results in memory at full resolution and applies size and format when you download. You can switch “Format” and “256 colors” and download the same image several times, comparing the sizes shown on each card. In browsers that can't save WebP, such as Safari, choosing WebP gives you a PNG. How resizing works is covered in <a href="resize">Resize images</a>.</p>
+    <section class="related">
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="resize">Resize images</a></li>
+        <li><a href="app-icon-sizes">App icon and favicon sizes</a></li>
+        <li><a href="sprite-sheet">AI sprites to Unity and Godot sprite sheets</a></li>
+      </ul>
+    </section>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">Tool</a>
+    <a href="guides">Guides</a>
+    <a href="features">Features</a>
+    <a href="about">About</a>
+    <a href="contact">Contact</a>
+    <a href="privacy">Privacy policy</a>
+  </footer>
+</main>
+</body>
+</html>

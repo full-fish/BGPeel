@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Troubleshooting: Gradient Backgrounds – BGPeel</title>
+<meta name="description" content="You asked for a solid background, but the top and bottom differ or the corners are dark. Five gradient types tested: which ones defaults remove, why others leave residue, and the settings that fix them.">
+<link rel="canonical" href="https://bgpeel.com/en/fix-gradient-background">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/fix-gradient-background">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/fix-gradient-background">
+<link rel="icon" href="../icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="stylesheet" href="../style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./"><img src="../logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="Menu"><a href="guides">Guides</a><a href="about">About</a></nav>
+    <nav class="lang" aria-label="Language"><a href="../fix-gradient-background" hreflang="ko" lang="ko">한국어</a> | <span aria-current="true">English</span></nav>
+  </div>
+
+  <article class="doc">
+    <h1>Troubleshooting: Gradient Backgrounds</h1>
+    <p class="sub">Even when you ask for a “solid background”, AI tools like to add lighting: the top and bottom differ, the corners darken (vignetting), or a white background fades to gray toward the bottom. We built five such gradient backgrounds and tested them, and the results split clearly. Some gradients come off cleanly with default settings; others leave one side behind.</p>
+    <p class="byline">October 10, 2026 · <a href="about">BGPeel</a></p>
+
+    <h2>How BGPeel decides the background color</h2>
+    <p>To understand the results, start with how the background color is chosen. BGPeel groups the image's border pixels by similarity and uses the median of the largest group (within 80 per channel) as the background color. It then removes pixels similar to that color, plus pixels connected to the background whose hue is close (default −85° to +30°), that have some saturation (0.3 or more) and that aren't too dark (brightness 80 or more). Any part of a gradient that falls outside these conditions remains.</p>
+
+    <h2>How we tested</h2>
+    <p>We placed the background-removed plant monster and slime onto five gradient backgrounds that imitate shapes common in AI images, removed them with default settings, and measured how much of the original background area kept any opacity.</p>
+    <ol>
+      <li>Magenta at the top → purple (140, 0, 200) at the bottom</li>
+      <li>A vignette darkening toward the corners (corner brightness 64)</li>
+      <li>Magenta on the left → red (255, 40, 90) on the right</li>
+      <li>White at the top → light gray (200, 200, 205) at the bottom</li>
+      <li>A very strong vignette (corner brightness 20)</li>
+    </ol>
+    <figure>
+      <img src="../img/gradient-cases.webp" width="760" height="568" alt="Input, default result and fixed result of the plant monster on four gradient backgrounds. The vignette left corners and the red gradient left a strip on the right with defaults" loading="lazy">
+      <figcaption>Columns: magenta→purple, dark vignette, magenta→red, white→gray. Rows: input, default result, result with fixed settings. With defaults, the vignette left its corners, the red gradient a strip on the right, and white→gray a faint film at the bottom.</figcaption>
+    </figure>
+
+    <h2>Results</h2>
+    <div class="table"><table>
+      <thead><tr><th>Gradient</th><th class="n">Plant: background left</th><th class="n">Slime: background left</th><th>Setting changed</th><th class="n">After fix</th></tr></thead>
+      <tbody>
+        <tr><td>Magenta → purple</td><td class="n">0%</td><td class="n">0%</td><td>None needed</td><td class="n">–</td></tr>
+        <tr><td>Dark vignette</td><td class="n">0.86%</td><td class="n">0.57%</td><td>Glow minimum brightness 20</td><td class="n">0%</td></tr>
+        <tr><td>Magenta → red</td><td class="n">17.4%</td><td class="n">10.3%</td><td>Glow color range end +60°</td><td class="n">0.51% (plant)</td></tr>
+        <tr><td>White → light gray</td><td class="n">21.8% (faint)</td><td class="n">18.9% (faint)</td><td>Remove threshold 0.3</td><td class="n">0%</td></tr>
+        <tr><td>Very strong vignette</td><td class="n">4.9%</td><td class="n">65.6% of object lost</td><td>Not fixable with settings</td><td class="n">–</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>Magenta → purple: removed as is</h3>
+    <p>A gradient whose hue drifts slightly from magenta to purple stays entirely within the glow color range and is bright enough, so it was removed in one go like a glow connected to the background. The most common case in AI images, a background that's subtly different top to bottom, usually looks like this.</p>
+
+    <h3>Dark vignette: only the corners remain</h3>
+    <p>The corners reached brightness 64, darker than the outline-protection level of 80, so they were judged to be outline. What remained were dark triangles in the four corners (0.57–0.86% of the background). Lowering “Glow minimum brightness” to 20 brought it to 0%, while the slime lost 0.17% of its dark outline. Corners are far from the object, so cropping them off in an editor works too.</p>
+
+    <h3>Magenta → red: a strip remains on one side</h3>
+    <p>This left the most behind. The largest group of border colors was on the magenta side (73% of the border), so the background color was measured as (255, 9, 216), hue 309.5°. The red at the right edge has a hue of 346°, 36.5° away and outside the default +30°, so that strip survived. Widening the end of “Glow color range” to +60° cut the plant's leftover background from 17.4% to 0.51% with no object loss; the plant has red petals, but its outline protected them. Red or orange objects without outlines could be removed along with the background when you widen the range.</p>
+
+    <h3>White → light gray: a faint film remains</h3>
+    <p>Dull backgrounds like white and gray are processed in “Dull / pale solid” mode, where anything lighter than the background color is removed as “background mixed with white”. The trouble is the side <b>darker</b> than the measured background color. Those pixels compute as slightly different from the background and stay as a faint film with a median opacity of 7–8% and at most 13%. It's hard to notice, but on a dark background they look like gray haze. Raising “Remove threshold” to 0.3 brought it to 0%. The object loss of 1.5–1.9% was about the same as with defaults; it comes from white highlights on the object being indistinguishable from a white background, not from the gradient.</p>
+    <p>Interestingly, a white-to-gray gradient that's <b>light in the center and darker at the edges</b> left 0% with defaults. The background color is measured at the border (the dark side), so everything else is lighter and gets removed as “background mixed with white”. With gradients, direction changes the outcome.</p>
+
+    <h3>Very strong vignette: regenerate</h3>
+    <p>With nearly black corners (brightness 20), the median of the largest border group came out as a dark purple, (108, 0, 108). With the background color itself wrong, the slime lost 65.6% of its body.</p>
+    <figure>
+      <img src="../img/gradient-vignette.webp" width="760" height="372" alt="The slime on a very strong vignette with nearly black corners, and a result where most of the body is gone" loading="lazy">
+      <figcaption>Left: the slime on a very strong vignette. Right: the default result. The background color was misdetected as a dark purple, 65.6% of the body vanished and the corners remained.</figcaption>
+    </figure>
+    <p> Specifying magenta manually doesn't help either: too few border pixels are close to it, so the image is skipped. Settings can't fix this; regenerate.</p>
+
+    <h2>Test versus reality</h2>
+    <p>The test gradients change smoothly, but real AI backgrounds add faint blotches on top. The blotches are usually very close to the background color and harmless, but where a gradient is already near a threshold, such as its far end, a little more may remain. Treat the values in the table as a starting point and nudge them while watching the result.</p>
+
+    <h2>Fixing it, step by step</h2>
+    <ol>
+      <li><b>See what's left:</b> switch the preview background between black and white and identify corners, a one-sided strip or a faint film.</li>
+      <li><b>Dark corners left:</b> lower “Glow minimum brightness”, stopping just before outlines break.</li>
+      <li><b>One side left in another color:</b> widen “Glow color range” toward that color. From magenta toward red, widen the end (+); toward blue, the start (−).</li>
+      <li><b>A faint film left:</b> raise “Remove threshold” to 0.2–0.3.</li>
+      <li><b>The object itself badly damaged:</b> background detection failed; regenerate.</li>
+    </ol>
+
+    <h2>Prompts that avoid gradients</h2>
+    <p>Add “flat lighting, even lighting, no vignette, no gradient, uniform background” and leave out lighting terms like “studio lighting”, “dramatic lighting” or “spotlight”. White backgrounds are prone to floor shadows and gray gradients toward the bottom, so unless the object has white in it, magenta is the better choice. Wording per tool is in <a href="ai-background-prompts">Solid background prompts</a>.</p>
+    <section class="related">
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="fix-shadow">Troubleshooting: a shadow is left behind</a></li>
+        <li><a href="fix-eroded-edges">Troubleshooting: parts of the object disappear</a></li>
+        <li><a href="ai-background-prompts">Solid background prompts for AI image tools</a></li>
+      </ul>
+    </section>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">Tool</a>
+    <a href="guides">Guides</a>
+    <a href="features">Features</a>
+    <a href="about">About</a>
+    <a href="contact">Contact</a>
+    <a href="privacy">Privacy policy</a>
+  </footer>
+</main>
+</body>
+</html>

@@ -17,6 +17,7 @@
 <main>
   <div class="topbar">
     <a class="brand" href="./"><img src="logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="메뉴"><a href="guides">가이드</a><a href="about">소개</a></nav>
     <nav class="lang" aria-label="언어"><span aria-current="true">한국어</span> | <a href="en/magenta-background" hreflang="en" lang="en">English</a></nav>
   </div>
 
@@ -42,20 +43,36 @@
       <li>결과를 체크무늬·검정·흰색 배경으로 바꿔 보며 확인한 뒤 zip으로 한 번에 받습니다.</li>
     </ol>
 
+    <h2>실제 결과</h2>
+    <p>나노바나나에 마젠타 배경을 지정해 만든 몬스터 세 장을 BGPeel 기본 설정으로 처리한 결과입니다. 요청한 색은 모두 #FF00FF였지만 실제 배경은 #FC01FB, #FA25FE, #D506D9로 조금씩 달랐고, 배경색 자동 감지가 이미지마다 그 색을 다시 재서 지웠습니다. 오른쪽 아래의 반짝이 마크도 배경과 함께 사라졌고, 식물 몬스터의 덩굴 사이처럼 물체에 둘러싸인 배경도 투명해졌습니다.</p>
+    <figure>
+      <img src="img/magenta-before-after.webp" width="760" height="504" alt="마젠타 배경의 식물, 슬라임, 정령 몬스터 원본과 배경을 지운 결과" loading="lazy">
+      <figcaption>위: 원본(마젠타 배경). 아래: BGPeel 기본 설정 결과(체크무늬는 투명한 부분).</figcaption>
+    </figure>
+    <p>어떤 배경색이 가장 잘 지워지는지는 <a href="background-color-test">배경색 비교 실험</a>에서 같은 캐릭터로 비교했습니다.</p>
+
     <h2>그냥 색만 지우는 것과 뭐가 다른가요?</h2>
     <p>이미지 편집기의 ‘자동 선택’으로 배경색만 지우면 물체 둘레에 분홍·초록 테두리가 남습니다. 가장자리 픽셀에 배경색이 반쯤 섞여 있기 때문입니다. BGPeel은 픽셀마다 배경이 섞인 정도를 재서 그만큼만 투명하게 하고, 섞인 배경색을 빼 원래 물체 색으로 되돌립니다. 배경에 붙은 빛번짐(글로우)도 함께 지울 수 있습니다.</p>
 
     <h2>결과가 아쉬울 때</h2>
     <p>물체 둘레에 배경색 선이 남거나 가장자리가 깎이면 도구 페이지 아래의 설정 가이드를 참고해 ‘세부 조절’ 값을 바꿔 보세요. 바꾼 뒤 아쉬운 카드만 골라 다시 변환할 수 있습니다.</p>
+    <section class="related">
+      <h2>함께 보면 좋은 글</h2>
+      <ul>
+        <li><a href="background-color-test">마젠타·초록·파랑 배경 비교 실험</a></li>
+        <li><a href="ai-background-prompts">AI 단색 배경 프롬프트 모음</a></li>
+        <li><a href="color-fringe">가장자리 색 번짐이 생기는 이유와 없애는 법</a></li>
+      </ul>
+    </section>
   </article>
 
   <footer>
     <span>© 2026 BGPeel</span>
-    <a href="./">도구로 가기</a>
+    <a href="./">도구</a>
+    <a href="guides">가이드</a>
     <a href="features">기능 설명</a>
-    <a href="resize">이미지 크기 바꾸기</a>
-    <a href="nano-banana-watermark">나노바나나 워터마크 제거</a>
-    <a href="magenta-background">마젠타 배경 투명하게</a>
+    <a href="about">소개</a>
+    <a href="contact">문의</a>
     <a href="privacy">개인정보처리방침</a>
   </footer>
 </main>

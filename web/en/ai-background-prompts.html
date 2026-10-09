@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solid Background Prompts for Nano Banana, GPT Image and Midjourney – BGPeel</title>
+<meta name="description" content="Clean background removal starts with a clean solid background. Prompts that work and prompts that fail for Nano Banana, GPT Image and Midjourney, plus measured background colors.">
+<link rel="canonical" href="https://bgpeel.com/en/ai-background-prompts">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/ai-background-prompts">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/ai-background-prompts">
+<link rel="icon" href="../icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="stylesheet" href="../style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./"><img src="../logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="Menu"><a href="guides">Guides</a><a href="about">About</a></nav>
+    <nav class="lang" aria-label="Language"><a href="../ai-background-prompts" hreflang="ko" lang="ko">한국어</a> | <span aria-current="true">English</span></nav>
+  </div>
+
+  <article class="doc">
+    <h1>Solid Background Prompts for Nano Banana, GPT Image and Midjourney</h1>
+    <p class="sub">Half of a good background removal happens when the image is generated. A flat, even background comes off cleanly right down to the edges; a shadow or gradient leaves traces no matter how much you tweak the settings. Here's how to get a solid background from each major AI image tool, and which prompts tend to backfire.</p>
+    <p class="byline">October 10, 2026 · <a href="about">BGPeel</a></p>
+
+    <h2>Why a solid background instead of a transparent one?</h2>
+    <p>Most image generators produce opaque pictures. Writing “transparent background” in a prompt usually doesn't give you a real transparent PNG; instead, the model often <b>paints</b> the gray-and-white checkerboard that editors use to show transparency. A painted checkerboard has two colors and is much harder to remove than a single flat color.</p>
+    <p>That's why people who make game sprites and icons ask for a background color the object almost never uses (usually magenta) and then remove just that color. It's the same idea as a chroma key in video. It works with every AI tool, and it lets you process dozens of images with one consistent rule.</p>
+
+    <h2>The color you ask for isn't the color you get</h2>
+    <p>We measured the border color of three images made with Nano Banana, all requested with a #FF00FF magenta background. The actual median background colors were #FC01FB, #FA25FE and #D506D9. The first is nearly exact, the second has 37 levels of green mixed in, and the third is noticeably darker.</p>
+    <figure>
+      <img src="../img/prompts-swatch.webp" width="760" height="120" alt="Swatches comparing the requested #FF00FF with the actual backgrounds #FC01FB, #FA25FE and #D506D9" loading="lazy">
+      <figcaption>Left: the requested #FF00FF. Right: the actual backgrounds of the three images (median of border pixels).</figcaption>
+    </figure>
+    <p>Even within one image the background is not perfectly flat. Amplifying each background pixel's deviation from the median by 12 reveals faint blotches in what looks like a solid color, and the spirit character has a wide glow painted into the background around its body. The per-channel standard deviation along the borders ranged from 1.5 to 7.3 levels.</p>
+    <figure>
+      <img src="../img/prompts-noise.webp" width="760" height="248" alt="Grayscale maps of background deviation for three images. The spirit image shows a bright glow band around the character" loading="lazy">
+      <figcaption>Background deviation from the median, amplified 12× (black is even, gray is the object). The white dot at bottom right is the Nano Banana mark.</figcaption>
+    </figure>
+    <p>Differences like these are fine. BGPeel doesn't remove a fixed color; it measures the background from each image's border and treats nearby blotches and glows as background too. What matters is not whether the color value is exact, but <b>whether anything else is in the background</b>.</p>
+
+    <h2>Rules that work in every tool</h2>
+    <ul>
+      <li><b>Give both the color name and the hex code.</b> Write “solid magenta (#FF00FF) background”. A name alone tends to drift toward pink or purple.</li>
+      <li><b>Say “flat” more than once.</b> Words like “flat”, “plain”, “uniform” and “single color” reduce gradients and lighting effects.</li>
+      <li><b>Ask for no floor and no shadow.</b> Put a character on its feet and the AI will want to draw a shadow under it. Add “no shadow, no floor, no ground”.</li>
+      <li><b>Leave a margin.</b> “centered, full body, with empty space around” keeps the object off the image edges. BGPeel measures the background along the border, and auto-detection needs at least a quarter of the border to be background.</li>
+      <li><b>Pick a color the object doesn't use.</b> Magenta is safest in most cases; the evidence is in our <a href="background-color-test">background color test</a>.</li>
+    </ul>
+
+    <h2>Prompts that tend to fail</h2>
+    <div class="table"><table>
+      <thead><tr><th>Phrase</th><th>What often happens</th><th>Use instead</th></tr></thead>
+      <tbody>
+        <tr><td>transparent background</td><td>A checkerboard is painted into the image</td><td>solid magenta (#FF00FF) background</td></tr>
+        <tr><td>green screen, chroma key</td><td>A whole studio: green backdrop, floor, lights</td><td>plain flat green (#00FF00) background</td></tr>
+        <tr><td>white background</td><td>Floor shadow; white highlights merge with the background</td><td>Only if the object has no white; otherwise magenta</td></tr>
+        <tr><td>studio lighting, dramatic lighting</td><td>Vignetting and gradients toward the edges</td><td>flat lighting, even lighting</td></tr>
+        <tr><td>glowing, aura</td><td>Light spills widely into the background</td><td>Describe the light effect as inside the object</td></tr>
+      </tbody>
+    </table></div>
+    <p>BGPeel removes glows connected to the background fairly well, but a glow whose color is far from the background color can remain. Leftover shadows and gradients are covered with test results in <a href="fix-shadow">A shadow is left behind</a> and <a href="fix-gradient-background">Gradient backgrounds</a>.</p>
+
+    <h2>Nano Banana (Gemini)</h2>
+    <p>Nano Banana follows hex codes fairly well and is strong at editing an image through conversation. If you like a character but the background is messy, don't regenerate from scratch; ask it to change only the background, for example “Keep the character exactly the same and change only the background to solid magenta (#FF00FF), no shadow”. When you need the same character in several poses, attaching the first image as a reference keeps the style steadier.</p>
+    <pre><code>pixel art goblin warrior, game sprite, full body, centered,
+solid flat magenta (#FF00FF) background, no shadow, no floor,
+no gradient, empty space around the character</code></pre>
+    <p>Images made with Nano Banana get a small sparkle mark in the bottom-right corner. If the mark sits on the background, BGPeel removes it along with the background. See <a href="nano-banana-watermark">Remove the Nano Banana watermark</a>.</p>
+
+    <h2>GPT Image (ChatGPT, OpenAI API)</h2>
+    <p>OpenAI's GPT Image models offer a transparent background option in the API (set <code>background</code> to <code>transparent</code> and save as PNG or WebP). If you need one or two images and like the result, that may be all you need. The trade-off is that you can't control how the model handles the edges, and edge quality can vary from image to image within a set. If you want every edge handled by the same rule, or you're generating somewhere without the transparent option, use a solid background.</p>
+    <pre><code>A cute slime monster in 16-bit pixel art style, game asset,
+front view, centered with generous margins.
+Background: one solid flat color, pure magenta #FF00FF,
+no shadow, no ground, no texture, no lighting gradient.</code></pre>
+    <p>GPT Image handles long descriptive sentences well, so putting the background requirements in a separate sentence makes them less likely to be ignored.</p>
+
+    <h2>Midjourney</h2>
+    <p>Midjourney applies a strong house style and tends to add lighting and texture even when you ask for a plain background. Use two tools together: the <code>--no</code> parameter to exclude unwanted elements, and <code>--style raw</code> to reduce embellishment. According to the official docs, <code>--no</code> accepts a comma-separated list but reads each word separately, so “--no dark shadow” excludes “dark” and “shadow” independently. Stick to single words.</p>
+    <pre><code>pixel art fire spirit, game sprite, centered, full body,
+flat solid magenta background, simple, isolated
+--no shadow, gradient, texture, vignette, floor --style raw</code></pre>
+    <p>Midjourney is not precise with hex codes, and magenta can come out as hot pink or purple. BGPeel's auto-detection measures whatever color appears, so that's fine, but if the background comes out as a dull pink it is processed in “Dull / pale solid” mode instead of “Vivid solid”. That mode can also remove object colors close to the background, so check the result.</p>
+
+    <h2>What to check right after generating</h2>
+    <ol>
+      <li><b>Does the object touch the edges?</b> If it covers much of the border, the background color can't be found and the image is skipped.</li>
+      <li><b>Is there a shadow under it?</b> A dark shadow can stay behind as a black blob.</li>
+      <li><b>Are the corners darker, or does one side change color?</b> Gradients can leave residue.</li>
+      <li><b>Does the object use the background color?</b> Colors close to the background can be eaten.</li>
+    </ol>
+    <p>If all four look fine, drop the whole folder onto <a href="./">BGPeel</a> and remove every background in one go.</p>
+    <section class="related">
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="background-color-test">Magenta vs green vs blue background test</a></li>
+        <li><a href="fix-shadow">Troubleshooting: a shadow is left behind</a></li>
+        <li><a href="nano-banana-watermark">Remove the Nano Banana watermark</a></li>
+      </ul>
+    </section>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">Tool</a>
+    <a href="guides">Guides</a>
+    <a href="features">Features</a>
+    <a href="about">About</a>
+    <a href="contact">Contact</a>
+    <a href="privacy">Privacy policy</a>
+  </footer>
+</main>
+</body>
+</html>

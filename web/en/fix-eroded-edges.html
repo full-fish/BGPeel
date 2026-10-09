@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Troubleshooting: Parts of the Object Disappear – BGPeel</title>
+<meta name="description" content="The background came off cleanly but part of the character went with it. Causes by the shape of the damage and the BGPeel fine-tuning fix for each, with measurements, including a 55% loss cut to 1.35%.">
+<link rel="canonical" href="https://bgpeel.com/en/fix-eroded-edges">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/fix-eroded-edges">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/fix-eroded-edges">
+<link rel="icon" href="../icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="stylesheet" href="../style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./"><img src="../logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="Menu"><a href="guides">Guides</a><a href="about">About</a></nav>
+    <nav class="lang" aria-label="Language"><a href="../fix-eroded-edges" hreflang="ko" lang="ko">한국어</a> | <span aria-current="true">English</span></nav>
+  </div>
+
+  <article class="doc">
+    <h1>Troubleshooting: Parts of the Object Disappear</h1>
+    <p class="sub">The background is gone, but so is part of your character: a bright highlight, one side of the body, a light effect. The cause depends on what disappeared and how, and so does the fix. Below are reproduced cases with measurements for each.</p>
+    <p class="byline">October 10, 2026 · <a href="about">BGPeel</a></p>
+
+    <h2>First, see what was lost</h2>
+    <p>In BGPeel, hover over a card image (press and hold on a phone), or open the zoom view and hold, to flip between the original and the result. Switching the preview background to black and white makes semi-transparent damage easier to see. The damage usually takes one of four shapes:</p>
+    <ol>
+      <li><b>A whole area of one color</b> vanished → the object's color was judged to be background glow.</li>
+      <li><b>Near-white bright parts</b> vanished → they were judged to be pale background.</li>
+      <li><b>Edges thinned or turned semi-transparent</b> → the mix thresholds are too high.</li>
+      <li><b>A dark outline</b> broke → outline protection is set too low.</li>
+    </ol>
+
+    <h2>1. A whole area of one color disappears</h2>
+    <p>This causes the biggest losses. To clear glows around the background, BGPeel treats colors with a hue close to the background's as background when they're connected to it. If the object itself is in that hue range and has no outline, the removal that starts in the background spreads into the object.</p>
+    <p>In our test, the gold spirit character placed on green lost 55.02% of its body with default settings. For a green (120°) background the default glow range is 35° to 150°, the spirit's gold (about 40° to 55°) falls inside it, and its glowing body has no outline to stop the removal.</p>
+    <figure>
+      <img src="../img/eroded-green.webp" width="760" height="248" alt="The gold spirit on green. The default result in the middle lost most of the body; with glow removal turned off on the right it is almost intact" loading="lazy">
+      <figcaption>Left: input (green background). Middle: defaults, 55.02% of the body lost. Right: “Also remove colored glows” turned off, 2.88% lost.</figcaption>
+    </figure>
+    <p><b>Fix:</b> in Fine-tuning, turn off “Also remove colored glows”. In this test the loss dropped from 55.02% to 2.88%. If you still want background glows removed, narrow “Glow color range” instead; at −20° to +20° the loss was 2.89%, almost the same. The remaining 2.9% were near-white highlights caught by “Light background detection” (case 2 below); with glow removal off and that setting lowered to 20, the loss fell to 1.35%. Still, the surest fix is to regenerate on a color the object doesn't use: the same spirit lost only 1.13% on magenta (see the <a href="background-color-test">background color test</a>).</p>
+    <p>The opposite mistake happens too. If a cyan glow is left over and you widen the start of “Glow color range” from −85° to −105°, cyan falls inside the range for magenta backgrounds. Applied to the real magenta spirit, it removed part of the cyan eyes and light, a 0.14% loss. Small, but the eyes are exactly where people look, so check.</p>
+
+    <h2>2. Near-white bright parts disappear</h2>
+    <p>“Light background detection” sets how far pale glows and sparkles (including the Nano Banana mark), meaning background color mixed with white, count as background. Set it high and white highlights on the object that touch the background get judged as pale background too.</p>
+    <p>Raising it from the default 40 to 100 on the original magenta spirit removed 147,678 pixels, 6.4% of the body, all of them bright cream-colored areas along the body's edge.</p>
+    <figure>
+      <img src="../img/eroded-tint.webp" width="760" height="372" alt="Close-up of the spirit. Left: default result. Right: bright areas removed at light background detection 100, marked in red" loading="lazy">
+      <figcaption>Close-up of the area of the spirit that lost the most. Left: default (40). Right: “Light background detection” at 100, newly removed areas in red.</figcaption>
+    </figure>
+    <p><b>Fix:</b> lower “Light background detection” to the default 40 or below. If you raised it to clear the Nano Banana mark, raise it only to the lowest value that removes the mark. For images on a white background, white parts of the object and the background are hard to separate by color; regenerating on magenta works better.</p>
+
+    <h2>3. Edges thin out or turn semi-transparent</h2>
+    <p>“Remove threshold” and “Keep threshold” decide how much background mix makes a pixel transparent, semi-transparent or opaque. Raising both to remove more background makes edge pixels more transparent, and lines only one or two pixels thick turn semi-transparent. Raising them to 0.3 and 0.7 on the spirit cost only 0.14%, but the loss wasn't at the edges: it was the purple light streaks inside the body (hue about 273°). Purples close to magenta compute as “fairly mixed with background”, so raising the thresholds turns the object's purples transparent first.</p>
+    <p><b>Fix:</b> bring both back toward the defaults (0.12 and 0.5). If you were trying to remove more background, the glow and pale-background settings usually do it with less damage than these two. For images processed as “Dull / pale solid”, lowering “Color difference from background” makes the object less transparent.</p>
+
+    <h2>4. A dark outline breaks</h2>
+    <p>“Glow minimum brightness” is the level below which pixels count as outline and stop the removal. Lower it to remove a shadow and outlines become fair game too. In the slime test, lowering it from 80 to 30 removed the shadow but also cut part of the bottom outline, a 0.17% loss. It's small, but one or two missing outline pixels are noticeable.</p>
+    <p><b>Fix:</b> raise it again, stopping just before the shadow returns. The balance is covered in <a href="fix-shadow">A shadow is left behind</a>.</p>
+
+    <h2>Settings summary</h2>
+    <div class="table"><table>
+      <thead><tr><th>Symptom</th><th>Setting</th><th>Direction</th></tr></thead>
+      <tbody>
+        <tr><td>A background-like color area vanishes entirely</td><td>Also remove colored glows / Glow color range</td><td>Turn off / narrow</td></tr>
+        <tr><td>One specific color, like cyan, vanishes</td><td>Glow color range</td><td>Narrow until it's excluded</td></tr>
+        <tr><td>White highlights vanish</td><td>Light background detection</td><td>Lower</td></tr>
+        <tr><td>Edges thin out or turn semi-transparent</td><td>Remove threshold, Keep threshold</td><td>Lower</td></tr>
+        <tr><td>Whole object semi-transparent (dull background)</td><td>Color difference from background</td><td>Lower</td></tr>
+        <tr><td>Dark outline breaks</td><td>Glow minimum brightness</td><td>Raise</td></tr>
+      </tbody>
+    </table></div>
+    <p>After changing settings, select just the damaged cards and click “Convert n selected”; only those are reprocessed and every other result stays as it is. Every setting's meaning and default is listed in <a href="features">Features</a>.</p>
+
+    <h2>When regenerating is the better fix</h2>
+    <p>Settings only help when object and background can be told apart by color. If a large part of the object is almost exactly the background color and has no outline, no setting can remove the background while keeping that part. Regenerate on a color the object doesn't use. With a conversational tool like Nano Banana, just ask: “Keep the character exactly the same and change only the background to magenta (#FF00FF).”</p>
+    <section class="related">
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="background-color-test">Magenta vs green vs blue background test</a></li>
+        <li><a href="fix-shadow">Troubleshooting: a shadow is left behind</a></li>
+        <li><a href="fix-gradient-background">Troubleshooting: gradient backgrounds</a></li>
+      </ul>
+    </section>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">Tool</a>
+    <a href="guides">Guides</a>
+    <a href="features">Features</a>
+    <a href="about">About</a>
+    <a href="contact">Contact</a>
+    <a href="privacy">Privacy policy</a>
+  </footer>
+</main>
+</body>
+</html>

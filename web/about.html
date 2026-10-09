@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BGPeel 소개 – BGPeel</title>
+<meta name="description" content="BGPeel을 누가, 왜 만들었는지. AI로 만든 게임 스프라이트의 마젠타 배경을 깔끔하게 지우려다 시작한 1인 개발 프로젝트입니다.">
+<link rel="canonical" href="https://bgpeel.com/about">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/about">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/about">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./"><img src="logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="메뉴"><a href="guides">가이드</a><a href="about">소개</a></nav>
+    <nav class="lang" aria-label="언어"><span aria-current="true">한국어</span> | <a href="en/about" hreflang="en" lang="en">English</a></nav>
+  </div>
+
+  <article class="doc">
+    <h1>BGPeel 소개</h1>
+    <p class="sub">BGPeel은 마젠타·초록·흰색처럼 한 가지 색으로 칠해진 배경을 지워 투명 PNG로 만드는 무료 웹 도구입니다. 이미지는 서버로 올라가지 않고 방문자의 브라우저 안에서만 처리됩니다. 1인 개발자가 만들고 운영합니다.</p>
+
+    <h2>왜 만들었나</h2>
+    <p>시작은 게임에 쓸 몬스터 그림이었습니다. AI 이미지 생성기로 몬스터 스프라이트를 수십 장 만들었는데, 생성기는 투명 배경을 바로 주지 않았습니다. 그래서 흔히 쓰는 방법대로 마젠타 배경으로 만든 뒤 그 색을 지웠습니다.</p>
+    <p>그런데 그림 도구의 ‘색 지우기’로 지운 결과는 쓸 수가 없었습니다. 캐릭터 둘레에 분홍 테두리가 남았고, 빛나는 캐릭터는 보라색 빛번짐이 배경처럼 붙어 있었고, 오른쪽 아래에는 생성기가 붙인 반짝이 마크까지 그대로였습니다. 기준을 넓히면 이번에는 캐릭터가 깎였습니다. 한두 장이면 손으로 다듬겠지만, 수십 장을 하나씩 고칠 수는 없었습니다.</p>
+    <p>그래서 가장자리 픽셀에 배경색이 얼마나 섞였는지 계산해 그만큼만 투명하게 하고, 섞인 배경색을 빼서 원래 색으로 되돌리는 스크립트를 만들었습니다. 배경과 이어진 빛번짐과 마크를 함께 지우고, 노랑·주황처럼 계산이 틀어지기 쉬운 색을 따로 보정하는 규칙도 하나씩 더했습니다. 이렇게 처음에는 파이썬 스크립트로 만든 것을, 다른 사람도 설치 없이 쓸 수 있도록 브라우저로 옮긴 것이 BGPeel입니다.</p>
+
+    <h2>지키는 원칙</h2>
+    <ul>
+      <li><b>업로드 없음:</b> 배경 제거, 크기 줄이기, 형식 바꾸기가 모두 브라우저 안에서 이뤄집니다. 올린 이미지는 기기 밖으로 나가지 않고, 탭을 닫으면 사라집니다.</li>
+      <li><b>무료, 가입 없음:</b> 장 수 제한이나 워터마크가 없습니다. 사이트는 광고로 운영합니다.</li>
+      <li><b>같은 규칙:</b> 여러 장을 같은 설정으로 처리하면 같은 기준으로 처리됩니다. 스프라이트 세트나 애니메이션 프레임처럼 결과가 고르게 맞아야 하는 작업을 염두에 뒀습니다.</li>
+      <li><b>설명할 수 있는 도구:</b> 자동으로 잘 되지 않을 때 무엇을 바꿔야 하는지 알 수 있도록, 세부 조절 항목마다 올리고 내렸을 때 달라지는 점을 적어 두었습니다.</li>
+    </ul>
+
+    <h2>이 사이트의 글</h2>
+    <p><a href="guides">가이드</a>의 글들은 BGPeel을 만들고 쓰면서 부딪힌 문제를 정리한 것입니다. 실제 AI로 만든 이미지를 BGPeel로 처리하고, 결과를 픽셀 단위로 재서 썼습니다. 실험을 위해 배경을 바꾸거나 그림자를 그려 넣은 경우에는 글에 그렇게 밝혀 두었습니다. 외부 서비스의 규격처럼 바뀔 수 있는 내용은 확인한 시점을 적었습니다. 틀린 내용을 발견하면 <a href="contact">문의</a>로 알려 주세요. 확인하는 대로 고치겠습니다.</p>
+
+    <h2>지나온 길</h2>
+    <ul>
+      <li><b>2026년 9월 26일:</b> BGPeel 공개. 단색 배경 제거, 폴더째 올리기, zip 받기, PNG·WebP·JPG 저장, 배경을 두고 크기만 바꾸는 모드.</li>
+      <li><b>2026년 9월 28일:</b> 로고와 아이콘.</li>
+      <li><b>2026년 10월:</b> 실험 기반 가이드 11편과 소개·문의 페이지.</li>
+    </ul>
+
+    <h2>연락</h2>
+    <p>버그 제보, 기능 제안, 그 밖의 문의는 <a href="contact">문의 페이지</a>를 참고해 이메일로 보내 주세요. 개인정보를 어떻게 다루는지는 <a href="privacy">개인정보처리방침</a>에 있습니다.</p>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">도구</a>
+    <a href="guides">가이드</a>
+    <a href="features">기능 설명</a>
+    <a href="about">소개</a>
+    <a href="contact">문의</a>
+    <a href="privacy">개인정보처리방침</a>
+  </footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About BGPeel – BGPeel</title>
+<meta name="description" content="Who made BGPeel and why: a one-person project that started with cleanly removing magenta backgrounds from AI-generated game sprites.">
+<link rel="canonical" href="https://bgpeel.com/en/about">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/about">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/about">
+<link rel="icon" href="../icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="stylesheet" href="../style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./"><img src="../logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="Menu"><a href="guides">Guides</a><a href="about">About</a></nav>
+    <nav class="lang" aria-label="Language"><a href="../about" hreflang="ko" lang="ko">한국어</a> | <span aria-current="true">English</span></nav>
+  </div>
+
+  <article class="doc">
+    <h1>About BGPeel</h1>
+    <p class="sub">BGPeel is a free web tool that removes single-color backgrounds, such as magenta, green or white, and turns images into transparent PNGs. Images are never uploaded; everything runs inside the visitor's browser. It's built and run by one developer.</p>
+
+    <h2>Why it exists</h2>
+    <p>It started with monster art for a game. I generated dozens of monster sprites with an AI image generator, which didn't give me transparent backgrounds. So I did what many people do: generated them on magenta and removed that color.</p>
+    <p>The results from an image editor's color removal were unusable. A pink outline remained around each character, glowing characters kept a purple glow stuck to them like background, and the generator's sparkle mark sat untouched in the bottom-right corner. Widening the threshold just ate into the characters. One or two images I could touch up by hand, but not dozens.</p>
+    <p>So I wrote a script that calculates how much background color is mixed into each edge pixel, makes the pixel only that transparent, and subtracts the mixed-in color to restore the original. One rule at a time I added more: removing glows and marks connected to the background, and correcting yellows and oranges where the math tends to go wrong. It began as a Python script; BGPeel is that script moved into the browser so others can use it without installing anything.</p>
+
+    <h2>Principles</h2>
+    <ul>
+      <li><b>No uploads:</b> background removal, resizing and format conversion all happen in the browser. Your images never leave your device and disappear when you close the tab.</li>
+      <li><b>Free, no sign-up:</b> no image limits and no watermarks. The site is supported by ads.</li>
+      <li><b>One set of rules:</b> images processed with the same settings are treated by the same rules, with sprite sets and animation frames, where results must match, in mind.</li>
+      <li><b>A tool that explains itself:</b> so you know what to change when automatic results fall short, every fine-tuning setting describes what happens when you raise or lower it.</li>
+    </ul>
+
+    <h2>About the guides</h2>
+    <p>The <a href="guides">guides</a> document problems I ran into while building and using BGPeel. They're written from real AI-generated images processed with BGPeel and measured pixel by pixel. Where a test involved swapping a background or painting in a shadow, the article says so. Details that can change, such as other services' specs, note when they were checked. If you find a mistake, please tell me via <a href="contact">Contact</a> and I'll fix it.</p>
+
+    <h2>Milestones</h2>
+    <ul>
+      <li><b>September 26, 2026:</b> BGPeel launched with solid background removal, folder upload, zip download, PNG/WebP/JPG export and a resize-only mode.</li>
+      <li><b>September 28, 2026:</b> Logo and icons.</li>
+      <li><b>October 2026:</b> Eleven test-based guides, plus About and Contact pages.</li>
+    </ul>
+
+    <h2>Get in touch</h2>
+    <p>For bug reports, feature ideas or anything else, see the <a href="contact">contact page</a> and send an email. How personal information is handled is described in the <a href="privacy">privacy policy</a>.</p>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">Tool</a>
+    <a href="guides">Guides</a>
+    <a href="features">Features</a>
+    <a href="about">About</a>
+    <a href="contact">Contact</a>
+    <a href="privacy">Privacy policy</a>
+  </footer>
+</main>
+</body>
+</html>

@@ -17,6 +17,7 @@
 <main>
   <div class="topbar">
     <a class="brand" href="./"><img src="../logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="Menu"><a href="guides">Guides</a><a href="about">About</a></nav>
     <nav class="lang" aria-label="Language"><a href="../magenta-background" hreflang="ko" lang="ko">한국어</a> | <span aria-current="true">English</span></nav>
   </div>
 
@@ -42,21 +43,37 @@
       <li>Check the results on a checkerboard, black or white preview, then download them all as a zip.</li>
     </ol>
 
+    <h2>Real results</h2>
+    <p>Three monsters generated with Nano Banana on a requested magenta background, processed with BGPeel's default settings. All three were requested as #FF00FF, yet the actual backgrounds were #FC01FB, #FA25FE and #D506D9; auto-detection measured each image's own color and removed it. The sparkle mark in the corner went with the background, and background enclosed by the object, such as the gaps between the plant's vines, became transparent too.</p>
+    <figure>
+      <img src="../img/magenta-before-after.webp" width="760" height="504" alt="Plant, slime and spirit monsters on magenta, before and after background removal" loading="lazy">
+      <figcaption>Top: originals (magenta background). Bottom: BGPeel results with default settings (the checkerboard is transparency).</figcaption>
+    </figure>
+    <p>Which background color removes best is compared on the same characters in the <a href="background-color-test">background color test</a>.</p>
+
     <h2>How is this different from just deleting the color?</h2>
     <p>If you delete the background color with an editor's magic wand, a pink or green fringe stays around the object, because edge pixels are partly mixed with the background. BGPeel measures how much background is mixed into each pixel, makes it only that transparent, and subtracts the mixed-in background color to restore the object's own color. It can also remove glows attached to the background.</p>
 
     <h2>If the result isn't quite right</h2>
     <p>If a background-colored line remains around the object or its edges get trimmed, see the settings guide at the bottom of the tool page and adjust “Fine-tuning”. You can then reconvert only the cards that need it.</p>
+    <section class="related">
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="background-color-test">Magenta vs green vs blue background test</a></li>
+        <li><a href="ai-background-prompts">Solid background prompts for AI image tools</a></li>
+        <li><a href="color-fringe">Why color fringes appear and how to remove them</a></li>
+      </ul>
+    </section>
   </article>
 
   <footer>
     <span>© 2026 BGPeel</span>
-    <a href="./">Go to the tool</a>
-    <a href="features">Features guide</a>
-    <a href="resize">Resize images</a>
-    <a href="nano-banana-watermark">Remove the Nano Banana watermark</a>
-    <a href="magenta-background">Magenta background to transparent</a>
-    <a href="privacy">Privacy Policy</a>
+    <a href="./">Tool</a>
+    <a href="guides">Guides</a>
+    <a href="features">Features</a>
+    <a href="about">About</a>
+    <a href="contact">Contact</a>
+    <a href="privacy">Privacy policy</a>
   </footer>
 </main>
 </body>

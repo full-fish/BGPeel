@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guides – BGPeel</title>
+<meta name="description" content="All BGPeel guides: solid background removal, AI image background prompts, color fringes, image formats and sizes, and making emoticons, app icons and sprite sheets.">
+<link rel="canonical" href="https://bgpeel.com/en/guides">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/guides">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/guides">
+<link rel="icon" href="../icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="stylesheet" href="../style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./"><img src="../logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="Menu"><a href="guides">Guides</a><a href="about">About</a></nav>
+    <nav class="lang" aria-label="Language"><a href="../guides" hreflang="ko" lang="ko">한국어</a> | <span aria-current="true">English</span></nav>
+  </div>
+
+  <article class="doc">
+    <h1>Guides</h1>
+    <p class="sub">Write-ups from building and using BGPeel, based on our own tests. Every image and number in them comes from real AI images run through BGPeel.</p>
+
+    <h2>Getting started</h2>
+    <ul class="guide-list">
+      <li><a href="magenta-background">Turn a magenta or chroma key background into a transparent PNG</a><span>Basic use of BGPeel with real before-and-after examples.</span></li>
+      <li><a href="features">Features and fine-tuning guide</a><span>What every setting means, with defaults.</span></li>
+      <li><a href="resize">Resize images</a><span>Change size and format while keeping the background.</span></li>
+      <li><a href="nano-banana-watermark">Remove the Nano Banana watermark</a><span>Why the corner sparkle mark comes off with the background.</span></li>
+    </ul>
+
+    <h2>Making images with AI</h2>
+    <ul class="guide-list">
+      <li><a href="ai-background-prompts">Solid background prompts for AI image tools</a><span>Wording that works and wording that fails in Nano Banana, GPT Image and Midjourney.</span></li>
+      <li><a href="background-color-test">Magenta vs green vs blue background test</a><span>The same characters removed from three background colors. Outlines mattered as much as color.</span></li>
+    </ul>
+
+    <h2>How it works</h2>
+    <ul class="guide-list">
+      <li><a href="color-fringe">Why color fringes appear and how to remove them</a><span>Deleting a color versus subtracting the mixed-in background.</span></li>
+      <li><a href="ai-vs-color-removal">AI vs color-based background removal</a><span>Strengths and limits of each, and when to use which.</span></li>
+      <li><a href="png-webp-jpg">PNG vs WebP vs JPG measured file sizes</a><span>WebP wasn't always smaller; 256-color PNG cut size by 64–81%.</span></li>
+    </ul>
+
+    <h2>By use</h2>
+    <ul class="guide-list">
+      <li><a href="kakao-emoticon">KakaoTalk emoticon sizes and transparent PNGs</a><span>360px transparent PNGs, outlines on dark chat themes, margins.</span></li>
+      <li><a href="app-icon-sizes">App icon and favicon sizes</a><span>iOS's no-alpha rule, Android safe zones, web icon sizes.</span></li>
+      <li><a href="sprite-sheet">AI sprites to Unity and Godot sprite sheets</a><span>Matching position and scale, a packing script, engine import settings.</span></li>
+    </ul>
+
+    <h2>Troubleshooting</h2>
+    <ul class="guide-list">
+      <li><a href="fix-eroded-edges">Parts of the object disappear</a><span>Causes by the shape of the damage, with settings. A 55% loss cut to 1.35%.</span></li>
+      <li><a href="fix-shadow">A shadow is left behind</a><span>Which shadows remain and why, tested by strength and color.</span></li>
+      <li><a href="fix-gradient-background">Gradient backgrounds</a><span>Five gradient types tested, and the order to fix them in.</span></li>
+    </ul>
+
+    <p>Can't find what you need, or spotted a mistake? Let us know via <a href="contact">Contact</a>.</p>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">Tool</a>
+    <a href="guides">Guides</a>
+    <a href="features">Features</a>
+    <a href="about">About</a>
+    <a href="contact">Contact</a>
+    <a href="privacy">Privacy policy</a>
+  </footer>
+</main>
+</body>
+</html>

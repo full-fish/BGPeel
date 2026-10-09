@@ -62,4 +62,144 @@
     <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/resize"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/resize"/>
   </url>
+  <url>
+    <loc>https://bgpeel.com/guides</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/guides"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/guides"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/en/guides</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/guides"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/guides"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/about</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/about"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/about"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/en/about</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/about"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/about"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/contact</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/contact"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/en/contact</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/contact"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/contact"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/background-color-test</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/background-color-test"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/background-color-test"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/en/background-color-test</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/background-color-test"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/background-color-test"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/ai-background-prompts</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/ai-background-prompts"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/ai-background-prompts"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/en/ai-background-prompts</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/ai-background-prompts"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/ai-background-prompts"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/kakao-emoticon</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/kakao-emoticon"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/kakao-emoticon"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/en/kakao-emoticon</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/kakao-emoticon"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/kakao-emoticon"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/app-icon-sizes</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/app-icon-sizes"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/app-icon-sizes"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/en/app-icon-sizes</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/app-icon-sizes"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/app-icon-sizes"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/sprite-sheet</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/sprite-sheet"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/sprite-sheet"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/en/sprite-sheet</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/sprite-sheet"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/sprite-sheet"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/png-webp-jpg</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/png-webp-jpg"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/png-webp-jpg"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/en/png-webp-jpg</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/png-webp-jpg"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/png-webp-jpg"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/color-fringe</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/color-fringe"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/color-fringe"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/en/color-fringe</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/color-fringe"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/color-fringe"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/ai-vs-color-removal</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/ai-vs-color-removal"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/ai-vs-color-removal"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/en/ai-vs-color-removal</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/ai-vs-color-removal"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/ai-vs-color-removal"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/fix-eroded-edges</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/fix-eroded-edges"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/fix-eroded-edges"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/en/fix-eroded-edges</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/fix-eroded-edges"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/fix-eroded-edges"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/fix-shadow</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/fix-shadow"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/fix-shadow"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/en/fix-shadow</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/fix-shadow"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/fix-shadow"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/fix-gradient-background</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/fix-gradient-background"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/fix-gradient-background"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/en/fix-gradient-background</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/fix-gradient-background"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/fix-gradient-background"/>
+  </url>
 </urlset>

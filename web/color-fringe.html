@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>가장자리 색 번짐(프린지)이 생기는 이유와 없애는 법 – BGPeel</title>
+<meta name="description" content="배경을 지운 뒤 물체 둘레에 분홍·초록 테두리가 남는 이유를 그림과 실측으로 설명합니다. 색을 지우는 것만으로는 안 되는 이유와, 섞인 배경색을 빼는 원리까지.">
+<link rel="canonical" href="https://bgpeel.com/color-fringe">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/color-fringe">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/color-fringe">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./"><img src="logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="메뉴"><a href="guides">가이드</a><a href="about">소개</a></nav>
+    <nav class="lang" aria-label="언어"><span aria-current="true">한국어</span> | <a href="en/color-fringe" hreflang="en" lang="en">English</a></nav>
+  </div>
+
+  <article class="doc">
+    <h1>가장자리 색 번짐(프린지)이 생기는 이유와 없애는 법</h1>
+    <p class="sub">마젠타 배경을 지웠는데 캐릭터 둘레에 분홍 테두리가 남아 있다면, 그건 지우기를 덜 해서가 아닙니다. 가장자리 픽셀에는 물체 색과 배경색이 섞여 있기 때문입니다. 이 섞임이 왜 생기는지, 색만 지우는 방식이 왜 이것을 해결하지 못하는지, 그리고 어떻게 없애는지를 그림과 실측으로 설명합니다.</p>
+    <p class="byline">2026년 10월 10일 · <a href="about">BGPeel</a></p>
+
+    <h2>프린지란</h2>
+    <p>프린지(fringe)는 배경을 지운 물체 둘레에 남는 배경색 띠를 말합니다. 헤일로(halo), 색 번짐, 테두리라고도 부릅니다. 흰 배경에 올리면 잘 안 보이다가, 어두운 배경이나 다른 색 배경에 올리는 순간 드러나서 뒤늦게 발견하는 경우가 많습니다. 게임 화면, 다크 모드 웹페이지, 카카오톡의 어두운 채팅방이 대표적입니다.</p>
+
+    <h2>왜 생길까: 가장자리 픽셀은 반반이다</h2>
+    <p>픽셀은 네모난 칸이고, 물체의 경계는 칸을 비스듬히 지나갑니다. 경계에 걸친 칸은 일부가 물체, 일부가 배경이라 화면에는 두 색이 섞인 중간색으로 칠해집니다. 이것을 식으로 쓰면 다음과 같습니다.</p>
+    <p><b>보이는 색 = α × 물체 색 + (1 − α) × 배경색</b></p>
+    <p>여기서 α(알파)는 그 칸에서 물체가 차지하는 비율입니다. 물체 한가운데는 α가 1, 배경은 0, 경계는 그 사이입니다. AI 이미지는 여기에 몇 가지가 더해집니다. 생성 과정에서 경계가 몇 픽셀에 걸쳐 부드럽게 번지고(2048px 이미지에서 보통 3~4px), 캐릭터 둘레에 빛이나 그림자 같은 효과가 배경 위에 칠해지기도 하며, JPG로 저장하면 색 정보가 주변으로 더 퍼집니다.</p>
+    <figure>
+      <img src="img/fringe-mix.webp" width="736" height="222" alt="금색에서 마젠타로 8단계 섞인 띠, 그 아래 앞의 다섯 칸이 분홍빛으로 남은 띠, 맨 아래 금색이 점점 투명해지는 띠" loading="lazy">
+      <figcaption>위: 금색 물체와 마젠타 배경이 섞인 정도별 8칸(왼쪽 α=1 → 오른쪽 α=0). 가운데: 배경색과 비슷한 칸만 지웠을 때 남는 것. 아래: 섞인 배경을 빼고 섞인 비율만큼 투명하게 한 것.</figcaption>
+    </figure>
+    <p>위 그림의 가운데 줄이 프린지가 생기는 순간입니다. 배경색과 충분히 다른 칸은 남기고 비슷한 칸만 지우면, 남은 칸들은 금색이 아니라 금색과 마젠타가 섞인 주황·분홍색입니다. 이 칸들이 물체 둘레를 한 바퀴 두르면 분홍 테두리가 됩니다.</p>
+
+    <h2>기준을 바꿔도 해결되지 않는 이유</h2>
+    <p>그림 편집기의 ‘색 범위 선택’이나 ‘자동 선택’은 한 가지 기준으로 지울지 말지를 정합니다. 기준을 넓히면 테두리는 줄지만 물체도 깎이고, 좁히면 물체는 살지만 테두리가 남습니다. 실제 이미지로 확인해 보았습니다. 나노바나나로 만든 정령 이미지에서 배경색과 채널당 60 이내인 픽셀만 지우자, BGPeel 결과에서는 투명한 픽셀 143,194개가 불투명하게 남았습니다. 물체 면적의 6.3%에 해당하고, 남은 픽셀의 색상 중앙값은 262°로 보라색이었습니다. 기준을 100으로 넓히자 남은 픽셀은 1.5%로 줄었지만, 이번에는 물체 픽셀 12,188개가 지워졌습니다.</p>
+    <div class="table"><table>
+      <thead><tr><th>단순 색 지우기 기준</th><th class="n">정령: 남은 배경</th><th class="n">정령: 지워진 물체</th><th class="n">식물: 남은 배경</th><th class="n">슬라임: 남은 배경</th></tr></thead>
+      <tbody>
+        <tr><td>채널당 40 이내</td><td class="n">9.5%</td><td class="n">0px</td><td class="n">1.8%</td><td class="n">1.1%</td></tr>
+        <tr><td>채널당 60 이내</td><td class="n">6.3%</td><td class="n">690px</td><td class="n">1.3%</td><td class="n">0.8%</td></tr>
+        <tr><td>채널당 100 이내</td><td class="n">1.5%</td><td class="n">12,188px</td><td class="n">0.8%</td><td class="n">0.4%</td></tr>
+      </tbody>
+    </table></div>
+    <p>남은 배경은 물체 면적 대비 비율이고, BGPeel 기본 결과와 비교했습니다. 빛 효과가 많은 정령에서 프린지가 가장 심했고, 외곽선이 뚜렷한 슬라임은 가장 덜했습니다. 어느 기준에서도 ‘테두리 없음’과 ‘물체 손실 없음’을 동시에 얻을 수 없다는 점이 핵심입니다.</p>
+    <figure>
+      <img src="img/fringe-compare.webp" width="736" height="312" alt="정령 가장자리 확대. 왼쪽 원본, 가운데 분홍 테두리와 보라 빛번짐이 남은 단순 지우기, 오른쪽 깨끗한 BGPeel 결과" loading="lazy">
+      <figcaption>정령 오른쪽 가장자리 확대. 왼쪽: 원본. 가운데: 채널당 60 이내 색만 지운 결과(분홍 테두리, 보라 빛번짐). 오른쪽: BGPeel 기본 설정.</figcaption>
+    </figure>
+
+    <h2>없애는 원리: 지우는 게 아니라 빼는 것</h2>
+    <p>해결책은 위 식을 거꾸로 푸는 것입니다. 배경색은 이미지 테두리에서 잴 수 있으니 알고 있는 값입니다. 픽셀마다 배경이 얼마나 섞였는지(1 − α)를 추정할 수 있다면, 물체 색은 다음처럼 되살릴 수 있습니다.</p>
+    <p><b>물체 색 = (보이는 색 − (1 − α) × 배경색) ÷ α</b></p>
+    <p>그리고 그 픽셀의 투명도를 α로 정하면, 어떤 배경 위에 올려도 원래 물체 색이 α만큼만 비쳐 보입니다. 위 색 띠의 맨 아래 줄이 이렇게 처리한 결과로, 분홍기가 사라지고 금색이 점점 투명해집니다. BGPeel이 하는 일을 순서대로 적으면 이렇습니다.</p>
+    <ol>
+      <li><b>섞인 정도 재기:</b> 쨍한 배경이라면 배경색의 강한 채널(마젠타면 빨강·파랑)이 약한 채널(초록)보다 얼마나 높은지로 배경 성분을 잽니다.</li>
+      <li><b>투명도 정하기:</b> 배경이 거의 전부인 픽셀(‘배경으로 지울 기준’ 0.12 이하)은 완전히 투명하게, 물체 색이 절반 이상인 픽셀(‘물체로 남길 기준’ 0.5 이상)은 불투명하게, 그 사이는 반투명하게 합니다.</li>
+      <li><b>섞인 배경색 빼기:</b> 투명해진 영역에서 4px(‘가장자리 색 빼기 폭’) 안쪽의 픽셀은 위 식으로 배경색을 빼서 원래 색으로 되돌립니다.</li>
+      <li><b>배경과 이어진 빛번짐 지우기:</b> 테두리에서 시작해 배경과 이어진 연한 빛, 보라·파랑 글로우, AI 워터마크를 배경으로 처리합니다. 물체 안의 비슷한 색은 이어져 있지 않으니 건드리지 않습니다.</li>
+      <li><b>노랑·주황 보정:</b> 노랑·주황·모래색은 1번 계산에서 배경이 덜 섞인 것으로 나오는 경향이 있어서, 근처의 깨끗한 물체 색을 기준으로 다시 계산합니다.</li>
+    </ol>
+    <figure>
+      <img src="img/fringe-alpha.webp" width="488" height="312" alt="같은 영역의 투명도 지도. 왼쪽 단순 지우기는 빛번짐까지 큰 덩어리로 불투명하고, 오른쪽 BGPeel은 도트 모양만 불투명하다" loading="lazy">
+      <figcaption>같은 영역의 투명도 지도(흰색=불투명). 왼쪽: 단순 지우기는 빛번짐까지 물체로 남겼습니다. 오른쪽: BGPeel은 도트 모양만 남겼습니다.</figcaption>
+    </figure>
+
+    <h2>프린지가 남았을 때 확인하고 고칠 것</h2>
+    <ul>
+      <li><b>먼저 잘 보이게:</b> BGPeel의 미리보기 배경을 검정과 흰색으로 바꿔 보고, 돋보기 버튼으로 크게 본 상태에서 누르고 있으면 원본과 번갈아 볼 수 있습니다.</li>
+      <li><b>얇은 배경색 선:</b> ‘가장자리 색 빼기 폭’을 올립니다. 경계가 넓게 번진 큰 이미지일수록 효과가 있습니다.</li>
+      <li><b>테두리가 딱딱하고 계단이 짐:</b> ‘물체로 남길 기준’을 조금 올려 가장자리를 부드럽게 합니다.</li>
+      <li><b>보라·파랑 빛이 넓게 남음:</b> ‘배경에 붙은 색 글로우도 지우기’가 켜져 있는지 확인하고, 빛 색이 범위 밖이면 ‘글로우로 볼 색 범위’를 넓힙니다.</li>
+      <li><b>노랑·주황 부분에 분홍 점:</b> ‘반쯤 물든 픽셀 보정’을 켜고, 남으면 ‘보정할 때 주변을 찾는 거리’를 올립니다.</li>
+    </ul>
+
+    <h2>만들 때부터 줄이는 법</h2>
+    <ul>
+      <li><b>JPG가 아니라 PNG 원본을 쓰세요.</b> JPG는 색 정보를 주변 픽셀과 묶어 저장해서 경계의 색 번짐을 키웁니다.</li>
+      <li><b>배경을 먼저 지우고 나중에 줄이세요.</b> 배경이 있는 채로 줄이면 경계 픽셀에 배경이 더 많이 섞입니다. BGPeel은 원본 해상도에서 배경을 지우고, 받을 때 크기를 줄입니다.</li>
+      <li><b>빛 효과를 배경에 칠하지 않게 하세요.</b> “no glow, no rim light, no outer glow”를 프롬프트에 넣으면 배경 쪽 빛번짐이 줄어듭니다.</li>
+      <li><b>외곽선이 있는 그림체를 고르세요.</b> 어두운 외곽선은 배경과 물체 사이의 섞임을 짧게 끊어 줍니다.</li>
+    </ul>
+    <section class="related">
+      <h2>함께 보면 좋은 글</h2>
+      <ul>
+        <li><a href="background-color-test">마젠타·초록·파랑 배경 비교 실험</a></li>
+        <li><a href="ai-vs-color-removal">AI 배경 제거 vs 색 기반 배경 제거</a></li>
+        <li><a href="fix-eroded-edges">문제 해결: 물체가 깎일 때</a></li>
+      </ul>
+    </section>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">도구</a>
+    <a href="guides">가이드</a>
+    <a href="features">기능 설명</a>
+    <a href="about">소개</a>
+    <a href="contact">문의</a>
+    <a href="privacy">개인정보처리방침</a>
+  </footer>
+</main>
+</body>
+</html>

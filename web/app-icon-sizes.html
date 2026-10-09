@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>앱 아이콘·파비콘 크기 규격 정리: iOS·Android·웹 – BGPeel</title>
+<meta name="description" content="App Store 1024px 아이콘의 투명도 금지, Android 적응형 아이콘의 108dp·66dp 안전 영역, Google Play 512px, 파비콘과 PWA 아이콘 크기까지 한 페이지에 정리했습니다.">
+<link rel="canonical" href="https://bgpeel.com/app-icon-sizes">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/app-icon-sizes">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/app-icon-sizes">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./"><img src="logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="메뉴"><a href="guides">가이드</a><a href="about">소개</a></nav>
+    <nav class="lang" aria-label="언어"><span aria-current="true">한국어</span> | <a href="en/app-icon-sizes" hreflang="en" lang="en">English</a></nav>
+  </div>
+
+  <article class="doc">
+    <h1>앱 아이콘·파비콘 크기 규격 정리: iOS·Android·웹</h1>
+    <p class="sub">아이콘 하나를 만들어도 올리는 곳마다 요구하는 크기와 조건이 다릅니다. 특히 iOS는 투명도를 허용하지 않고, Android는 바깥쪽이 잘릴 것을 전제로 그려야 합니다. 플랫폼별 규격과 함께, 투명 PNG로 아이콘을 준비할 때 자주 걸리는 부분을 정리했습니다.</p>
+    <p class="byline">2026년 10월 10일 · <a href="about">BGPeel</a></p>
+
+    <h2>한눈에 보기</h2>
+    <div class="table"><table>
+      <thead><tr><th>용도</th><th>크기</th><th>조건</th></tr></thead>
+      <tbody>
+        <tr><td>App Store 아이콘 (iOS)</td><td>1024×1024px</td><td>PNG, <b>투명·알파 채널 없음</b>, 모서리 둥글리지 않음</td></tr>
+        <tr><td>Android 적응형 아이콘</td><td>레이어당 108×108dp (xxxhdpi 432px)</td><td>앞·뒤 두 레이어, 중요한 부분은 지름 66dp 안</td></tr>
+        <tr><td>Android 예전 방식 런처 아이콘</td><td>48dp (48·72·96·144·192px)</td><td>mdpi~xxxhdpi 밀도별</td></tr>
+        <tr><td>Google Play 스토어 아이콘</td><td>512×512px</td><td>32비트 PNG, sRGB, 1024KB 이하, 꽉 찬 정사각형</td></tr>
+        <tr><td>파비콘</td><td>16·32·48px (ICO) 또는 48의 배수 PNG</td><td>검색 결과용은 48×48 이상 권장</td></tr>
+        <tr><td>iOS 홈 화면 바로가기 (apple-touch-icon)</td><td>180×180px</td><td>불투명 권장</td></tr>
+        <tr><td>웹 앱 매니페스트(PWA)</td><td>192×192, 512×512px</td><td>maskable 아이콘은 반지름 40% 원 안에 중요한 부분</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2>iOS: 1024px 하나, 그리고 투명도 금지</h2>
+    <p>App Store에 올리는 아이콘은 1024×1024 PNG입니다. Xcode 14부터는 이 1024px 이미지 하나만 넣으면 기기별 크기를 알아서 만들 수 있어서, 예전처럼 180·167·152·120px를 하나하나 준비하지 않아도 됩니다. 모서리를 둥글게 깎을 필요도 없습니다. 시스템이 마스크를 씌우므로 꽉 찬 정사각형으로 그립니다.</p>
+    <p>가장 자주 걸리는 조건은 <b>투명도와 알파 채널 금지</b>입니다. 투명한 픽셀이 하나도 없어도, PNG 파일에 알파 채널이 들어 있으면 업로드할 때 거절될 수 있습니다. Chrome에서 BGPeel로 저장한 PNG를 직접 확인해 보니, 이미지가 완전히 불투명해도 알파 채널이 있는 형식(RGBA)으로 저장되어 있었습니다. 그래서 투명 PNG로 만든 캐릭터를 iOS 아이콘으로 쓰려면 마지막에 배경색을 채우고 알파 채널을 빼는 단계가 필요합니다.</p>
+    <figure>
+      <img src="img/icon-ios.webp" width="752" height="240" alt="투명 배경 슬라임, 하늘색 배경을 채운 슬라임, 그리고 iOS 모양으로 모서리가 둥글게 보이는 미리보기" loading="lazy">
+      <figcaption>왼쪽: 투명 PNG(그대로는 App Store에 못 올림). 가운데: 배경색을 채운 불투명 1024px 원본. 오른쪽: 기기에서 마스크가 씌워졌을 때의 모습.</figcaption>
+    </figure>
+    <p>배경을 채우고 알파 채널을 빼는 방법은 두 가지입니다. 맥이라면 ‘미리보기’ 앱에서 PNG를 연 뒤 ‘보내기’에서 ‘알파’ 체크를 끄면 됩니다. 이때 투명했던 부분이 의도한 색으로 채워지는지 확인하세요. 파이썬을 쓴다면 아래처럼 배경색을 깐 뒤 RGB로 바꿔 저장합니다.</p>
+    <pre><code>from PIL import Image
+icon = Image.open("icon_1024.png").convert("RGBA")
+bg = Image.new("RGBA", icon.size, (126, 200, 248, 255))  # 채울 배경색
+bg.alpha_composite(icon)
+bg.convert("RGB").save("AppIcon-1024.png")               # 알파 채널 없음</code></pre>
+
+    <h2>Android: 바깥 3분의 1은 잘릴 수 있다</h2>
+    <p>Android 8.0부터 쓰는 적응형 아이콘은 앞 레이어(캐릭터·로고)와 뒤 레이어(배경)를 따로 받습니다. 두 레이어 모두 108×108dp이고, 기기는 그중 가운데 72×72dp만 동그라미, 둥근 사각형 같은 모양으로 잘라 보여 줍니다. 바깥 18dp는 시차·흔들림 효과에 쓰이는 여유분입니다. 로고처럼 꼭 보여야 하는 부분은 가운데 지름 66dp 원 안에 두라는 것이 공식 안내입니다.</p>
+    <figure>
+      <img src="img/icon-android.webp" width="494" height="414" alt="108dp 캔버스 안의 72dp 사각형과 66dp 안전 원, 그리고 원형·스퀘어클·둥근 사각형으로 잘린 결과 세 가지" loading="lazy">
+      <figcaption>왼쪽: 108dp 전체 캔버스, 검은 사각형이 보이는 72dp 영역, 빨간 원이 안전 영역 66dp. 오른쪽: 기기별 마스크(원, 스퀘어클, 둥근 사각형)로 잘린 모습.</figcaption>
+    </figure>
+    <p>투명 PNG로 만든 캐릭터는 앞 레이어로 쓰기 좋습니다. 이미 배경이 투명하니 뒤 레이어에 단색이나 무늬를 따로 깔면 됩니다. 앞 레이어 PNG는 432×432px(108dp × xxxhdpi 4배)로 만들고, 캐릭터를 가운데 약 61%(66/108) 안에 넣으세요. Android Studio의 Image Asset 도구에 투명 PNG를 넣으면 밀도별 파일과 미리보기를 만들어 줍니다.</p>
+    <p>Google Play 스토어 등록 화면의 아이콘은 이와 별개로 512×512px 32비트 PNG(1024KB 이하)를 올립니다. Google Play가 둥근 마스크(아이콘 크기의 30% 반지름)와 그림자를 직접 씌우므로, 모서리를 깎거나 그림자를 넣지 않은 꽉 찬 정사각형으로 준비합니다.</p>
+
+    <h2>웹: 파비콘, apple-touch-icon, PWA</h2>
+    <p>브라우저 탭의 파비콘은 16·32px에서 보입니다. 여러 크기를 담은 <code>favicon.ico</code>를 쓰거나 PNG·SVG를 <code>&lt;link rel="icon"&gt;</code>로 연결합니다. Google 검색 결과에 사이트 아이콘을 띄우려면 48px의 배수(48, 96, 144…) 정사각형을 권장합니다. 이 사이트도 192px PNG 하나를 파비콘으로 연결해 두었습니다.</p>
+    <p>아이폰에서 ‘홈 화면에 추가’를 했을 때 보이는 아이콘은 <code>apple-touch-icon</code>으로 지정하며 180×180px가 표준입니다. 투명한 부분은 기기에 따라 검게 보일 수 있으니 배경을 채워 두는 편이 안전합니다. 설치형 웹 앱(PWA)은 매니페스트에 192px와 512px 아이콘을 넣고, 모양이 잘리는 기기를 위해 <code>purpose: "maskable"</code> 아이콘을 따로 두면 좋습니다. maskable 아이콘의 안전 영역은 아이콘 너비 40% 반지름의 원입니다.</p>
+
+    <h2>원본은 한 장, 크고 투명하게</h2>
+    <p>플랫폼마다 크기가 다르다고 아이콘을 여러 번 그릴 필요는 없습니다. 1024px 이상의 원본 한 장을 투명 배경으로 만들어 두면, 위의 모든 크기를 거기서 줄여 만들 수 있습니다. 반대로 작은 이미지를 키우면 흐려지고 계단이 지므로, 원본은 쓸 크기 중 가장 큰 것보다 커야 합니다. 배경을 투명하게 따로 두면 Android 앞 레이어, iOS용 배경색 채우기, 웹용 원형 아이콘처럼 플랫폼마다 다른 배경을 나중에 마음대로 고를 수 있다는 장점도 있습니다. 배경까지 한 장에 그려 버리면 이런 변형을 만들 때마다 다시 그려야 합니다.</p>
+
+    <h2>작게 줄였을 때 무엇이 사라지나</h2>
+    <p>규격보다 더 중요한 것은 작은 크기에서도 알아볼 수 있는지입니다. 세밀한 식물 몬스터를 180, 64, 48, 32, 16px로 줄여 보았습니다.</p>
+    <figure>
+      <img src="img/icon-scale.webp" width="460" height="406" alt="식물 몬스터를 180, 64, 48, 32, 16px로 줄인 모습과 32px, 16px를 확대한 모습. 16px에서는 덩굴과 이빨이 뭉개진다" loading="lazy">
+      <figcaption>위: 180·64·48·32·16px 실제 크기. 아래: 32px와 16px를 6배, 12배로 확대한 모습.</figcaption>
+    </figure>
+    <p>48px까지는 꽃 얼굴과 잎이 구분되지만, 32px부터 이빨과 덩굴이 뭉개지고 16px에서는 빨강·노랑 덩어리만 남습니다. 파비콘처럼 16~32px로 쓰일 아이콘은 큰 그림을 줄이기보다, 얼굴만 잘라 쓰거나 형태가 단순한 별도 버전을 만드는 편이 낫습니다.</p>
+
+    <h2>BGPeel로 여러 크기 한 번에 받기</h2>
+    <ol>
+      <li>1024px 이상으로 만든 아이콘 원본을 <a href="./">BGPeel</a>에 올리고 배경을 지웁니다. 이미 배경이 투명하거나 배경을 그대로 둘 거라면 <a href="./?mode=none">‘지우지 않음’ 모드</a>로 엽니다.</li>
+      <li>‘내려받을 크기’를 1024로 두고 받습니다.</li>
+      <li>크기를 512, 192, 180, 48로 바꿔 가며 다시 받습니다. 변환 결과는 원본 해상도로 남아 있고 줄이기는 받는 순간 적용되므로, 다시 변환할 필요가 없습니다.</li>
+      <li>iOS용 1024px는 위의 방법으로 배경을 채우고 알파 채널을 뺍니다.</li>
+    </ol>
+    <p>크기를 줄일 때 BGPeel은 한 번에 크게 줄이지 않고 절반씩 나눠 줄여서, 가는 외곽선이 끊기는 것을 줄입니다. 자세한 동작은 <a href="resize">이미지 크기 바꾸기</a>에 있습니다.</p>
+    <section class="related">
+      <h2>함께 보면 좋은 글</h2>
+      <ul>
+        <li><a href="resize">이미지 크기 줄이기 · 리사이즈</a></li>
+        <li><a href="png-webp-jpg">PNG·WebP·JPG 용량 비교 실측</a></li>
+        <li><a href="kakao-emoticon">카카오 이모티콘 규격과 투명 PNG 만들기</a></li>
+      </ul>
+    </section>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">도구</a>
+    <a href="guides">가이드</a>
+    <a href="features">기능 설명</a>
+    <a href="about">소개</a>
+    <a href="contact">문의</a>
+    <a href="privacy">개인정보처리방침</a>
+  </footer>
+</main>
+</body>
+</html>

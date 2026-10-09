@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Magenta vs Green vs Blue: Which Background Color Removes Best? – BGPeel</title>
+<meta name="description" content="We put the same three characters on magenta, green and blue backgrounds, removed them with identical settings and measured the damage. Outlines mattered as much as color.">
+<link rel="canonical" href="https://bgpeel.com/en/background-color-test">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/background-color-test">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/background-color-test">
+<link rel="icon" href="../icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="stylesheet" href="../style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./"><img src="../logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="Menu"><a href="guides">Guides</a><a href="about">About</a></nav>
+    <nav class="lang" aria-label="Language"><a href="../background-color-test" hreflang="ko" lang="ko">한국어</a> | <span aria-current="true">English</span></nav>
+  </div>
+
+  <article class="doc">
+    <h1>Magenta vs Green vs Blue: Which Background Color Removes Best?</h1>
+    <p class="sub">If you're deciding which solid background color to ask an AI image generator for, start with this experiment. We placed the same three characters on magenta, green and blue, removed the background with identical settings and measured, pixel by pixel, how much of each character survived. The short answer: whether the character has an outline mattered as much as the background color.</p>
+    <p class="byline">October 10, 2026 · <a href="about">BGPeel</a></p>
+
+    <h2>How the test worked</h2>
+    <p>The test subjects are three pixel-art monsters made with Nano Banana (Gemini). The plant monster has red-and-yellow striped petals and green vines with a dark outline. The slime is a green body wrapped in a dark green outline. The spirit is a glowing gold figure with no outline, cyan eyes and a purple glow. All three were originally generated on magenta, and we used their BGPeel results (default settings) as the starting point.</p>
+    <p>We placed each transparent PNG back onto pure magenta (#FF00FF), green (#00FF00) and blue (#0000FF), giving nine 2048×2048 images. Each was processed with BGPeel's defaults (auto-detected background color, auto background type), and the output was compared pixel by pixel with the original transparent PNG on three measures:</p>
+    <ul>
+      <li><b>Object loss:</b> the share of originally fully opaque pixels that came out more than half transparent. This is how much of the character was eaten.</li>
+      <li><b>Background left:</b> the share of originally fully transparent pixels that kept any opacity. This is how much background survived.</li>
+      <li><b>Color error:</b> the average per-channel difference (on a 0–255 scale) between surviving opaque pixels and their original color.</li>
+    </ul>
+    <p>Note that we did not ask the AI to redraw each character on a new color; we swapped the background under the same drawing. That removes the noise of the AI drawing a slightly different character each time and isolates one thing: <b>how the object's colors relate to the background color</b>. Real AI images carry faint blotches and glows in the background, so real results can be slightly worse than these.</p>
+
+    <figure>
+      <img src="../img/bgtest-inputs.webp" width="760" height="248" alt="The gold spirit character placed on magenta, green and blue backgrounds" loading="lazy">
+      <figcaption>Example inputs: the same spirit character on magenta, green and blue.</figcaption>
+    </figure>
+
+    <h2>Results</h2>
+    <p>The table below shows object loss. Background left was 0% in all nine cases, and the worst color error (the plant on green) was 0.45 per channel, far below what the eye can see. Because the test backgrounds were perfectly flat, every color was removed cleanly. The only differences were in object loss, and they were concentrated in a single character.</p>
+    <div class="table"><table>
+      <thead><tr><th>Character</th><th class="n">Magenta</th><th class="n">Green</th><th class="n">Blue</th></tr></thead>
+      <tbody>
+        <tr><td>Plant (outlined)</td><td class="n">0%</td><td class="n">0.92%</td><td class="n">0%</td></tr>
+        <tr><td>Slime (outlined, green body)</td><td class="n">0%</td><td class="n">0%</td><td class="n">0%</td></tr>
+        <tr><td>Spirit (no outline, gold)</td><td class="n">1.13%</td><td class="n"><b>55.02%</b></td><td class="n">2.39%</td></tr>
+      </tbody>
+    </table></div>
+
+    <figure>
+      <img src="../img/bgtest-results.webp" width="760" height="778" alt="Nine results: plant, slime and spirit removed from magenta, green and blue. Only the spirit on green lost most of its body" loading="lazy">
+      <figcaption>Results. Rows from top: plant, slime, spirit. Columns from left: magenta, green, blue; the strip above each tile shows the background color. Only the spirit on green lost most of its body.</figcaption>
+    </figure>
+
+    <h2>Why the green slime survived a green background</h2>
+    <p>The most surprising result is the slime. Its whole body is green, yet not a single pixel was lost on the green background. There are two reasons.</p>
+    <p>First, the slime's green is nothing like #00FF00. For vivid backgrounds, BGPeel estimates how much background is mixed into a pixel by checking how far the background's strong channel (G for a green background) rises above its weak channels (R and B). For pure green that gap is 255, but the slime is a muted green with plenty of red and blue, so its gap is less than half of that. It is never judged to be "more than half background" and stays opaque.</p>
+    <p>Second, and more important, is the <b>dark outline</b>. BGPeel does not delete every background-like color in the image. It starts at the image border and removes only regions connected to the background, and it stops at pixels darker than a set brightness ("Glow minimum brightness", default 80) because those are treated as outlines. The slime and the plant are fully wrapped in dark outlines, so the removal never reached their background-colored interiors.</p>
+
+    <h2>Why the spirit lost more than half its body on green</h2>
+    <p>The spirit is the opposite case. It is a glowing gold figure with no outline, so nothing stops the removal that starts at the border. Gold and yellow also sit close to green on the color wheel. To clear glows around the background, BGPeel treats colors within a hue range around the background color ("Glow color range", default −85° to +30°) as background. For green (120°) that range is 35° to 150°, and the spirit's gold (about 40° to 55°) falls inside it. The result: 55% of the spirit disappeared along with the background.</p>
+    <p>The 2.39% loss on blue has the same cause. Around blue (240°) the range is 155° to 270°, which catches the spirit's cyan eyes and highlights (about 165° to 185°). Around magenta (300°) the range is 215° to 330°, which contains neither gold nor cyan, so magenta caused the least damage. The 1.13% lost on magenta is unrelated to hue: those were near-white highlights touching the background, which "Light background detection" treated as a pale glow.</p>
+
+    <h2>How to choose a background color</h2>
+    <ol>
+      <li><b>Pick a color far from the object's main colors on the color wheel.</b> Characters and props are mostly red, yellow, green and brown, so magenta is usually the safest choice. For pink or purple characters use green; if a character has lots of both green and pink, consider blue.</li>
+      <li><b>Be extra careful with characters that have no outline.</b> Fire, ghosts, magic effects and glowing spirits have soft edges, and any color close to the background gets eaten. Outlined pixel art is far more forgiving.</li>
+      <li><b>Images you've already made can usually be rescued with settings.</b> For the spirit on green, turning off "Also remove colored glows" cut the loss from 55.02% to 2.88%. See <a href="fix-eroded-edges">Parts of the object disappear</a> for details.</li>
+    </ol>
+
+    <h2>Put the color code in the prompt</h2>
+    <p>Once you've chosen a color, include both its name and its hex code in the prompt, for example “solid magenta (#FF00FF) background, flat color, no shadow, no gradient”. Even then, the AI won't hit the exact value. The real backgrounds of the three originals in this test were #FC01FB, #FA25FE and #D506D9. BGPeel measures the background color from each image's border, so differences like these don't matter. Wording that works well for each AI tool is covered in <a href="ai-background-prompts">Solid background prompts</a>.</p>
+
+    <h2>Summary</h2>
+    <ul>
+      <li>With a perfectly flat background, magenta, green and blue were all removed completely (0% left).</li>
+      <li>What made the difference was how far the object's colors were from the background color, and whether the object had an outline.</li>
+      <li>Outlined pixel-art characters barely lost anything even on a similar color, while an unoutlined glowing character lost more than half of itself on a nearby color.</li>
+      <li>If you're unsure, start with magenta. It caused the least or equal-least loss for all three characters.</li>
+    </ul>
+    <p><b><a href="./">→ Try it with your own images on BGPeel</a></b></p>
+    <section class="related">
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="ai-background-prompts">Solid background prompts for AI image tools</a></li>
+        <li><a href="fix-eroded-edges">Troubleshooting: parts of the object disappear</a></li>
+        <li><a href="magenta-background">Magenta or chroma key background to transparent PNG</a></li>
+      </ul>
+    </section>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">Tool</a>
+    <a href="guides">Guides</a>
+    <a href="features">Features</a>
+    <a href="about">About</a>
+    <a href="contact">Contact</a>
+    <a href="privacy">Privacy policy</a>
+  </footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>App Icon and Favicon Sizes for iOS, Android and the Web – BGPeel</title>
+<meta name="description" content="The App Store's 1024px no-alpha rule, Android adaptive icons' 108dp canvas and 66dp safe zone, Google Play's 512px icon, favicons and PWA icons, all on one page.">
+<link rel="canonical" href="https://bgpeel.com/en/app-icon-sizes">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/app-icon-sizes">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/app-icon-sizes">
+<link rel="icon" href="../icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="stylesheet" href="../style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./"><img src="../logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="Menu"><a href="guides">Guides</a><a href="about">About</a></nav>
+    <nav class="lang" aria-label="Language"><a href="../app-icon-sizes" hreflang="ko" lang="ko">한국어</a> | <span aria-current="true">English</span></nav>
+  </div>
+
+  <article class="doc">
+    <h1>App Icon and Favicon Sizes for iOS, Android and the Web</h1>
+    <p class="sub">One icon, many destinations, each with its own size and rules. iOS refuses transparency, and Android expects the outer part of your icon to be cropped away. Here are the specs per platform, plus the snags you hit when your icon starts life as a transparent PNG.</p>
+    <p class="byline">October 10, 2026 · <a href="about">BGPeel</a></p>
+
+    <h2>At a glance</h2>
+    <div class="table"><table>
+      <thead><tr><th>Use</th><th>Size</th><th>Requirements</th></tr></thead>
+      <tbody>
+        <tr><td>App Store icon (iOS)</td><td>1024×1024px</td><td>PNG, <b>no transparency or alpha channel</b>, no rounded corners</td></tr>
+        <tr><td>Android adaptive icon</td><td>108×108dp per layer (432px at xxxhdpi)</td><td>Foreground and background layers; key content within a 66dp circle</td></tr>
+        <tr><td>Android legacy launcher icon</td><td>48dp (48, 72, 96, 144, 192px)</td><td>One per density, mdpi to xxxhdpi</td></tr>
+        <tr><td>Google Play store icon</td><td>512×512px</td><td>32-bit PNG, sRGB, up to 1024KB, full square</td></tr>
+        <tr><td>Favicon</td><td>16, 32, 48px (ICO) or PNG in multiples of 48</td><td>48×48 or larger recommended for search results</td></tr>
+        <tr><td>iOS home screen shortcut (apple-touch-icon)</td><td>180×180px</td><td>Opaque recommended</td></tr>
+        <tr><td>Web app manifest (PWA)</td><td>192×192 and 512×512px</td><td>Maskable icons: key content within a circle of 40% radius</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2>iOS: one 1024px image, and no transparency</h2>
+    <p>The App Store icon is a 1024×1024 PNG. Since Xcode 14 you can supply just this one image and let Xcode derive the device sizes, instead of preparing 180, 167, 152 and 120px versions by hand. Don't round the corners either; the system applies its own mask, so draw a full square.</p>
+    <p>The rule people trip over most is <b>no transparency and no alpha channel</b>. Even if no pixel is transparent, a PNG that contains an alpha channel can be rejected on upload. We checked PNGs saved by BGPeel in Chrome: they are stored in a format with an alpha channel (RGBA) even when the image is fully opaque. So if your icon character is a transparent PNG, the final step for iOS is to fill in a background color and drop the alpha channel.</p>
+    <figure>
+      <img src="../img/icon-ios.webp" width="752" height="240" alt="A transparent slime, the same slime on a light blue background, and a preview with the iOS rounded mask applied" loading="lazy">
+      <figcaption>Left: transparent PNG (can't be uploaded as is). Middle: opaque 1024px master with a background color. Right: how it looks once the device applies its mask.</figcaption>
+    </figure>
+    <p>There are two easy ways to fill the background and remove the alpha channel. On a Mac, open the PNG in Preview, choose Export and uncheck “Alpha”, then make sure the formerly transparent areas came out in the color you intended. In Python, composite onto a background color and save as RGB:</p>
+    <pre><code>from PIL import Image
+icon = Image.open("icon_1024.png").convert("RGBA")
+bg = Image.new("RGBA", icon.size, (126, 200, 248, 255))  # fill color
+bg.alpha_composite(icon)
+bg.convert("RGB").save("AppIcon-1024.png")               # no alpha channel</code></pre>
+
+    <h2>Android: the outer third may be cropped</h2>
+    <p>Adaptive icons, used since Android 8.0, take a foreground layer (character or logo) and a background layer separately. Both are 108×108dp, and the device shows only the central 72×72dp, cropped to a circle, rounded square or other shape. The outer 18dp on each side is reserved for parallax and pulse effects. The official guidance is to keep anything that must be visible, like a logo, within the central 66dp circle.</p>
+    <figure>
+      <img src="../img/icon-android.webp" width="494" height="414" alt="A 108dp canvas with the 72dp visible square and 66dp safe circle, and three masked results: circle, squircle and rounded square" loading="lazy">
+      <figcaption>Left: the full 108dp canvas; the black square is the visible 72dp area and the red circle is the 66dp safe zone. Right: the same icon under different device masks.</figcaption>
+    </figure>
+    <p>A transparent PNG character makes a natural foreground layer: the background is already gone, so you add a solid color or pattern as the background layer. Make the foreground PNG 432×432px (108dp × 4 for xxxhdpi) and keep the character within the central 61% or so (66/108). Feed the transparent PNG to Android Studio's Image Asset tool and it will generate the per-density files and previews.</p>
+    <p>The icon on your Google Play store listing is separate: a 512×512px 32-bit PNG of up to 1024KB. Google Play applies a rounded mask (a radius of 30% of the icon size) and a shadow itself, so upload a full square with no rounded corners or shadow.</p>
+
+    <h2>Web: favicons, apple-touch-icon, PWA</h2>
+    <p>A browser tab shows the favicon at 16 to 32px. Use a multi-size <code>favicon.ico</code>, or link a PNG or SVG with <code>&lt;link rel="icon"&gt;</code>. For the site icon in Google Search results, a square in multiples of 48px (48, 96, 144…) is recommended. This site links a single 192px PNG as its favicon.</p>
+    <p>The icon shown when someone uses “Add to Home Screen” on an iPhone is set with <code>apple-touch-icon</code>, and 180×180px is standard. Transparent areas may appear black on some devices, so fill the background. Installable web apps (PWAs) list 192px and 512px icons in the manifest, and should add a separate <code>purpose: "maskable"</code> icon for devices that crop icon shapes. A maskable icon's safe zone is a circle with a radius of 40% of the icon width.</p>
+
+    <h2>One master: large and transparent</h2>
+    <p>Different sizes per platform don't mean drawing the icon several times. Keep one master of 1024px or more with a transparent background, and every size above can be scaled down from it. Scaling a small image up makes it blurry and jagged, so the master must be larger than the largest size you need. Keeping the background separate also means you can choose a different background per platform later: an Android foreground layer, a filled background for iOS, a round icon for the web. Paint the background into the master and you'll be redrawing for every variant.</p>
+
+    <h2>What disappears when you shrink</h2>
+    <p>More important than any spec is whether the icon is still recognizable when small. We scaled a detailed plant monster to 180, 64, 48, 32 and 16px.</p>
+    <figure>
+      <img src="../img/icon-scale.webp" width="460" height="406" alt="A plant monster at 180, 64, 48, 32 and 16px, with the 32px and 16px versions enlarged. At 16px the vines and teeth turn to mush" loading="lazy">
+      <figcaption>Top: actual size at 180, 64, 48, 32 and 16px. Bottom: the 32px and 16px versions enlarged 6× and 12×.</figcaption>
+    </figure>
+    <p>Down to 48px the flower face and leaves are distinct, but from 32px the teeth and vines blur together, and at 16px only red and yellow blobs remain. For icons used at 16 to 32px, such as favicons, crop to just the face or draw a simpler version rather than shrinking the full illustration.</p>
+
+    <h2>Getting several sizes at once with BGPeel</h2>
+    <ol>
+      <li>Add an icon master of 1024px or more to <a href="./">BGPeel</a> and remove the background. If it's already transparent, or you want to keep its background, open the tool in <a href="./?mode=none">“Keep background” mode</a>.</li>
+      <li>Set “Download size” to 1024 and download.</li>
+      <li>Change the size to 512, 192, 180 and 48 and download again each time. Results are kept at full resolution and resized at download time, so there's no need to convert again.</li>
+      <li>For the iOS 1024px icon, fill the background and remove the alpha channel as shown above.</li>
+    </ol>
+    <p>BGPeel halves the image step by step instead of shrinking it in one jump, which keeps thin outlines from breaking up. Details are in <a href="resize">Resize images</a>.</p>
+    <section class="related">
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="resize">Resize images</a></li>
+        <li><a href="png-webp-jpg">PNG vs WebP vs JPG measured file sizes</a></li>
+        <li><a href="kakao-emoticon">KakaoTalk emoticon sizes and transparent PNGs</a></li>
+      </ul>
+    </section>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">Tool</a>
+    <a href="guides">Guides</a>
+    <a href="features">Features</a>
+    <a href="about">About</a>
+    <a href="contact">Contact</a>
+    <a href="privacy">Privacy policy</a>
+  </footer>
+</main>
+</body>
+</html>

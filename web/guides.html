@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>가이드 모음 – BGPeel</title>
+<meta name="description" content="단색 배경 제거, AI 이미지 배경 프롬프트, 가장자리 색 번짐, 이미지 형식과 크기, 이모티콘·앱 아이콘·스프라이트 시트 만들기까지 BGPeel 가이드 전체 목록입니다.">
+<link rel="canonical" href="https://bgpeel.com/guides">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/guides">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/guides">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./"><img src="logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="메뉴"><a href="guides">가이드</a><a href="about">소개</a></nav>
+    <nav class="lang" aria-label="언어"><span aria-current="true">한국어</span> | <a href="en/guides" hreflang="en" lang="en">English</a></nav>
+  </div>
+
+  <article class="doc">
+    <h1>가이드 모음</h1>
+    <p class="sub">BGPeel을 만들고 쓰면서 직접 실험해 정리한 글입니다. 글에 나오는 이미지와 수치는 모두 실제 AI 이미지와 BGPeel로 직접 돌려 얻은 것입니다.</p>
+
+    <h2>시작하기</h2>
+    <ul class="guide-list">
+      <li><a href="magenta-background">마젠타·크로마키 배경을 투명 PNG로 만들기</a><span>BGPeel의 기본 사용법과 실제 전후 비교.</span></li>
+      <li><a href="features">기능 설명과 세부 옵션 가이드</a><span>모든 설정 항목의 뜻과 기본값.</span></li>
+      <li><a href="resize">이미지 크기 줄이기 · 리사이즈</a><span>배경은 두고 크기와 형식만 바꾸는 법.</span></li>
+      <li><a href="nano-banana-watermark">나노바나나 워터마크 제거하고 배경 투명하게 만들기</a><span>오른쪽 아래 반짝이 마크가 배경과 함께 지워지는 원리.</span></li>
+    </ul>
+
+    <h2>AI로 이미지 만들기</h2>
+    <ul class="guide-list">
+      <li><a href="ai-background-prompts">AI 이미지 단색 배경 프롬프트 모음</a><span>나노바나나·GPT 이미지·Midjourney별로 잘 통하는 문구와 실패하는 문구.</span></li>
+      <li><a href="background-color-test">마젠타·초록·파랑 배경 비교 실험</a><span>같은 캐릭터를 세 배경색으로 지워 본 결과. 배경색만큼 외곽선이 중요했습니다.</span></li>
+    </ul>
+
+    <h2>원리와 비교</h2>
+    <ul class="guide-list">
+      <li><a href="color-fringe">가장자리 색 번짐(프린지)이 생기는 이유와 없애는 법</a><span>색을 지우는 것과 섞인 배경색을 빼는 것의 차이.</span></li>
+      <li><a href="ai-vs-color-removal">AI 배경 제거 vs 색 기반 배경 제거</a><span>두 방식의 강점과 한계, 언제 무엇을 쓸지.</span></li>
+      <li><a href="png-webp-jpg">PNG·WebP·JPG 용량 비교 실측</a><span>WebP가 늘 작지는 않았고, 256색 PNG가 용량을 64~81% 줄였습니다.</span></li>
+    </ul>
+
+    <h2>쓰임새별</h2>
+    <ul class="guide-list">
+      <li><a href="kakao-emoticon">카카오 이모티콘 규격과 투명 PNG 만들기</a><span>360px 투명 PNG, 어두운 채팅방에서 드러나는 테두리, 여백 정리.</span></li>
+      <li><a href="app-icon-sizes">앱 아이콘·파비콘 크기 규격 정리</a><span>iOS의 알파 채널 금지, Android 안전 영역, 웹 아이콘 크기.</span></li>
+      <li><a href="sprite-sheet">AI 스프라이트를 Unity·Godot 스프라이트 시트로</a><span>위치·배율 맞추기, 시트 만드는 스크립트, 엔진별 가져오기 설정.</span></li>
+    </ul>
+
+    <h2>문제 해결</h2>
+    <ul class="guide-list">
+      <li><a href="fix-eroded-edges">물체가 깎일 때</a><span>깎인 모양별 원인과 설정. 손실 55%를 1.35%로 줄인 사례.</span></li>
+      <li><a href="fix-shadow">그림자가 남을 때</a><span>어떤 그림자가 왜 남는지, 진하기·색별 실험.</span></li>
+      <li><a href="fix-gradient-background">배경이 그라데이션일 때</a><span>그라데이션 다섯 종류 실험과 고치는 순서.</span></li>
+    </ul>
+
+    <p>찾는 내용이 없거나 글에서 틀린 부분을 발견했다면 <a href="contact">문의</a>로 알려 주세요.</p>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">도구</a>
+    <a href="guides">가이드</a>
+    <a href="features">기능 설명</a>
+    <a href="about">소개</a>
+    <a href="contact">문의</a>
+    <a href="privacy">개인정보처리방침</a>
+  </footer>
+</main>
+</body>
+</html>
