@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Convert HEIC to JPG: iPhone Photos in Bulk, No Upload – BGPeel</title>
+<meta name="description" content="Convert iPhone HEIC photos to JPG for free, many at once or a whole folder, right in your browser with no upload. Measured conversion times and sizes, choosing quality, and how rotation and location data are handled.">
+<link rel="canonical" href="https://bgpeel.com/en/heic-to-jpg">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/heic-to-jpg">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/heic-to-jpg">
+<link rel="icon" href="../icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="stylesheet" href="../style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./"><img src="../logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="Menu"><a href="guides">Guides</a><a href="about">About</a></nav>
+    <nav class="lang" aria-label="Language"><a href="../heic-to-jpg" hreflang="ko" lang="ko">한국어</a> | <span aria-current="true">English</span></nav>
+  </div>
+
+  <article class="doc">
+    <h1>Convert HEIC to JPG: iPhone Photos in Bulk, No Upload</h1>
+    <p class="sub">Most photos taken on an iPhone are saved as HEIC. They open fine on iPhones and Macs, but many Windows PCs, websites and older programs can't open or accept them. Here's how to convert HEIC photos to JPG in bulk with BGPeel, along with times and file sizes measured on real photos.</p>
+    <p class="byline">October 20, 2026 · <a href="about">BGPeel</a></p>
+
+    <p><b><a href="./?mode=none&amp;format=jpg">→ Convert HEIC to JPG now</a></b></p>
+
+    <h2>What is HEIC?</h2>
+    <p>HEIC is the HEIF image format using HEVC (H.265) compression. Apple has made it the iPhone camera's default since iOS 11. Its advantage is size: at similar quality, files are smaller than JPG. The photo used in this guide was 1.3MB as HEIC; converted to JPG at BGPeel's default quality it became 1.9MB, about 1.4 times larger.</p>
+    <p>The drawback is compatibility. Chrome, Edge and Firefox can't open HEIC on their own; Chrome 155, which we tested while writing this, couldn't either. Windows often can't open HEIC out of the box and needs extensions from the Microsoft Store (the HEVC one is paid). Plenty of places, such as review forms and official document uploads, still accept only JPG or PNG.</p>
+
+    <h2>How to convert with BGPeel</h2>
+    <ol>
+      <li>The link above opens the tool with “Background type” set to “Keep background” and “Format” set to JPG. If you came in another way, choose those two.</li>
+      <li>Drop HEIC photos or a folder onto the page. Many at once and subfolders are fine. The first time you add a HEIC, the converter (about 600KB to download) is fetched once.</li>
+      <li>Optionally choose “Quality” and “Download size”, using the measurements below as a guide.</li>
+      <li>Click “Convert”, then use each card's “Download” or “Download zip” for everything. File names stay the same; only the extension changes to .jpg.</li>
+    </ol>
+    <figure>
+      <img src="../img/heic-ui-en.webp" width="760" height="442" alt="BGPeel with a HEIC photo converted to JPG at quality 80. The card shows 4032×2688 · 1.3 MB → 4032×2688 · 1.1 MB" loading="lazy">
+      <figcaption>One HEIC photo converted to JPG at quality 80. Each card shows “original size and file size → downloaded size and file size”.</figcaption>
+    </figure>
+
+    <h2>Measured times and sizes</h2>
+    <p>We used two HEIC photos released by Aaron Rust under CC0 (public domain). One is the untouched original at 8256×5504 (about 45 megapixels, 4.3MB); the other was scaled to 4032px wide, the width of an iPhone photo, and saved again as HEIC at 4032×2688 (1.3MB). Measured in Chrome 155 on an Apple M1 MacBook.</p>
+    <div class="table"><table>
+      <thead><tr><th>Download settings</th><th class="n">4032×2688 (HEIC 1.3MB)</th><th class="n">8256×5504 (HEIC 4.3MB)</th></tr></thead>
+      <tbody>
+        <tr><td>JPG, default quality (92), original size</td><td class="n">1.9MB</td><td class="n">8.3MB</td></tr>
+        <tr><td>JPG, quality 80, original size</td><td class="n">1.1MB</td><td class="n">4.6MB</td></tr>
+        <tr><td>JPG, quality 60, original size</td><td class="n">756KB</td><td class="n">2.8MB</td></tr>
+        <tr><td>JPG, quality 80, 2048px</td><td class="n">320KB</td><td class="n">296KB</td></tr>
+        <tr><td>JPG, quality 80, 1024px</td><td class="n">95KB</td><td class="n">78KB</td></tr>
+        <tr><td>Open time / convert time</td><td class="n">0.9s / 0.35s</td><td class="n">4.1s / 1.6s</td></tr>
+      </tbody>
+    </table></div>
+    <p>Open time runs from adding the photo until its card preview appears, and the first one includes fetching the converter. That's around a second per photo, and computers process several at once. Very large photos like the 45-megapixel one use a lot of memory and can be slow on phones.</p>
+
+    <h2>Which quality to choose</h2>
+    <p>At original size and default quality (92), JPGs come out larger than the HEIC, as the table shows. That's expected, because HEIC is simply the more efficient format. If you want roughly the HEIC's size, quality 80 worked well: the 4032×2688 photo at quality 80 was 1.1MB, slightly smaller than the original HEIC (1.3MB).</p>
+    <p>How much does quality change? Taking macOS's own rendering of the HEIC (what the iPhone Photos app shows) as the reference, the JPG BGPeel made at default quality differed by 1.0 level per pixel on average (on a 0–255 scale). That's invisible to the eye.</p>
+    <figure>
+      <img src="../img/heic-compare.webp" width="760" height="372" alt="Dry grass from the photo enlarged 2×. The original HEIC on the left and the converted JPG on the right look the same" loading="lazy">
+      <figcaption>Dry grass from the photo, enlarged 2×. Left: original HEIC (as opened by macOS). Right: JPG made by BGPeel at default quality. Photo: Aaron Rust, CC0.</figcaption>
+    </figure>
+    <p>For photos you'll send in a messenger or post to a blog, also setting “Download size” to 2048px makes the biggest difference. At quality 80 and 2048px the file was 320KB, about a quarter of the original HEIC. More ways to shrink files are in <a href="compress-image">Reduce image file size</a>.</p>
+
+    <h2>Good to know</h2>
+    <ul>
+      <li><b>Rotation and flips:</b> iPhones store how a photo should be turned instead of rotating the pixels. BGPeel applies that information so photos come out upright. We compared standard HEIF test files with rotation (90°), flipping, rotation plus cropping, and tiled images against macOS's rendering, and all came out with the same orientation and size.</li>
+      <li><b>Location and date:</b> converted JPGs carry no metadata, such as GPS location, camera details or the capture date. That makes them safer to share, but if you're archiving photos to sort by date in a photo app, keep the HEIC originals too.</li>
+      <li><b>Color space:</b> iPhone photos usually use Display P3, a wider color space than standard sRGB. The JPG doesn't carry that color space information, so side by side with the original on a wide-gamut screen, very saturated reds and greens can look slightly less intense.</li>
+      <li><b>Live Photos and bursts:</b> a Live Photo is a still photo (HEIC) plus a short video stored separately; only the photo is converted. For a HEIC containing several images, the primary image is converted.</li>
+      <li><b>No upload:</b> photos are never sent to a server and are processed only in your browser. Personal photos with location data never leave your device.</li>
+    </ul>
+
+    <h2>Getting JPGs from your iPhone in the first place</h2>
+    <p>To skip converting altogether, change the iPhone's settings. Under Settings → Camera → Formats, choose “Most Compatible” and new photos are saved as JPG, though each one is larger. And under Settings → Photos, setting “Transfer to Mac or PC” to “Automatic” converts photos to a compatible format when you copy them to a computer by cable. For HEIC photos you've already taken, or HEIC files you received by email or messenger, converting them in one go with BGPeel is faster.</p>
+
+    <h2>Frequently asked questions</h2>
+    <dl>
+      <dt>How many can I convert at once?</dt>
+      <dd>There's no set limit. Adding a folder includes its subfolders, and the zip keeps the folder structure. With a very large number of photos, things can slow down depending on your device's memory, so batches of a few hundred are a good idea.</dd>
+      <dt>Can I convert to PNG or WebP instead?</dt>
+      <dd>Yes, choose PNG or WebP under “Format”. Photos get very large as PNG, so to keep files small use JPG or WebP with a quality setting.</dd>
+      <dt>Does it work on a phone?</dt>
+      <dd>Yes. Phones process one photo at a time to save memory, so it's slower than on a computer.</dd>
+      <dt>Is it free?</dt>
+      <dd>Yes, free with no image limits and no watermarks. The site is supported by ads.</dd>
+    </dl>
+    <section class="related">
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="compress-image">Reduce image file size</a></li>
+        <li><a href="png-webp-jpg">PNG vs WebP vs JPG measured file sizes</a></li>
+        <li><a href="resize">Resize images</a></li>
+      </ul>
+    </section>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">Tool</a>
+    <a href="guides">Guides</a>
+    <a href="features">Features</a>
+    <a href="about">About</a>
+    <a href="contact">Contact</a>
+    <a href="privacy">Privacy policy</a>
+  </footer>
+</main>
+</body>
+</html>

@@ -29,8 +29,9 @@ const SLIDERS = {
 const clone = (o) => JSON.parse(JSON.stringify(o));
 let cfg = clone(D);
 try { Object.assign(cfg, JSON.parse(localStorage.getItem("nobg-cfg")) || {}); } catch {}
-// 안내 페이지에서 ?mode=none(크기만 바꾸기)처럼 배경 종류를 정해 들어올 수 있다
-const qMode = new URLSearchParams(location.search).get("mode");
+// 안내 페이지에서 ?mode=none(크기만 바꾸기)·?format=jpg처럼 배경 종류와 저장 형식을 정해 들어올 수 있다
+const qs = new URLSearchParams(location.search);
+const qMode = qs.get("mode");
 if (qMode && Object.hasOwn(T.modeHelp, qMode)) cfg.mode = qMode;
 const save = () => { try { localStorage.setItem("nobg-cfg", JSON.stringify(cfg)); } catch {} };
 
@@ -152,10 +153,12 @@ for (let i = 0; i < POOL; i++) {
 const call = (msg) => new Promise((res) => { const id = ++seq; pending.set(id, res); queue.push({ id, ...msg }); pump(); });
 
 // 내려받을 크기(긴 변 px, 0=원본)와 256색. 전체 기본값은 이 브라우저에 기억하고, 카드마다 따로 가진다.
-// 저장 형식(png·webp)은 전체에 하나만 둔다
-const SIDES = [0, 1024, 512, 256, 128, 64];
-let out = { side: 0, colors: false, format: "png" };
+// 저장 형식(png·webp·jpg)과 화질은 전체에 하나만 둔다
+const SIDES = [0, 2048, 1024, 512, 256, 128, 64];
+const QUALITY = [0, 0.9, 0.8, 0.7, 0.6, 0.5]; // JPG·WebP 화질. 0 = 기본(JPG 0.92, WebP 무손실)
+let out = { side: 0, colors: false, format: "png", quality: 0 };
 try { Object.assign(out, JSON.parse(localStorage.getItem("nobg-out")) || {}); } catch {}
+if (["png", "webp", "jpg"].includes(qs.get("format"))) out.format = qs.get("format");
 const saveOut = () => { try { localStorage.setItem("nobg-out", JSON.stringify(out)); } catch {} };
 
 const outHTML = (colorsLabel) => `<select class="side" aria-label="${T.side}">${SIDES.map((v) => `<option value="${v}">${v ? v + " px" : T.original}</option>`).join("")}<option value="custom">${T.custom}</option></select>
@@ -182,8 +185,12 @@ function bindOut(el, onChange) {
 }
 
 $("#export").innerHTML = `<span class="lbl">${T.format}</span><select class="fmt" aria-label="${T.format}"><option value="png">PNG</option><option value="webp">WebP</option><option value="jpg">${T.jpg}</option></select>
+  <span class="qual"><span class="lbl">${T.quality}</span><select class="q" aria-label="${T.quality}">${QUALITY.map((v) => `<option value="${v}">${v ? Math.round(v * 100) : T.qDefault}</option>`).join("")}</select></span>
   <span class="lbl">${T.side}</span>${outHTML(T.colors)}<p class="help">${T.exportHelp}</p>`;
 $("#export .fmt").value = out.format;
+$("#export .q").value = out.quality;
+const showQual = () => { $("#export .qual").hidden = out.format === "png"; }; // 화질은 JPG·WebP에만
+showQual();
 setOutUI($("#export"), out);
 // 전체에서 바꾸면 모든 카드가 따라가고, 그다음 카드마다 따로 바꿀 수 있다
 bindOut($("#export"), (patch) => {
@@ -195,22 +202,27 @@ bindOut($("#export"), (patch) => {
 $("#export .fmt").onchange = (e) => {
   out.format = e.target.value;
   saveOut();
+  showQual();
   setOutUI($("#export"), out);
   items.forEach(showOut);
 };
+$("#export .q").onchange = (e) => { out.quality = +e.target.value; saveOut(); items.forEach(showOut); };
 
 const fmtSize = (b) => (b >= 1048576 ? (b / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(b / 1024)) + " KB");
 const colorsOn = (it) => it.colors && out.format === "png";
-const expKey = (it) => `${it.side}|${colorsOn(it)}|${out.format}`;
+const qualityOn = () => (out.format === "png" ? 0 : out.quality);
+const expKey = (it) => `${it.side}|${colorsOn(it)}|${out.format}|${qualityOn()}`;
 const shrinks = (it) => { const [W, H] = fitSize(it.w, it.h, it.side); return out.format !== "png" || colorsOn(it) || W !== it.w || H !== it.h; };
 
-// 카드의 크기 칸과 '원본 크기·용량 → 내려받을 크기·용량' 줄. 용량은 한 번 내려받은 뒤에 보인다
+// 카드의 크기 칸과 '원본 크기·용량 → 받을 크기·용량' 줄. 원본 용량은 올린 파일 그대로(용량 줄이기를 정직하게 비교하려고),
+// 받을 용량은 줄일 게 없으면 변환 결과, 줄이면 한 번 내려받은 뒤에 보인다
 function showOut(it) {
   setOutUI(it.card, it);
   if (!it.blob) return;
   const [W, H] = fitSize(it.w, it.h, it.side);
-  const made = it.exp?.key === expKey(it) && it.exp.src === it.blob ? ` · ${fmtSize(it.exp.blob.size)}` : "";
-  $(".dims", it.card).textContent = `${it.w}×${it.h} · ${fmtSize(it.blob.size)}` + (shrinks(it) ? ` → ${W}×${H}${made}` : "");
+  const got = !shrinks(it) ? it.blob : it.exp?.key === expKey(it) && it.exp.src === it.blob ? it.exp.blob : null;
+  const to = [shrinks(it) && `${W}×${H}`, got && fmtSize(got.size)].filter(Boolean).join(" · ");
+  $(".dims", it.card).textContent = `${it.w}×${it.h} · ${fmtSize(it.size)} → ${to}`;
 }
 
 // 내려받을 파일. 줄일 게 없으면 변환 결과 그대로, 같은 설정으로 이미 만들었으면 다시 쓴다
@@ -218,7 +230,7 @@ async function exported(it) {
   if (!shrinks(it)) return it.blob;
   const key = expKey(it), src = it.blob;
   if (it.exp?.key !== key || it.exp.src !== src) {
-    const r = await call({ job: "shrink", blob: src, side: it.side, colors: colorsOn(it), format: out.format });
+    const r = await call({ job: "shrink", blob: src, side: it.side, colors: colorsOn(it), format: out.format, quality: qualityOn() });
     if (r.error) throw new Error(r.error);
     it.exp = { key, src, blob: r.blob };
     showOut(it);
@@ -226,14 +238,17 @@ async function exported(it) {
   return it.exp.blob;
 }
 
-const items = []; // {file, path, url, card, side, colors, blob, w, h, resultUrl, exp}. path = 놓은 폴더 기준 경로(zip 안 구조)
+const items = []; // {file, path, url, card, size, ready, side, colors, blob, w, h, resultUrl, exp}. path = 놓은 폴더 기준 경로(zip 안 구조), size = 올린 파일 용량
 let busy = false;
 let lastRunCfg = null; // 마지막으로 변환한 설정(바뀌면 '다시 변환' 안내)
+
+// HEIC·HEIF(아이폰 사진). 형식을 모르는 브라우저(윈도우 크롬 등)는 type이 비어 있어 이름으로도 본다
+const isHeic = (f) => /^image\/hei[cf]/.test(f.type) || /\.hei[cf]$/i.test(f.name);
 
 function addFiles(list) {
   list.sort((a, b) => a.path.localeCompare(b.path, undefined, { numeric: true })); // 폴더 순서대로, g2가 g10보다 앞
   for (const { file, path } of list) {
-    if (!file.type.startsWith("image/")) continue;
+    if (!file.type.startsWith("image/") && !isHeic(file)) continue;
     const url = URL.createObjectURL(file);
     const card = document.createElement("div");
     card.className = "card";
@@ -248,16 +263,23 @@ function addFiles(list) {
     card.querySelector(".name").title = path;
     card.querySelector(".st").textContent = T.waiting;
     $("#list").append(card);
-    const it = { file, path, url, card, th: { orig: null, res: null }, ...out };
+    const it = { file, path, url, card, size: file.size, th: { orig: null, res: null }, ...out };
     bindOut(card, (patch) => { Object.assign(it, patch); showOut(it); });
     bindPeek(it);
     paint(it);
+    // HEIC는 브라우저가 열지 못해 처리기에서 먼저 PNG로 풀어 둔다. 미리보기와 변환은 이게 끝난 뒤에
+    it.ready = isHeic(file) ? call({ job: "heic", file }).then((r) => {
+      if (r.error) throw new Error(T.heicFail);
+      it.file = new File([r.blob], file.name, { type: "image/png" });
+      URL.revokeObjectURL(it.url);
+      if (items.includes(it)) it.url = URL.createObjectURL(it.file);
+    }) : Promise.resolve();
     // 원본 미리보기 사본은 처리기에서 따로 만든다. 그동안 카드 그림은 비어 있다(2048px 원본을 여러 장 띄우지 않으려고)
-    call({ job: "thumbs", blob: file }).then((r) => {
+    it.ready.then(() => call({ job: "thumbs", blob: it.file })).then((r) => {
       if (!items.includes(it)) return;
       it.th.orig = thumbUrls(r.thumbs);
       setSrc(it);
-    });
+    }, (e) => items.includes(it) && setSt(it, T.error + e.message, "err"));
     const pick = $(".pick", card);
     pick.onchange = refresh;
     // Shift+클릭: 마지막으로 누른 카드부터 여기까지를 이 카드가 바뀔 상태로 한 번에
@@ -464,7 +486,7 @@ async function convert(it, runCfg) {
   setSt(it, T.processing);
   const det = it.card.querySelector(".detected");
   det.hidden = true;
-  const r = await call({ job: "remove", file: it.file, cfg: runCfg });
+  const r = await it.ready.then(() => call({ job: "remove", file: it.file, cfg: runCfg }), (e) => ({ error: e.message }));
   $(".out", it.card).hidden = !r.blob;
   if (r.blob) {
     if (it.resultUrl) URL.revokeObjectURL(it.resultUrl);
@@ -521,7 +543,7 @@ async function zip() {
     const blobs = await Promise.all(done.map((it) => exported(it).then((b) => { $("#status").textContent = T.zipMaking(++n, done.length); return b; })));
     for (const [i, it] of done.entries()) {
       const blob = blobs[i];
-      before += it.blob.size; after += blob.size;
+      before += it.size; after += blob.size;
       let name = outName(it.path, blob); // 폴더 구조 그대로
       const c = (used.get(name) || 0) + 1;
       used.set(name, c);

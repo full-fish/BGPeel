@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>이미지 용량 줄이기: 사진 화질은 지키고 용량만 줄이는 법 – BGPeel</title>
+<meta name="description" content="사진·이미지 용량을 무료로 줄이는 법. 크기·화질·형식 중 무엇이 가장 효과가 큰지 실제 사진으로 재 본 결과와, 여러 장을 업로드 없이 한 번에 줄이는 방법을 정리했습니다.">
+<link rel="canonical" href="https://bgpeel.com/compress-image">
+<link rel="alternate" hreflang="ko" href="https://bgpeel.com/compress-image">
+<link rel="alternate" hreflang="en" href="https://bgpeel.com/en/compress-image">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1379550026930118" crossorigin="anonymous"></script>
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="brand" href="./"><img src="logo.png" alt="" width="24" height="24">BGPeel</a>
+    <nav class="menu" aria-label="메뉴"><a href="guides">가이드</a><a href="about">소개</a></nav>
+    <nav class="lang" aria-label="언어"><span aria-current="true">한국어</span> | <a href="en/compress-image" hreflang="en" lang="en">English</a></nav>
+  </div>
+
+  <article class="doc">
+    <h1>이미지 용량 줄이기: 사진 화질은 지키고 용량만 줄이는 법</h1>
+    <p class="sub">메일 첨부 용량 제한에 걸리거나, 서류 제출 사이트가 “1MB 이하”를 요구하거나, 블로그 사진이 느리게 뜰 때 이미지 용량을 줄여야 합니다. 용량을 줄이는 방법은 크게 세 가지인데, 효과는 크게 다릅니다. 실제 사진으로 재 본 결과와 BGPeel로 여러 장을 한 번에 줄이는 방법을 정리했습니다.</p>
+    <p class="byline">2026년 10월 20일 · <a href="about">BGPeel</a></p>
+
+    <p><b><a href="./?mode=none&amp;format=jpg">→ 이미지 용량 바로 줄이기</a></b></p>
+
+    <h2>용량을 줄이는 세 가지 방법</h2>
+    <ol>
+      <li><b>크기(해상도) 줄이기:</b> 가로세로 픽셀 수를 줄입니다. 가로세로를 절반으로 줄이면 픽셀 수는 4분의 1이 되어, 가장 확실하게 줄어듭니다. 휴대폰 사진은 대부분 가로 4000px 안팎인데, 화면에서 볼 사진이라면 2048px로도 충분합니다.</li>
+      <li><b>화질 낮추기:</b> JPG·WebP는 압축할 때 눈에 덜 띄는 정보를 버리는데, 화질 값이 낮을수록 더 많이 버립니다. 80 정도까지는 눈으로 차이를 찾기 어렵습니다.</li>
+      <li><b>형식 바꾸기:</b> 사진은 JPG나 WebP가 알맞고, PNG는 사진에서 용량이 매우 커집니다. 반대로 스크린샷·그림·아이콘은 PNG를 256색으로 줄이는 방법이 효과적입니다.</li>
+    </ol>
+
+    <h2>직접 재 본 결과</h2>
+    <p>Aaron Rust가 CC0(저작권 없음)로 공개한 사진을 4032×2688 크기, 화질 90의 JPG(2.4MB)로 저장해 휴대폰 사진처럼 만들었습니다. 이 사진을 BGPeel에서 설정만 바꿔 가며 받은 결과입니다. 측정 환경은 Apple M1 맥북의 크롬 155이고, 한 장 받는 데 0.2초 안팎이 걸렸습니다.</p>
+    <div class="table"><table>
+      <thead><tr><th>받는 설정</th><th class="n">용량</th><th class="n">원본 대비</th></tr></thead>
+      <tbody>
+        <tr><td>원본 (JPG, 4032×2688)</td><td class="n">2.4MB</td><td class="n">–</td></tr>
+        <tr><td>JPG 기본 화질(92), 크기 그대로</td><td class="n">1.9MB</td><td class="n">−20%</td></tr>
+        <tr><td>JPG 화질 80, 크기 그대로</td><td class="n">1.1MB</td><td class="n">−53%</td></tr>
+        <tr><td>JPG 화질 60, 크기 그대로</td><td class="n">749KB</td><td class="n">−69%</td></tr>
+        <tr><td>WebP 화질 80, 크기 그대로</td><td class="n">808KB</td><td class="n">−67%</td></tr>
+        <tr><td><b>JPG 화질 80, 2048px</b></td><td class="n"><b>320KB</b></td><td class="n"><b>−87%</b></td></tr>
+        <tr><td>WebP 화질 80, 2048px</td><td class="n">237KB</td><td class="n">−90%</td></tr>
+        <tr><td>JPG 화질 80, 1024px</td><td class="n">95KB</td><td class="n">−96%</td></tr>
+      </tbody>
+    </table></div>
+    <p>표에서 보이듯 크기를 2048px로 줄이는 것이 화질을 60까지 낮추는 것보다 효과가 컸습니다. 크기 그대로 화질만 92로 다시 저장해도 20%가 줄었는데, 프로그램마다 JPG를 압축하는 방식이 달라서 생긴 차이입니다. 원본이 이미 강하게 압축된 사진이라면 이만큼 줄지 않을 수 있습니다.</p>
+
+    <h2>화질 80이면 티가 날까</h2>
+    <p>사진에서 화질에 따른 차이가 가장 컸던 부분(마른 풀)을 골라 2배로 확대해 보았습니다.</p>
+    <figure>
+      <img src="img/compress-quality.webp" width="752" height="240" alt="마른 풀 부분을 2배 확대한 비교. 화질 92, 80, 60이 거의 같아 보이고 60만 아주 조금 뭉개진다" loading="lazy">
+      <figcaption>같은 부분을 2배 확대. 왼쪽부터 JPG 화질 92(1.9MB), 80(1.1MB), 60(749KB). 사진: Aaron Rust, CC0.</figcaption>
+    </figure>
+    <p>차이가 가장 큰 곳을 골라 확대해도 92와 80은 구분하기 어렵고, 60에서야 가는 풀잎이 아주 조금 뭉개집니다. 사진이라면 화질 80과 2048px 조합을 먼저 써 보고, 더 줄여야 할 때 화질 60이나 1024px로 내리는 순서를 권합니다. 글자가 많은 스크린샷처럼 경계가 날카로운 이미지는 JPG로 압축하면 글자 둘레가 지저분해지기 쉬워 PNG가 낫습니다.</p>
+
+    <h2>크기는 얼마로 줄일까</h2>
+    <p>기준은 간단합니다. 사진이 보일 화면 폭의 2배면 충분합니다. 요즘 휴대폰 화면은 세로로 들었을 때 가로가 1080~1290픽셀 안팎이라, 휴대폰 화면을 꽉 채워 보는 사진도 2048px면 넉넉합니다. 블로그 본문은 대개 폭 700~900px로 보이므로, 선명한 고해상도 화면을 생각해도 1600~2048px면 충분합니다. 메신저 앱은 사진을 보낼 때 스스로 다시 줄이는 경우가 많아서, 원본 크기로 보내도 받는 사람에게는 작게 도착하기도 합니다.</p>
+    <p>인쇄할 사진은 다릅니다. 인쇄는 1인치(2.54cm)당 300픽셀 정도가 필요해서, 4×6인치(약 10×15cm) 사진이면 1800×1200, A4 한 장 전체면 3508×2480 정도가 필요합니다. 인화나 출판에 쓸 사진은 크기를 줄이지 말고, 꼭 줄여야 한다면 화질만 조금 낮추세요.</p>
+
+    <h2>BGPeel로 여러 장 한 번에 줄이기</h2>
+    <ol>
+      <li>위 링크로 들어가면 ‘배경 종류’는 ‘지우지 않음’, ‘저장 형식’은 JPG로 맞춰져 있습니다.</li>
+      <li>사진이나 폴더를 끌어다 놓습니다. JPG, PNG, WebP는 물론 아이폰 HEIC 사진도 됩니다.</li>
+      <li>‘화질’과 ‘내려받을 크기’를 고릅니다. 크기는 2048·1024px 중에 고르거나 ‘직접 입력’으로 1600처럼 원하는 값을 적습니다. 긴 변 기준으로 비율을 유지해 줄이고, 원본보다 키우지는 않습니다.</li>
+      <li>‘변환 시작’을 누른 뒤, 한 장씩 ‘다운로드’하거나 ‘zip 다운로드’로 받습니다.</li>
+    </ol>
+    <figure>
+      <img src="img/compress-ui-ko.webp" width="760" height="442" alt="BGPeel에서 JPG 화질 80, 2048px로 설정해 사진을 줄인 화면. 카드에 4032×2688 · 2.4 MB → 2048×1365 · 320 KB가 표시된다" loading="lazy">
+      <figcaption>저장 형식 JPG, 화질 80, 2048px로 받은 화면. 카드에 원래 파일 용량과 받은 파일 용량이 함께 표시됩니다.</figcaption>
+    </figure>
+    <p>카드에는 ‘원본 크기·용량 → 받을 크기·용량’이 표시되고, 받을 용량은 한 번 받은 뒤에 나타납니다. 결과는 원본 해상도로 메모리에 남아 있어서, 화질이나 크기를 바꿔 가며 다시 받아 보고 용량을 비교할 수 있습니다. zip으로 받으면 상태 줄에 전체 용량이 얼마에서 얼마로 줄었는지도 나옵니다.</p>
+
+    <h2>용도별 추천 설정</h2>
+    <div class="table"><table>
+      <thead><tr><th>용도</th><th>추천</th><th>이 글의 사진 기준 용량</th></tr></thead>
+      <tbody>
+        <tr><td>메신저·SNS·블로그에 올릴 사진</td><td>JPG 80, 2048px</td><td class="n">320KB</td></tr>
+        <tr><td>웹사이트에 올릴 사진(더 가볍게)</td><td>WebP 80, 2048px</td><td class="n">237KB</td></tr>
+        <tr><td>“1MB 이하” 같은 제출 제한</td><td>JPG 80, 2048px부터 시도</td><td class="n">320KB</td></tr>
+        <tr><td>아주 작아야 할 때(썸네일 등)</td><td>JPG 80, 1024px</td><td class="n">95KB</td></tr>
+        <tr><td>스크린샷·그림·아이콘</td><td>PNG + 256색</td><td>그림 종류에 따라 64~81% 감소(<a href="png-webp-jpg">실측</a>)</td></tr>
+      </tbody>
+    </table></div>
+
+    <h2>알아 둘 점</h2>
+    <ul>
+      <li><b>원본은 따로 두세요.</b> JPG는 저장할 때마다 정보를 조금씩 버립니다. 줄인 파일을 다시 줄이는 일을 반복하면 화질이 계속 떨어지니, 항상 원본에서 다시 만드는 편이 좋습니다.</li>
+      <li><b>위치 정보가 지워집니다.</b> 줄인 파일에는 촬영 위치(GPS), 카메라 정보, 촬영 날짜 같은 메타데이터가 들어가지 않습니다. 공유할 때는 안전하지만, 날짜순 정리가 필요한 원본 보관용으로는 맞지 않습니다.</li>
+      <li><b>투명 배경은 JPG에 저장되지 않습니다.</b> 투명한 부분이 흰색으로 채워지므로, 투명 배경이 필요하면 PNG나 WebP를 고르세요.</li>
+      <li><b>업로드 없이 처리됩니다.</b> TinyPNG처럼 파일을 서버로 올려 압축하는 서비스와 달리, BGPeel은 브라우저 안에서만 처리합니다. 개인 사진이나 회사 자료도 기기 밖으로 나가지 않습니다.</li>
+    </ul>
+
+    <h2>자주 묻는 질문</h2>
+    <dl>
+      <dt>PNG를 PNG로 저장했는데 왜 안 줄어드나요?</dt>
+      <dd>PNG는 정보를 버리지 않는 형식이라 같은 크기로 다시 저장해도 거의 그대로입니다. 사진이라면 JPG나 WebP로 바꾸고, 그림·아이콘이라면 ‘256색으로 용량 줄이기’를 켜세요.</dd>
+      <dt>“500KB 이하”처럼 용량을 정해서 줄일 수 있나요?</dt>
+      <dd>목표 용량을 직접 적는 기능은 없습니다. 대신 카드에 받은 파일의 용량이 바로 표시되므로, 화질 80·2048px로 받아 보고 넘치면 화질 60이나 1024px로 한 단계씩 내려 보세요. 결과가 메모리에 남아 있어 다시 받는 데 1초도 걸리지 않습니다.</dd>
+      <dt>몇 장까지 한 번에 되나요?</dt>
+      <dd>정해진 제한은 없습니다. 폴더째 넣으면 하위 폴더까지 들어가고, zip 안에 같은 폴더 구조로 담깁니다.</dd>
+      <dt>아이폰 사진(HEIC)도 줄일 수 있나요?</dt>
+      <dd>네. HEIC를 넣으면 JPG나 WebP로 바꾸면서 함께 줄일 수 있습니다. 자세한 내용은 <a href="heic-to-jpg">HEIC를 JPG로 변환하기</a>를 참고하세요.</dd>
+    </dl>
+    <section class="related">
+      <h2>함께 보면 좋은 글</h2>
+      <ul>
+        <li><a href="heic-to-jpg">HEIC를 JPG로 변환하기</a></li>
+        <li><a href="png-webp-jpg">PNG·WebP·JPG 용량 비교 실측</a></li>
+        <li><a href="resize">이미지 크기 줄이기 · 리사이즈</a></li>
+      </ul>
+    </section>
+  </article>
+
+  <footer>
+    <span>© 2026 BGPeel</span>
+    <a href="./">도구</a>
+    <a href="guides">가이드</a>
+    <a href="features">기능 설명</a>
+    <a href="about">소개</a>
+    <a href="contact">문의</a>
+    <a href="privacy">개인정보처리방침</a>
+  </footer>
+</main>
+</body>
+</html>

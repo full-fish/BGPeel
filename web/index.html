@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BGPeel – 단색·크로마키 배경 제거, 투명 PNG 무료 변환</title>
-<meta name="description" content="단색·크로마키 배경과 나노바나나 워터마크를 지워 투명 PNG로. 이미지 크기 변경·JPG/WebP 저장까지 여러 장 한 번에, 업로드 없이.">
+<meta name="description" content="단색·크로마키 배경과 나노바나나 워터마크를 지워 투명 PNG로. 이미지 크기·용량 줄이기, 아이폰 HEIC→JPG 변환까지 여러 장 한 번에, 업로드 없이.">
 <link rel="canonical" href="https://bgpeel.com/">
 <link rel="alternate" hreflang="ko" href="https://bgpeel.com/">
 <link rel="alternate" hreflang="en" href="https://bgpeel.com/en/">
@@ -35,10 +35,10 @@
   <p class="sub">이미지를 여러 장 올리면 마젠타 같은 단색 배경을 지워 투명 PNG로 만듭니다. 이미지는 서버로 업로드되지 않고 이 브라우저 안에서만 처리됩니다.</p>
 
   <div class="drop" id="drop">
-    <input type="file" id="file" accept="image/*" multiple>
+    <input type="file" id="file" accept="image/*,.heic,.heif" multiple>
     <input type="file" id="dir" webkitdirectory>
     이미지나 폴더를 끌어다 놓거나 <label for="file"><b>클릭해서 선택</b></label> · <label for="dir" class="dir"><b>폴더 선택</b></label>
-    <span class="hint">붙여넣기(Ctrl+V · ⌘V)도 됩니다</span>
+    <span class="hint">붙여넣기(Ctrl+V · ⌘V)도 되고, 아이폰 HEIC 사진도 열립니다</span>
   </div>
 
   <div id="opts">
@@ -128,7 +128,7 @@
           <li><b>확인</b>: ‘배경’을 검정·흰색으로 바꾸면 가장자리에 남은 배경색이 잘 보입니다. ‘카드 크기’ −/+로 한 화면에 보이는 장 수를 바꿉니다.</li>
           <li><b>일부만 다시</b>: 카드 이미지를 눌러 고른 뒤 변환하면 고른 것만 다시 하고 나머지 결과는 그대로 둡니다. Shift를 누른 채 누르면 여러 장을 한 번에 고르고, ‘실패만 선택’은 건너뛰거나 실패한 카드만 고릅니다. 카드 오른쪽 위 ×는 목록에서 빼기입니다.</li>
         </ul></li>
-      <li><b>받기</b> — 카드마다 있는 ‘다운로드’로 한 장씩 받거나, ‘zip 다운로드’로 한 번에 받습니다. 폴더로 올렸다면 zip 안에 같은 폴더 구조로 담깁니다. ‘내려받을 크기’와 ‘256색’으로 용량을 줄여 받을 수 있고, 카드마다 따로 정할 수도 있습니다. ‘저장 형식’에서 PNG·WebP·JPG 중에 고를 수 있습니다. 투명 배경은 PNG와 WebP만 저장되고, JPG는 투명한 부분이 흰색으로 채워집니다. 배경은 두고 크기만 바꾸려면 배경 종류를 ‘지우지 않음’으로 고르세요.</li>
+      <li><b>받기</b> — 카드마다 있는 ‘다운로드’로 한 장씩 받거나, ‘zip 다운로드’로 한 번에 받습니다. 폴더로 올렸다면 zip 안에 같은 폴더 구조로 담깁니다. ‘내려받을 크기’와 ‘256색’으로 용량을 줄여 받을 수 있고, 카드마다 따로 정할 수도 있습니다. ‘저장 형식’에서 PNG·WebP·JPG 중에 고를 수 있고, JPG·WebP는 ‘화질’을 낮추면 더 작아집니다. 투명 배경은 PNG와 WebP만 저장되고, JPG는 투명한 부분이 흰색으로 채워집니다. 배경은 두고 크기만 바꾸려면 배경 종류를 ‘지우지 않음’으로 고르세요.</li>
     </ol>
 
     <h2>이런 이미지에 잘 맞아요</h2>
@@ -167,7 +167,7 @@
       <dt>무료인가요?</dt>
       <dd>네, 무료입니다. 사이트는 광고로 운영됩니다.</dd>
       <dt>어떤 파일을 쓸 수 있나요?</dt>
-      <dd>PNG, JPG, WebP, BMP, GIF(첫 프레임) 등 브라우저가 여는 이미지 파일이면 됩니다. 결과는 PNG·WebP(투명 배경 유지)나 JPG(투명 부분은 흰색)로 받습니다.</dd>
+      <dd>PNG, JPG, WebP, BMP, GIF(첫 프레임) 등 브라우저가 여는 이미지 파일과 아이폰의 HEIC 사진을 쓸 수 있습니다. 결과는 PNG·WebP(투명 배경 유지)나 JPG(투명 부분은 흰색)로 받습니다.</dd>
       <dt>몇 장까지 한 번에 되나요?</dt>
       <dd>정해진 제한은 없습니다. 한 장씩 차례로 처리하며, 2048×2048 이미지 한 장에 보통 1초 안팎이 걸립니다. 아주 많이 올리면 기기 메모리에 따라 느려질 수 있습니다.</dd>
       <dt>설정은 저장되나요?</dt>
@@ -181,6 +181,7 @@
       <li><a href="color-fringe">가장자리 색 번짐이 생기는 이유</a>: 색만 지우면 분홍 테두리가 남는 이유</li>
       <li>문제 해결: <a href="fix-eroded-edges">물체가 깎일 때</a> · <a href="fix-shadow">그림자가 남을 때</a> · <a href="fix-gradient-background">배경이 그라데이션일 때</a></li>
       <li>쓰임새: <a href="kakao-emoticon">카카오 이모티콘</a> · <a href="app-icon-sizes">앱 아이콘·파비콘</a> · <a href="sprite-sheet">스프라이트 시트</a></li>
+      <li>사진: <a href="heic-to-jpg">HEIC를 JPG로 변환</a> · <a href="compress-image">이미지 용량 줄이기</a></li>
       <li><a href="guides">가이드 전체 보기</a></li>
     </ul>
   </article>

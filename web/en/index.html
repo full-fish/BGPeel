@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BGPeel – Solid & Chroma Key Background Remover, Free Transparent PNG</title>
-<meta name="description" content="Remove solid-color and chroma key backgrounds plus the Nano Banana watermark, and get transparent PNGs. Also resize images and save as JPG or WebP, in bulk, with no upload.">
+<meta name="description" content="Remove solid-color and chroma key backgrounds plus the Nano Banana watermark, and get transparent PNGs. Also resize and compress images and convert iPhone HEIC to JPG, in bulk, with no upload.">
 <link rel="canonical" href="https://bgpeel.com/en/">
 <link rel="alternate" hreflang="ko" href="https://bgpeel.com/">
 <link rel="alternate" hreflang="en" href="https://bgpeel.com/en/">
@@ -34,10 +34,10 @@
   <p class="sub">Drop in as many images as you like and solid backgrounds such as magenta are removed, leaving transparent PNGs. Images are never uploaded — they are processed only in this browser.</p>
 
   <div class="drop" id="drop">
-    <input type="file" id="file" accept="image/*" multiple>
+    <input type="file" id="file" accept="image/*,.heic,.heif" multiple>
     <input type="file" id="dir" webkitdirectory>
     Drag images or folders here or <label for="file"><b>click to choose</b></label> · <label for="dir" class="dir"><b>choose a folder</b></label>
-    <span class="hint">You can also paste (Ctrl+V · ⌘V)</span>
+    <span class="hint">You can also paste (Ctrl+V · ⌘V), and iPhone HEIC photos open too</span>
   </div>
 
   <div id="opts">
@@ -127,7 +127,7 @@
           <li><b>Check</b>: a black or white background makes leftover background color at the edges easy to spot. Use “Card size” −/+ to fit more or fewer images on screen.</li>
           <li><b>Redo a few</b>: click images to select them and convert: only the selected ones are redone and the other results stay. Shift-click selects a range, and “Select failed” picks only skipped or failed cards. × at the top right of a card removes it from the list.</li>
         </ul></li>
-      <li><b>Download</b> — use the Download link on each card, or “Download zip” to get everything at once (dropped folders keep their structure inside the zip). Use “Download size” and “256 colors” to get smaller files, for all images or card by card. Choose PNG, WebP or JPG under “Format”. Only PNG and WebP keep a transparent background; JPG fills transparent areas with white. To just resize without removing the background, set the background type to “Keep background”.</li>
+      <li><b>Download</b> — use the Download link on each card, or “Download zip” to get everything at once (dropped folders keep their structure inside the zip). Use “Download size” and “256 colors” to get smaller files, for all images or card by card. Choose PNG, WebP or JPG under “Format”; for JPG and WebP, a lower “Quality” gives smaller files. Only PNG and WebP keep a transparent background; JPG fills transparent areas with white. To just resize without removing the background, set the background type to “Keep background”.</li>
     </ol>
 
     <h2>Works best with</h2>
@@ -166,7 +166,7 @@
       <dt>Is it free?</dt>
       <dd>Yes. The site is supported by ads.</dd>
       <dt>Which files can I use?</dt>
-      <dd>Any image your browser can open, such as PNG, JPG, WebP, BMP or GIF (first frame). Results are PNG or WebP (transparency kept) or JPG (transparent areas become white).</dd>
+      <dd>Any image your browser can open, such as PNG, JPG, WebP, BMP or GIF (first frame), plus iPhone HEIC photos. Results are PNG or WebP (transparency kept) or JPG (transparent areas become white).</dd>
       <dt>How many images at once?</dt>
       <dd>There is no fixed limit. Images are processed one after another; a 2048×2048 image usually takes about a second. Very large batches may slow down depending on your device's memory.</dd>
       <dt>Are my settings saved?</dt>
@@ -180,6 +180,7 @@
       <li><a href="color-fringe">Why color fringes appear</a>: why deleting a color leaves a pink outline</li>
       <li>Troubleshooting: <a href="fix-eroded-edges">parts of the object disappear</a> · <a href="fix-shadow">a shadow is left behind</a> · <a href="fix-gradient-background">gradient backgrounds</a></li>
       <li>By use: <a href="kakao-emoticon">KakaoTalk emoticons</a> · <a href="app-icon-sizes">app icons and favicons</a> · <a href="sprite-sheet">sprite sheets</a></li>
+      <li>Photos: <a href="heic-to-jpg">convert HEIC to JPG</a> · <a href="compress-image">reduce image file size</a></li>
       <li><a href="guides">All guides</a></li>
     </ul>
   </article>

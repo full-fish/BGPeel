@@ -78,12 +78,13 @@ npm test -- stop   # 파일 이름 일부로 골라서
 
 ## 외부 라이브러리 (설치할 것 없음)
 
-모두 cdnjs에서 불러옵니다.
+libheif-js만 jsdelivr, 나머지는 cdnjs에서 불러옵니다.
 
 | 라이브러리 | 쓰는 곳 |
 |---|---|
 | JSZip | zip 만들 때 |
 | pako, UPNG.js | 256색을 처음 켤 때만 워커가 불러옴 |
+| libheif-js (jsdelivr, wasm) | HEIC(아이폰 사진)를 처음 넣을 때만 워커가 불러옴. 크롬·엣지·파이어폭스는 HEIC를 직접 못 연다 |
 | Google AdSense | `<meta name="google-adsense-account">`에 게시자 ID를 넣었을 때만 |
 
 CSS `:has()`를 쓰므로 Chrome 105+, Safari 15.4+, Firefox 121+가 필요합니다.
@@ -93,7 +94,7 @@ CSS `:has()`를 쓰므로 Chrome 105+, Safari 15.4+, Firefox 121+가 필요합�
 | 키 | 내용 |
 |---|---|
 | `nobg-cfg` | 배경 제거 설정 |
-| `nobg-out` | 내려받을 크기·256색 기본값 |
+| `nobg-out` | 내려받을 크기·256색·저장 형식·화질 기본값 |
 | `nobg-view` | 미리보기 배경, 카드 크기, 사이드바 위치 |
 
 ## 배포

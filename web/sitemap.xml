@@ -202,4 +202,24 @@
     <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/fix-gradient-background"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/fix-gradient-background"/>
   </url>
+  <url>
+    <loc>https://bgpeel.com/heic-to-jpg</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/heic-to-jpg"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/heic-to-jpg"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/en/heic-to-jpg</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/heic-to-jpg"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/heic-to-jpg"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/compress-image</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/compress-image"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/compress-image"/>
+  </url>
+  <url>
+    <loc>https://bgpeel.com/en/compress-image</loc>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://bgpeel.com/compress-image"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://bgpeel.com/en/compress-image"/>
+  </url>
 </urlset>
